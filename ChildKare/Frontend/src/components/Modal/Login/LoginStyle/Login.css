@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
+
+.parent-login-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 500px;
+    background-color: none;
+    padding: 30px 30px;
+    text-align: center;
+}
+
+.doctor-login-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 500px;
+    background-color: none;
+    padding: 30px 30px;
+    text-align: center;
+}
+
+.login-container {
+    position: relative;
+    width: 100%;
+    min-height: 20px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 30px 100px;
+    box-sizing: border-box;
+    box-shadow: 0 0 10px rgb(0 0 0 / 80%);
+}
+
+/* Heading styles */
+.login-container h1 {
+    color: #000000;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/* Box container for each input field */
+.login-container .box {
+    position: relative;
+    width: 100%;
+    margin: 30px 0;
+}
+
+/* Input and textarea styling */
+.login-container .box input,
+.login-container .box textarea {
+    position: relative;
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 22px;
+    padding: 8px 0;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgba(0, 0, 0, .2); 
+    background: transparent;
+    z-index: 2;
+    transition: .9s;
+}
+
+/* Focus effect on input fields */
+.login-container .box input:focus,
+.login-container .box textarea:focus {
+    border-color: #ff5722;
+}
+
+/* Span styling for labels */
+.login-container .box span {
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    color: rgba(0, 0, 0, .5);
+    z-index: 1;
+    transition: .9s;
+}
+
+/* Positioning of the label on focus */
+.login-container .box input + span {
+    top: 31%;
+}
+
+.login-container .box input:focus + span, 
+.login-container .box input:valid + span {
+    color: #ff5722;
+    top: -35%;
+}
+
+.login-container .box textarea + span {
+    top: 13px;
+}
+
+.login-container .box textarea:focus + span, 
+.login-container .box textarea:valid + span {
+    color: #ff5722;
+    top: -11px;
+}
+
+/* Button styling */
+.login-container a,
+.login-container button {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding: 10px 0;
+    color: #fff;
+    background-color: #4caf50;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Button hover effect */
+.login-container a:hover,
+.login-container button:hover {
+    background-color: #4caf4fc1;
+}
+
+/* Eye icon styling */
+.login-container .box .eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 22px; /* Adjust icon size */
+  z-index: 10; /* Make sure the icon is on top and clickable */
+}
+
+/* Additional input box styling */
+.login-container .box {
+  position: relative; /* Make sure the container for the input has relative positioning */
+}
+
+
+/* Responsive Styles */
+
+/* For tablets and small screens */
+@media (max-width: 768px) {
+    .parent-login-container {
+        width: 80%; /* Take up more width on smaller screens */
+        padding: 20px;
+    }
+
+    .container {
+        padding: 20px; /* Reduce padding on smaller screens */
+    }
+
+    .container h1 {
+        font-size: 24px; /* Adjust the heading size */
+    }
+
+    .container .box input,
+    .container .box textarea {
+        font-size: 18px; /* Adjust the input font size */
+    }
+
+    .container a,
+    .container button {
+        font-size: 16px; /* Adjust the button font size */
+    }
+}
+
+/* For mobile phones */
+@media (max-width: 480px) {
+    .parent-login-container {
+        width: 90%; /* Take up almost the entire width */
+        padding: 15px;
+    }
+
+    .container {
+        padding: 15px; /* Reduce padding on smaller screens */
+    }
+
+    .container h1 {
+        font-size: 20px; /* Adjust the heading size */
+    }
+
+    .container .box input,
+    .container .box textarea {
+        font-size: 16px; /* Adjust the input font size */
+    }
+
+    .container a,
+    .container button {
+        font-size: 14px; /* Adjust the button font size */
+    }
+}

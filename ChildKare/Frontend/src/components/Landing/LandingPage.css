@@ -1,0 +1,360 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
+
+*{
+  font-family: 'Poppins', sans-serif;
+}
+
+body{
+    margin: 0%;
+    padding: 0%;
+    height: 100%;
+    width: 100%;
+  }
+
+.Landing-wrapper {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: whitesmoke;
+  }
+  
+  header {
+    width: 100%;
+    background-color: #7dc2f7;
+    position: static;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .logo-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .center-nav {
+    font: 1.2em sans-serif;
+    font-weight: bold;
+    display: flex;
+    gap: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .center-nav span:hover {
+    color: #4e4e4e;
+    text-decoration: underline;
+  }
+
+  .auth-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .auth-buttons button {
+    padding: 10px 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 15px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-btn {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .register-btn {
+    background-color: #008cba;
+    color: white;
+    margin-left: 16%;
+  }
+  
+  .login-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .register-btn:hover {
+    background-color: #007bb5;
+  }
+  
+  .first-content {
+    margin: 0%;
+    padding: 0%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    min-height: 650px;
+    flex-grow: 1;
+    background-image: url(/src/components/Landing/LandingImage/background3.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .description {
+    flex: 1;
+    margin-left: 40px;
+    padding-right: 20px;
+    color: #ffffff;
+    justify-content: center;
+  }
+  
+  .description h1 {
+    margin: 0%;
+    margin-left: 30px;
+    font-size: 3rem;
+    font-weight: bold;
+  }
+  
+  .description p {
+    margin-top: 20px;
+    font-size: 2rem;
+  }
+  
+  .image-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .content-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  /* Footer Styles */
+.footer {
+  background-color: #333;  /* Dark background for footer */
+  color: white;  /* White text */
+  padding: 10px;
+  text-align: center;
+  position: relative;
+  bottom: 0;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-links {
+  margin-top: 10px;
+}
+
+.footer-links a {
+  color: white;
+  margin: 0 15px;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer span {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .logo {
+      width: 30px;
+      height: 30px;
+    }
+  
+    .logo-name {
+      font-size: 1.2rem;
+    }
+
+    .center-nav {
+      font-size: 15px;
+      gap: 10px;
+    }
+
+    .center-nav {
+      display: none;
+    }
+
+    .register-btn {
+      margin-left: 43%;
+    }
+
+    .first-content {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  
+    .description {
+      padding-right: 0;
+      margin-bottom: 20px;
+    }
+  
+    .image-container {
+      width: 80%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    header {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .logo-container {
+      margin-bottom: 10px;
+    }
+  
+    .auth-buttons {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .auth-buttons button {
+      width: 100%;
+      margin: 5px 0;
+    }
+
+  .second-content .card {
+    width: 230px;
+    border-radius: 15px;
+  }
+
+  .second-content .card .img-box {
+    width: 185px;
+    border-radius: 10px;
+  }
+
+  .second-content .card .content p {
+    font-size: 0.8rem;
+  }
+
+  .second-content .card .content a {
+    font-size: 0.9rem;
+  }
+
+  }
+
+/* Second Content Section */
+.second-content {
+  margin: 0%;
+  padding: 0%;
+  display: flex;
+  justify-content: space-evenly; /*Mao ni naka cause ug issue*/
+  margin-top: 50px;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 50px;
+}
+
+.second-content .card {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 320px;
+  height: 350px;
+  background: white;
+  border-radius: 20px;
+  transition: 0.5s;
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.15);
+}
+
+.second-content .card:hover {
+  height: 400px;
+}
+
+.second-content .card .img-box {
+  position: absolute;
+  top: 20px;
+  width: 300px;
+  height: 220px;
+  background: #333;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: 0.5s;
+}
+
+.second-content .card:hover .img-box {
+  top: -100px;
+  scale: 0.75;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
+}
+
+.second-content .card .img-box img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.second-content .card .content {
+  position: absolute;
+  top: 252px;
+  width: 100%;
+  height: 50px;
+  padding: 0 30px;
+  text-align: center;
+  overflow: hidden;
+  transition: 0.5s;
+}
+
+.second-content .card:hover .content {
+  top: 130px;
+  height: 250px;
+}
+
+.second-content .card .content h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--clr);
+}
+
+.second-content .card .content p {
+  color: #333;
+}
+
+.second-content .card .content a {
+  position: relative;
+  top: 15px;
+  display: inline-block;
+  padding: 12px 25px;
+  text-decoration: none;
+  background: var(--clr);
+  color: white;
+  font-weight: 500;
+}
+
+.second-content .card .content a:hover {
+  opacity: 0.8;
+}

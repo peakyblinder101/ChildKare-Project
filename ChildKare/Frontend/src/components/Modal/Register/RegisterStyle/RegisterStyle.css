@@ -1,0 +1,192 @@
+.register-container {
+    max-width: 700px;
+    max-height: 530px;
+    background: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 11px solid black;
+    margin: 10px;
+  }
+  
+  .register-container .register-container-title {
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #f6f8fa;
+  }
+  
+  .register-container .register-container-title p {
+    margin: 10px;
+    font-size: 25px;
+    font-weight: 500;
+  }
+  
+  /* Box container for each input field */
+   .box-reg {
+    position: relative;
+    width: 100%;
+  }
+  
+  /* Input and textarea styling */
+  .box-reg input,
+  .box-reg textarea {
+    position: relative;
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 22px;
+    padding: 8px 0;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgba(0, 0, 0, .2); 
+    background: transparent;
+    z-index: 2;
+    transition: .9s;
+  }
+  
+  /* Focus effect on input fields */
+  .box-reg input:focus,
+  .box-reg textarea:focus {
+    border-color: #ff5722;
+  }
+  
+  /* Span styling for labels */
+  .box-reg span {
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    color: rgba(0, 0, 0, .5);
+    z-index: 1;
+    transition: .9s;
+  }
+  
+  /* Positioning of the label on focus */
+   .box-reg input + span {
+    top: 31%;
+  }
+  
+   .box-reg input:focus + span, 
+   .box-reg input:valid + span {
+    color: #ff5722;
+    top: -35%;
+  }
+  
+  .box-reg textarea + span {
+    top: 13px;
+  }
+  
+  .box-reg textarea:focus + span, 
+  .box-reg textarea:valid + span {
+    color: #ff5722;
+    top: -11px;
+  }
+  
+  /* For tablets and small screens */
+  @media (max-width: 768px) {
+  
+   .box-reg input,
+  .box-reg textarea {
+        font-size: 18px; /* Adjust the input font size */
+    }
+  }
+  
+  
+  @media (max-width: 480px) {
+  .box-reg input,
+  .box-reg textarea {
+        font-size: 16px;
+    }
+  }
+  
+  .user_details {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 5px;
+  }
+  
+  .user_details .input_box {
+    width: calc(100% / 2 - 20px);
+    margin: 0 0 12px 0;
+  }
+  
+  .gender {
+    margin-top: -10px;
+  }
+  
+  .gender .gender-title {
+    display: flex;
+    font-size: 20px;
+    font-weight: 500;
+  }
+  
+  .gender .gender-category {
+    display: flex; /* Use flex to align the options horizontally */
+    margin: 5px 0;
+    gap: 80px; /* Space between the gender options */
+  }
+  
+  .gender .gender-category label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .gender input {
+    margin-right: 8px; /* Space between the radio button and the label */
+  }
+  
+  .gender input[type="radio"] {
+    display: inline-block; /* Ensure radio buttons are inline */
+  }
+  
+  /* For smaller screens, adjust layout if needed */
+  @media screen and (max-width: 584px) {
+    .gender .gender-category {
+      flex-direction: column;
+      align-items: flex-start; /* Stack the radio buttons vertically on small screens */
+    }
+  }
+  
+  .reg_btn input {
+    height: 45px;
+    width: 90%;
+    margin-bottom: 10px;
+    border: none;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    background: linear-gradient(to right, #f37a65, #d64141);
+    border-radius: 5px;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+  }
+  
+  .reg_btn input:hover {
+    background: linear-gradient(to right, #d64141, #f37a65);
+  }
+  
+  @media screen and (max-width: 584px) {
+    .user_details {
+      max-height: 340px;
+      overflow-y: scroll;
+    }
+  
+    .user_details::-webkit-scrollbar {
+      width: 0;
+    }
+  
+    .user_details .input_box {
+      width: 100%;
+    }
+  
+    .gender .gender-category {
+      width: 100%;
+    }
+  }
+  
+  @media screen and (max-width: 419px) {
+    .gender .gender-category {
+      flex-direction: column;
+    }
+  }
+  

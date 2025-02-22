@@ -1,0 +1,41 @@
+import React, { useState } from 'react';
+import { FaUserAlt, FaComments, FaCalendarAlt, FaHome } from 'react-icons/fa';
+import DashboardLayout from '../DashboardLayout';
+import ParentHome from './ParentHome/ParentHome';
+import ParentProfile from './ParentProfile/ParentProfile';
+import ChildTips from './ChildTips/ChildTips';
+import ParentChat from './ParentChat/ParentChat';
+import ParentSchedule from './ParentSchedule/ParentSchedule';
+
+function ParentDashboard() {
+  const [content, setContent] = useState('Profile'); // Default content when page loads
+
+  // Define sidebar items for Parent Dashboard
+  const sidebarItems = [
+    
+    { label: 'Parent Home', icon: FaHome },
+    { label: 'Parent Profile', icon: FaUserAlt },
+    { label: 'Child Tips', icon: FaComments },
+    { label: 'Parent Chat', icon: FaComments },
+    { label: 'Parent Schedule', icon: FaCalendarAlt },
+  ];
+
+  // Callback to handle content change when sidebar menu item is clicked
+  const handleMenuItemClick = (item) => {
+    setContent(item.label); // Set the clicked menu item's label
+  };
+
+  return (
+    <DashboardLayout sidebarItems={sidebarItems} onMenuItemClick={handleMenuItemClick}>
+      <div className="content">
+        {content === 'Parent Home' && <ParentHome />}
+        {content === 'Parent Profile' && <ParentProfile />}
+        {content === 'Child Tips' && <ChildTips />}
+        {content === 'Parent Chat' && <ParentChat />}
+        {content === 'Parent Schedule' && <ParentSchedule />}
+      </div>
+    </DashboardLayout>
+  );
+}
+
+export default ParentDashboard;
