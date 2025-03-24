@@ -68,7 +68,7 @@
 /* Focus effect on input fields */
 .login-container .box input:focus,
 .login-container .box textarea:focus {
-    border-color: #ff5722;
+    border-color: #028ef9;
 }
 
 /* Span styling for labels */
@@ -88,7 +88,7 @@
 
 .login-container .box input:focus + span, 
 .login-container .box input:valid + span {
-    color: #ff5722;
+    color: #028ef9;
     top: -35%;
 }
 
@@ -98,7 +98,7 @@
 
 .login-container .box textarea:focus + span, 
 .login-container .box textarea:valid + span {
-    color: #ff5722;
+    color: #028ef9;
     top: -11px;
 }
 
@@ -110,18 +110,19 @@
     width: 100%;
     padding: 10px 0;
     color: #fff;
-    background-color: #4caf50;
+    background-color: #028ef9;
     text-transform: uppercase;
     text-align: center;
     text-decoration: none;
     border: none;
     cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s ease; /* Add smooth transitions */
 }
 
 /* Button hover effect */
 .login-container a:hover,
 .login-container button:hover {
-    background-color: #4caf4fc1;
+    background-color: #004d88;
 }
 
 /* Eye icon styling */

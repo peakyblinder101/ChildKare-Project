@@ -99,10 +99,9 @@ body{
   .register-btn:hover {
     background-color: #007bb5;
   }
-  
   .first-content {
-    margin: 0%;
-    padding: 0%;
+    margin: 0;
+    padding: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -113,18 +112,23 @@ body{
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    /* Centering the content */
+    justify-content: center;
+    text-align: center;
+    flex-direction: row;
   }
-
+  
   .description {
     flex: 1;
     margin-left: 40px;
     padding-right: 20px;
     color: #ffffff;
     justify-content: center;
+    text-align: left; /* Text alignment for larger screens */
   }
   
   .description h1 {
-    margin: 0%;
+    margin: 0;
     margin-left: 30px;
     font-size: 3rem;
     font-weight: bold;
@@ -146,6 +150,122 @@ body{
     height: auto;
     border-radius: 8px;
   }
+  
+  /* Responsive Styles for First Content Section */
+  @media (max-width: 1024px) {
+    .first-content {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 500px;
+    }
+  
+    .description {
+      margin-left: 0;
+      padding-right: 0;
+      text-align: center;
+      flex: 1;
+      margin-bottom: 20px;
+      margin-top: 30px; /* Adjusted margin for smaller screens */
+    }
+  
+    .description h1 {
+      font-size: 2.5rem;
+    }
+  
+    .description p {
+      font-size: 1.6rem;
+    }
+  
+    .image-container {
+      width: 80%;
+      margin-top: 20px;
+    }
+  
+    .content-image {
+      width: 100%;
+      height: auto;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .first-content {
+      flex-direction: column;
+      align-items: center;
+      min-height: 450px;
+    }
+  
+    .description {
+      margin-left: 0;
+      padding-right: 0;
+      text-align: center;
+      flex: 1;
+      margin-bottom: 20px;
+      margin-top: 20px; /* Adjusted margin for smaller screens */
+    }
+  
+    .description h1 {
+      font-size: 2rem;
+    }
+  
+    .description p {
+      font-size: 1.4rem;
+      margin-top: 15px;
+    }
+  
+    .image-container {
+      width: 100%;
+      margin-top: 20px;
+    }
+  
+    .content-image {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .first-content {
+      flex-direction: column;
+      align-items: center;
+      min-height: 400px;
+      justify-content: center; /* Add center alignment for mobile */
+    }
+  
+    .description {
+      margin-left: 0;
+      padding-right: 0;
+      text-align: center;
+      margin-top: 10px; /* Added some margin to avoid text being too close to the header */
+    }
+  
+    .description h1 {
+      font-size: 1.8rem;
+    }
+  
+    .description p {
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+  
+    .image-container {
+      width: 100%;
+      margin-top: 20px;
+    }
+  
+    .content-image {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+  
+    .auth-buttons button {
+      width: 100%;
+      margin: 5px 0;
+    }
+  }
+  
   
   /* Footer Styles */
 .footer {

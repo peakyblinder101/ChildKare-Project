@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./Modal.css";
-//Parent
+// Parent
 import ParentLogin from "../Login/ParentDoctorLogin/ParentLogin";
 import ParentRegister from "../Register/ParentReg/ParentRegister";
-//Doctor
+// Doctor
 import DoctorLogin from "../Login/ParentDoctorLogin/DoctorLogin";
 import DoctorRegister from "../Register/DoctorReg/DoctorRegister";
 
@@ -27,6 +27,11 @@ function Modal({ isModalOpen, closeModal, formType }) {
     setRole(selectedRole); // Set the selected role (Parent or Doctor)
   };
 
+  // Function to handle going back to the role selection
+  const handleBack = () => {
+    setRole(""); // Reset the role to go back to the role selection screen
+  };
+
   // Render the correct form based on the selected role and formType
   const renderForm = () => {
     if (role === "Parent" && formType === "Login") {
@@ -43,9 +48,17 @@ function Modal({ isModalOpen, closeModal, formType }) {
   return (
     <div className="modal-overlay">
       <div className="modal">
-        <button className="close-modal" onClick={closeModal}>
+        {/* Close Button */}
+        <button className="modal-button close-modal" onClick={closeModal}>
           Close
         </button>
+
+        {/* Back Button */}
+        {role && (
+          <button className="modal-button back-button" onClick={handleBack}>
+            Back
+          </button>
+        )}
 
         {!role && (
           <>
@@ -65,7 +78,6 @@ function Modal({ isModalOpen, closeModal, formType }) {
 
         {/* Render the appropriate form for login or register */}
         {role && renderForm()}
-        
       </div>
     </div>
   );
