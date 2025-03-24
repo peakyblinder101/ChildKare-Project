@@ -19,7 +19,9 @@ function DoctorDashboard() {
   };
 
   return (
-    <DashboardLayout sidebarItems={sidebarItems} onMenuItemClick={handleMenuItemClick}>
+    <DashboardLayout sidebarItems={sidebarItems} 
+      onMenuItemClick={handleMenuItemClick} 
+      defaultSelected="Doctor Profile">
       <div className="content">
         {content === 'Doctor Profile' && <h1>Doctor Profile Content</h1>}
         {content === 'Upload Tips' && <h1>Upload Tips Content</h1>}

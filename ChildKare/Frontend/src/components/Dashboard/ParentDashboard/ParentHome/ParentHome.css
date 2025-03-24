@@ -1,0 +1,107 @@
+.parent-home {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 20px;
+  }
+  
+  .profile-card {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 180px; /* Adjusted for a smaller card */
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .profile-card .greeting {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .profile-card .greeting h2 {
+    margin: 0;
+    font-size: 14px; /* Smaller font size for the greeting */
+  }
+  
+  .profile-card .greeting p {
+    margin: 0;
+    font-size: 12px; /* Smaller font size for the name */
+  }
+  
+  .profile-card .profile-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  
+  .profile-card .profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .profile-card .profile-link {
+    display: block;
+    margin-top: 10px;
+  }
+  
+  .main-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 100px; /* Make space for the profile card */
+  }
+  
+  .tips-section {
+    flex: 1;
+    margin-right: 20px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tips-section h3 {
+    margin-bottom: 15px;
+  }
+  
+  .calendar-section {
+    flex: 1;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .event-info {
+    margin-top: 20px;
+  }
+  
+  .event-info h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .calendar {
+    width: 100%;
+  }
+  
+  .read-more {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .read-more:hover {
+    text-decoration: underline;
+  }
+  

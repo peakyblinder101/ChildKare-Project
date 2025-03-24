@@ -1,24 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './DashboardLayout.css'; 
+import './DashboardLayout.css';
 
-function DashboardLayout({ sidebarItems, onMenuItemClick, children }) {
-  const [selectedItem, setSelectedItem] = useState(null);
+function DashboardLayout({ sidebarItems, onMenuItemClick, children, defaultSelected }) {
+  const [selectedItem, setSelectedItem] = useState(defaultSelected); // Set initial selected item to the defaultSelected
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Set the initial selected item when the defaultSelected prop changes
+    setSelectedItem(defaultSelected);
+  }, [defaultSelected]);
+
+  // Handle menu item click
   const handleMenuItemClick = (item) => {
-    setSelectedItem(item); // Highlight the clicked item
-    onMenuItemClick(item); // Callback for updating content based on the menu
+    setSelectedItem(item.label); // Use item.label to track selected item
+    onMenuItemClick(item); // Pass the selected item to the parent
   };
 
   // Handle logout
   const handleLogout = () => {
-    // Clear any authentication-related data
-    // For example, you can clear localStorage or sessionStorage:
+    // Example: Clear authentication-related data (uncomment if needed)
     // localStorage.removeItem('auth_token');
     // sessionStorage.clear();
-
-    // Navigate back to the landing page
+    
+    // Navigate back to the landing page (or login page)
     navigate('/');
   };
 
@@ -30,14 +35,13 @@ function DashboardLayout({ sidebarItems, onMenuItemClick, children }) {
         <ul>
           {sidebarItems.map((item) => (
             <li
-            key={item.label}
-            onClick={() => handleMenuItemClick(item)}
-            className={selectedItem === item ? 'active' : ''}
-          >
-            {item.icon && <div className="icon">{<item.icon />}</div>} {/* Add the icon class here */}
-            {item.label}
-          </li>
-          
+              key={item.label}
+              onClick={() => handleMenuItemClick(item)}
+              className={selectedItem === item.label ? 'active' : ''} // Compare by label
+            >
+              {item.icon && <div className="icon">{<item.icon />}</div>} {/* Add the icon class here */}
+              {item.label}
+            </li>
           ))}
         </ul>
         {/* Log Out Button */}

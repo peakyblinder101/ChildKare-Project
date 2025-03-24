@@ -1,0 +1,35 @@
+
+  import React from 'react';
+import { FaUserAlt, FaComments, FaCalendarAlt, FaHome } from 'react-icons/fa';
+import { Routes, Route, Link } from 'react-router-dom';  // Import Routes and Route
+import DashboardLayout from '../DashboardLayout';
+import ParentHome from './ParentHome/ParentHome';
+import ParentProfile from './ParentProfile/ParentProfile';
+import ChildTips from './ChildTips/ChildTips';
+import ParentChat from './ParentChat/ParentChat';
+import ParentSchedule from './ParentSchedule/ParentSchedule';
+
+function ParentDashboard() {
+  // Define sidebar items for Parent Dashboard
+  const sidebarItems = [
+    { label: 'Parent Home', icon: FaHome, to: '/' },
+    { label: 'Parent Profile', icon: FaUserAlt, to: '/parent-profile' },
+    { label: 'Child Tips', icon: FaComments, to: '/child-tips' },
+    { label: 'Parent Chat', icon: FaComments, to: '/parent-chat' },
+    { label: 'Parent Schedule', icon: FaCalendarAlt, to: '/parent-schedule' },
+  ];
+
+  return (
+    <DashboardLayout sidebarItems={sidebarItems}>
+      <Routes>
+        <Route path="/" element={<ParentHome />} />
+        <Route path="/parent-profile" element={<ParentProfile />} />
+        <Route path="/child-tips" element={<ChildTips />} />
+        <Route path="/parent-chat" element={<ParentChat />} />
+        <Route path="/parent-schedule" element={<ParentSchedule />} />
+      </Routes>
+    </DashboardLayout>
+  );
+}
+
+export default ParentDashboard;
