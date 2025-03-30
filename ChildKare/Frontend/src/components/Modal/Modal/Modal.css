@@ -21,10 +21,10 @@
   height: 80%;
   width: 50%;
   position: absolute;
-  display: flex; /* Added to make the modal content flexbox */
-  flex-direction: column; /* This will stack the content vertically */
-  justify-content: center; /* Center the content vertically */
-  align-items: center; /* Center the content horizontally */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Modal Title */
@@ -48,25 +48,25 @@
 /* Common button styling for Close and Back buttons */
 .modal-button {
   padding: 8px 16px;
-  background-color: #7dc2f7; /* Red color for both Close and Back buttons */
+  background-color: #7dc2f7; 
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
   z-index: 1100; /* Ensure it's above other content */
-  transition: transform 0.2s ease, background-color 0.3s ease; /* Add smooth transitions */
+  transition: transform 0.2s ease, background-color 0.3s ease;
 }
 
 /* Hover Effect for both Close and Back Buttons */
 .modal-button:hover {
-  background-color: #028ef9; /* Darker red on hover */
-  transform: scale(1.1); /* Slightly enlarge the button */
+  background-color: #028ef9;
+  transform: scale(1.1);
 }
 
 /* Focus Effect for both Close and Back Buttons (when clicked) */
 .modal-button:active {
-  transform: scale(1); /* Slightly shrink the button when clicked to simulate pressing */
+  transform: scale(1);
 }
 
 /* Positioning for Close Button */
@@ -83,12 +83,11 @@
   left: 10px;
 }
 
-
 /* Styling for Role Images (Parent/Doctor) */
 .role-images {
-  display: flex; /* Added to use flexbox */
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
+  display: flex; 
+  justify-content: center;
+  align-items: center;
   gap: 20px;
 }
 
@@ -103,7 +102,7 @@
 }
 
 .role-option img {
-  width: 220px; /* Set image size */
+  width: 220px;
   height: 220px;
   object-fit: cover;
   border-radius: 10px;
@@ -118,13 +117,13 @@
 }
 
 .role-option:hover p {
-  color: #ff5722; /* Color change on hover */
+  color: #ff5722;
 }
 
 /* Responsive Design for Smaller Screens */
 @media (max-width: 768px) {
   .modal {
-    width: 70%; /* Increase width on smaller screens */
+    width: 70%; 
   }
 
   .role-images {
@@ -136,7 +135,7 @@
   }
 
   .role-option img {
-    width: 100px; /* Smaller image size on mobile */
+    width: 100px; 
     height: 100px;
   }
 }

@@ -132,13 +132,13 @@
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  font-size: 22px; /* Adjust icon size */
-  z-index: 10; /* Make sure the icon is on top and clickable */
+  font-size: 22px;
+  z-index: 10;
 }
 
 /* Additional input box styling */
 .login-container .box {
-  position: relative; /* Make sure the container for the input has relative positioning */
+  position: relative;
 }
 
 
@@ -147,51 +147,51 @@
 /* For tablets and small screens */
 @media (max-width: 768px) {
     .parent-login-container {
-        width: 80%; /* Take up more width on smaller screens */
+        width: 80%; 
         padding: 20px;
     }
 
     .container {
-        padding: 20px; /* Reduce padding on smaller screens */
+        padding: 20px;
     }
 
     .container h1 {
-        font-size: 24px; /* Adjust the heading size */
+        font-size: 24px;
     }
 
     .container .box input,
     .container .box textarea {
-        font-size: 18px; /* Adjust the input font size */
+        font-size: 18px;
     }
 
     .container a,
     .container button {
-        font-size: 16px; /* Adjust the button font size */
+        font-size: 16px;
     }
 }
 
 /* For mobile phones */
 @media (max-width: 480px) {
     .parent-login-container {
-        width: 90%; /* Take up almost the entire width */
+        width: 90%;
         padding: 15px;
     }
 
     .container {
-        padding: 15px; /* Reduce padding on smaller screens */
+        padding: 15px;
     }
 
     .container h1 {
-        font-size: 20px; /* Adjust the heading size */
+        font-size: 20px;
     }
 
     .container .box input,
     .container .box textarea {
-        font-size: 16px; /* Adjust the input font size */
+        font-size: 16px; 
     }
 
     .container a,
     .container button {
-        font-size: 14px; /* Adjust the button font size */
+        font-size: 14px;
     }
 }

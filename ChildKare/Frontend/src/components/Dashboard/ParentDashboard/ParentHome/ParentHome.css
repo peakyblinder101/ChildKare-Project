@@ -76,12 +76,15 @@
   }
   
   .calendar-section {
-    flex: 1;
+    flex: 0 0 300px; /* Fixed width */
+    height: 525px; /* Fixed height */
     background: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: auto;
   }
+  
   
   .event-info {
     margin-top: 20px;

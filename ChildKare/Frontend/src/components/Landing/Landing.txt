@@ -1,0 +1,156 @@
+
+import React, { useState } from "react";
+import "./LandingPage.css";
+import Modal from "../Modal/Modal/Modal";
+
+function LandingPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+  const [formType, setFormType] = useState(""); // State to manage form type (Login/Register)
+
+  // Function to open the modal with the appropriate form (Login/Register)
+  const openModal = (actionType) => {
+    setFormType(actionType); // Set the form type to "Login" or "Register"
+    setIsModalOpen(true); // Open the modal
+  };
+
+  // Function to close the modal and reset formType state
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setFormType(""); // Reset the form type when closing the modal
+  };
+
+  return (
+    <div className="Landing-wrapper">
+      <header className="header">
+        <div className="logo-container">
+          <img
+            src="/src/components/Landing/LandingImage/logo5.png"
+            alt="Logo"
+            className="logo"
+          />
+          <span className="logo-name">ChildKare</span>
+        </div>
+
+        <div className="center-nav">
+          <span>About Us</span>
+          <span>Our Goals</span>
+          <span>Blog</span>
+          <span>Child Tips</span>
+        </div>
+        <div className="auth-buttons">
+          <button className="login-btn" onClick={() => openModal("Login")}>
+            Login
+          </button>
+        </div>
+      </header>
+
+      <div className="first-content">
+        <div className="description">
+          <h1>Welcome to ChildKare</h1>
+          <p>
+            ChildKare is dedicated to providing the best care <br />
+            for children. Our mission is to ensure every child <br />
+            receives the attention and love they deserve. <br />
+            Join us in making a difference!
+          </p>
+          <div className="auth-buttons">
+            <button className="register-btn" onClick={() => openModal("Register")}>
+              Register
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Second Content Section */}
+      <div className="second-content">
+        <div className="card" style={{ "--clr": "#009688" }}>
+          <div className="img-box">
+            <img src="/src/components/Landing/LandingImage/chatbot.webp" alt="Development" />
+          </div>
+          <div className="content">
+            <h2>ChatBot Assistance</h2>
+            <p>
+              Our intelligent chatbot is available 24/7 
+              to answer any questions you may have. 
+              Whether you're seeking advice or need 
+              quick information, the chatbot is always 
+              ready to help!
+            </p>
+            <a href="#">Read More</a>
+          </div>
+        </div>
+        <div className="card" style={{ "--clr": "#009688" }}>
+          <div className="img-box">
+            <img src="/src/components/Landing/LandingImage/chatdoc.jpg" alt="Development" />
+          </div>
+          <div className="content">
+            <h2>Consult with Doctors</h2>
+            <p>
+              Connect directly with trusted healthcare 
+              professionals through our secure chat feature. 
+              Schedule checkups, ask health-related questions, 
+              and get expert advice at your convenience. 
+              Doctors can also reach out to you with 
+              personalized questions and updates.
+            </p>
+            <a href="#">Read More</a>
+          </div>
+        </div>
+        <div className="card" style={{ "--clr": "#FF3E7F" }}>
+          <div className="img-box">
+            <img src="/src/components/Landing/LandingImage/eventpic.avif" alt="Design" />
+          </div>
+          <div className="content">
+            <h2>Event Notifications</h2>
+            <p>
+              Stay on top of important events with 
+              personalized notifications. Get reminders 
+              for your baby’s checkups, upcoming 
+              appointments, and any special events 
+              for both you and your baby—ensuring 
+              you never miss a crucial moment.
+            </p>
+            <a href="#">Read More</a>
+          </div>
+        </div>
+        <div className="card" style={{ "--clr": "#03A9F4" }}>
+          <div className="img-box">
+            <img src="/src/components/Landing/LandingImage/tips.jpg" alt="Playground" />
+          </div>
+          <div className="content">
+            <h2>Helpful Tips</h2>
+            <p>
+            Our website is packed with informative 
+            articles on parenting, health, and 
+            baby care. Click "Read More" to explore 
+            full articles and get expert advice on 
+            all things related to motherhood.
+            </p>
+            <a href="#">Read More</a>
+          </div>
+        </div>
+      </div>
+
+
+      <footer className="footer">
+        <div className="footer-content">
+          <span>&copy; 2025 ChildKare. All rights reserved.</span>
+          <div className="footer-links">
+            <a href="#privacy-policy">Privacy Policy</a>
+            <a href="#terms-of-service">Terms of Service</a>
+            <a href="#contact">Contact Us</a>
+          </div>
+        </div>
+      </footer>
+
+      {/* Modal for Role Selection and Login/Register */}
+      <Modal
+        isModalOpen={isModalOpen}
+        closeModal={closeModal} // Pass the reset function to Modal
+        formType={formType} // Pass formType to Modal
+      />
+    </div>
+  );
+}
+
+export default LandingPage;
