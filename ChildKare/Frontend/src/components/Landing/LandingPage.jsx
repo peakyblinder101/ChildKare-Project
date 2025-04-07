@@ -28,8 +28,8 @@ const LandingPage = () => {
   const cardData = [
     { number: '01', label: 'Welcome' },
     { number: '02', label: 'ChatBot' },
-    { number: '03', label: 'Consult with Doctor' },
-    { number: '04', label: 'Helpful Tips' },
+    { number: '03', label: 'Consult' },
+    { number: '04', label: 'Tips' },
   ];
 
   return (  

@@ -1,13 +1,19 @@
-import React, { useState } from "react";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-import { Carousel } from "react-responsive-carousel"; // Correct import
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+import React from "react";
+import { Carousel } from "react-responsive-carousel"; // Correct import for the carousel
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import carousel styles
 import "./ParentHome.css";
 
-function ParentHome({ setContent }) { // Receive setContent as a prop
-  const [selectedDate, setSelectedDate] = useState(new Date());
+function ParentHome() {
+  // Define baby details for the left section
+  const babyDetails = {
+    firstName: "Ashley",
+    lastName: "Williams",
+    weight: "3.5 kg",
+    gender: "Female",
+    monthsOld: 6
+  };
 
+  // Define Parenting Tips
   const tips = [
     {
       title: "Parenting Tip #1",
@@ -21,28 +27,32 @@ function ParentHome({ setContent }) { // Receive setContent as a prop
     },
   ];
 
-  const handleProfileClick = () => {
-    setContent('Parent Profile'); // Switch to Parent Profile when profile card is clicked
-  };
+  // Upcoming Events with their titles
+  const events = [
+    { title: "Vacation", description: "Family vacation trip planned." },
+    { title: "Checkup", description: "Routine checkup for the baby." },
+    { title: "Parent Event", description: "Parenting seminar on child development." },
+    { title: "Baby Event", description: "First baby milestone celebration." },
+    { title: "Updates", description: "Important updates for parents." },
+  ];
 
   return (
     <div className="parent-home">
-      <div className="profile-card" onClick={handleProfileClick}>
-        <div className="greeting">
-          <h2>Hello, Mother</h2>
-          <p>Jane Doe</p>
+      <div className="home-main-content-wrapper">
+      <div className="home-main-content">
+        {/* Baby Details Section */}
+        <div className="baby-details">
+          <h3>Baby Details</h3>
+          <ul>
+            <li><strong>First Name:</strong> {babyDetails.firstName}</li>
+            <li><strong>Last Name:</strong> {babyDetails.lastName}</li>
+            <li><strong>Weight:</strong> {babyDetails.weight}</li>
+            <li><strong>Gender:</strong> {babyDetails.gender}</li>
+            <li><strong>Months Old:</strong> {babyDetails.monthsOld}</li>
+          </ul>
         </div>
-        <div className="profile-image">
-          <img
-            src="/src/components/Landing/LandingImage/logo5.png"
-            alt="Parent"
-          />
-        </div>
-        
-      </div>
 
-      <div className="main-content">
-        {/* Tips Section */}
+        {/* Parenting Tips Section with Carousel */}
         <div className="tips-section">
           <h3>Parenting Tips</h3>
           <Carousel autoPlay infiniteLoop interval={3000}>
@@ -62,23 +72,20 @@ function ParentHome({ setContent }) { // Receive setContent as a prop
             ))}
           </Carousel>
         </div>
+      </div>
 
-        {/* Calendar Section */}
-        <div className="calendar-section">
-          <Calendar
-            onChange={setSelectedDate}
-            value={selectedDate}
-            calendarType="US"
-            className="calendar"
-          />
-          <div className="event-info">
-            <h4>Upcoming Events</h4>
-            <ul>
-              <li>March 27, 2025: Children's Check-up</li>
-              <li>April 5, 2025: Family Vacation</li>
-            </ul>
-          </div>
+      {/* Schedule Section */}
+      <div className="schedule-section">
+        <h3>Upcoming Events</h3>
+        <div className="event-cards">
+          {events.map((event, index) => (
+            <div className="event-card" key={index}>
+              <h4>{event.title}</h4>
+              <p>{event.description}</p>
+            </div>
+          ))}
         </div>
+      </div>
       </div>
     </div>
   );

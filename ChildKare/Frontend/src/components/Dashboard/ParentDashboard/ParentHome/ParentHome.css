@@ -1,110 +1,126 @@
+/* Parent Home Container */
 .parent-home {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding: 20px;
-  }
-  
-  .profile-card {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: #fff;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 180px; /* Adjusted for a smaller card */
-    text-align: left;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .profile-card .greeting {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .profile-card .greeting h2 {
-    margin: 0;
-    font-size: 14px; /* Smaller font size for the greeting */
-  }
-  
-  .profile-card .greeting p {
-    margin: 0;
-    font-size: 12px; /* Smaller font size for the name */
-  }
-  
-  .profile-card .profile-image {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    overflow: hidden;
-  }
-  
-  .profile-card .profile-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .profile-card .profile-link {
-    display: block;
-    margin-top: 10px;
-  }
-  
-  .main-content {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 50px; /* Make space for the profile card */
-  }
-  
-  .tips-section {
-    flex: 1;
-    margin-right: 20px;
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .tips-section h3 {
-    margin-bottom: 15px;
-  }
-  
-  .calendar-section {
-    flex: 0 0 300px; /* Fixed width */
-    height: 525px; /* Fixed height */
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    overflow: auto;
-  }
-  
-  
-  .event-info {
-    margin-top: 20px;
-  }
-  
-  .event-info h4 {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-  
-  .calendar {
-    width: 100%;
-  }
-  
-  .read-more {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .read-more:hover {
-    text-decoration: underline;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Add a wrapper around the main content to limit its width */
+.home-main-content-wrapper {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+
+.home-main-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Baby Details Section */
+.baby-details {
+  flex: 1;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-right: 20px;
+  width: auto; /* Limit max width */
+}
+
+.baby-details h3 {
+  margin-bottom: 15px;
+}
+
+.baby-details ul {
+  list-style: none;
+  padding: 0;
+}
+
+.baby-details li {
+  margin: 10px 0;
+}
+
+/* Parenting Tips Section */
+.tips-section {
+  flex: 1;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: auto; /* Limit max width */
+  margin-left: 20px;
+}
+
+.tips-section h3 {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.react-responsive-carousel .carousel .slide {
+  text-decoration: none; /* No underline by default */
+  list-style: none; /* No list-style for <a> tags */
+  padding: 20px; /* Add padding to ensure content within the slide is properly spaced */
+}
+
+.read-more {
+  color: #007bff;
+  text-decoration: none;
+  list-style: none; /* Remove any list style (if inherited) */
+}
+
+.read-more:hover {
+  text-decoration: underline;
+}
+
+/* Schedule Section */
+.schedule-section {
+  width: 100%;
+  min-height: 300px;
+  height: auto;
+  margin-top: 20px;
+  text-align: center;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid black;
+}
+
+.schedule-section h3 {
+  text-align: left;
+  padding: 10px;
+  margin: 0%;
+  font-size: 24px;
+}
+
+.event-cards {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: no-wrap; /* Ensure no wrapping */
+}
+
+.event-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid black;
+  width: 18%; /* Adjust width of each card */
+  min-width: auto; /* Prevent card from getting too small */
+  text-align: center;
+}
+
+.event-card h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.event-card p {
+  font-size: 14px;
+  color: #555;
+}
