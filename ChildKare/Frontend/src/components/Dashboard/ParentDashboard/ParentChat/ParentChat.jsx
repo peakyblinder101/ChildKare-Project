@@ -6,21 +6,28 @@ function ParentChat() {
   const [message, setMessage] = useState(''); // To handle the input message
   const [chatHistory, setChatHistory] = useState({
     1: [
-      { userId: 1, message: 'Hello, Dr. John!' },
-      { userId: 0, message: 'Hi Dr. John, how are you?' }, // Your message to Dr. John
-      { userId: 1, message: 'I\'m doing well, thanks!' },
+      { userId: 1, message: 'Hello, Dr. John! My baby seems a bit feverish today.' },
+      { userId: 0, message: 'Hi Dr. John, how should I care for him? He\'s feeling warm.' }, // Your message to Dr. John
+      { userId: 1, message: 'I suggest you monitor his temperature. Try giving him some fever medicine.' },
+      { userId: 0, message: 'Thank you! I\'ll do that and make sure to keep him hydrated.' },
     ],
     2: [
-      { userId: 2, message: 'Hey Dr. Jane, long time no see!' },
-      { userId: 0, message: 'Yeah, let\'s catch up soon!' }, // Your message to Dr. Jane
+      { userId: 2, message: 'Dr. Jane, my baby is having trouble sleeping. What can I do?' },
+      { userId: 0, message: 'Has she been feeding well? Sometimes, discomfort can cause difficulty sleeping.' },
+      { userId: 2, message: 'She\'s been eating okay, but it\'s been hard to get her to sleep.' },
+      { userId: 0, message: 'Try swaddling her with soft fabrics and play some white noise. That usually helps.' },
     ],
     3: [
-      { userId: 3, message: 'Hi Dr. Alice, can you send the report?' },
-      { userId: 0, message: 'Sure! I\'ll send it over.' }, // Your message to Dr. Alice
+      { userId: 3, message: 'Dr. Alice, I\'ve noticed my baby is not gaining enough weight. Should I be concerned?' },
+      { userId: 0, message: 'What is his current weight? He may just need more time, but I\'ll advise some changes.' },
+      { userId: 3, message: 'He\'s been feeding well, but I feel like he\'s not putting on weight.' },
+      { userId: 0, message: 'Make sure you are feeding him regularly and consult me if the weight continues to drop.' },
     ],
     4: [
-      { userId: 4, message: 'Dr. Bob, let\'s discuss the project updates.' },
-      { userId: 0, message: 'Sounds good! Let\'s go over them.' }, // Your message to Dr. Bob
+      { userId: 4, message: 'Dr. Bob, I\'m worried because my baby hasn’t been making eye contact.' },
+      { userId: 0, message: 'Has he been showing any other signs of developmental delay?' },
+      { userId: 4, message: 'No, he seems to be developing normally in all other aspects.' },
+      { userId: 0, message: 'It might be a developmental stage, but let’s keep an eye on it. We can discuss again if needed.' },
     ],
   });
 
@@ -37,7 +44,7 @@ function ParentChat() {
         ...prevChatHistory,
         [selectedUser]: [
           ...prevChatHistory[selectedUser],
-          { userId: 0, message }, // '0' represents the parent
+          { userId: 0, message }, // '0' represents the mother (You)
         ],
       }));
       setMessage(''); // Clear the input field after sending
