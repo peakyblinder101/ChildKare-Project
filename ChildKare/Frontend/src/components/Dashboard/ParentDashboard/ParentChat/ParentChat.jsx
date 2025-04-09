@@ -32,10 +32,10 @@ function ParentChat() {
   });
 
   const users = [
-    { id: 1, name: 'John Doe', avatar: 'https://img.freepik.com/free-photo/bearded-doctor-glasses_23-2147896187.jpg?t=st=1744045616~exp=1744049216~hmac=16b880acba8eaa0e14475e9fb9534211355318917070fc8023f76228f40ea775&w=826' },
-    { id: 2, name: 'Jane Smith', avatar: 'https://img.freepik.com/free-photo/portrait-female-health-worker_23-2148980790.jpg?t=st=1744045671~exp=1744049271~hmac=00cd6b05446088cd41600429a9ee8fadab55320cd1a3fc3c30c689ae93c2abb0&w=740' },
-    { id: 3, name: 'Alice Johnson', avatar: 'https://img.freepik.com/free-photo/female-doctor-hospital-with-stethoscope_23-2148827774.jpg?t=st=1744045541~exp=1744049141~hmac=e189b3855db8a8edb4e2e293136c80e76880d6b0c5aa4a9c08fd374361bc076a&w=826' },
-    { id: 4, name: 'Bob Brown', avatar: 'https://img.freepik.com/free-photo/black-nurse-their-workspace_52683-100578.jpg?t=st=1744045779~exp=1744049379~hmac=6f3431ce18493b7075ed9962d3a44c2dfd8f09748a3dc0614c02692464e5f279&w=1380' },
+    { id: 1, name: 'John Doe', avatar: 'https://img.freepik.com/free-photo/bearded-doctor-glasses_23-2147896187.jpg?t=st=1744045616~exp=1744049216~hmac=16b880acba8eaa0e14475e9fb9534211355318917070fc8023f76228f40ea775&w=826', status: 'online' },
+    { id: 2, name: 'Jane Smith', avatar: 'https://img.freepik.com/free-photo/portrait-female-health-worker_23-2148980790.jpg?t=st=1744045671~exp=1744049271~hmac=00cd6b05446088cd41600429a9ee8fadab55320cd1a3fc3c30c689ae93c2abb0&w=740', status: 'offline' },
+    { id: 3, name: 'Alice Johnson', avatar: 'https://img.freepik.com/free-photo/female-doctor-hospital-with-stethoscope_23-2148827774.jpg?t=st=1744045541~exp=1744049141~hmac=e189b3855db8a8edb4e2e293136c80e76880d6b0c5aa4a9c08fd374361bc076a&w=826', status: 'offline' },
+    { id: 4, name: 'Bob Brown', avatar: 'https://img.freepik.com/free-photo/black-nurse-their-workspace_52683-100578.jpg?t=st=1744045779~exp=1744049379~hmac=6f3431ce18493b7075ed9962d3a44c2dfd8f09748a3dc0614c02692464e5f279&w=1380', status: 'online' },
   ];
 
   const handleSendMessage = () => {
@@ -65,11 +65,14 @@ function ParentChat() {
                   onClick={() => setSelectedUser(user.id)}
                   className={selectedUser === user.id ? 'selected' : ''}
                 >
-                  <img
-                    src={user.avatar}
-                    alt={user.name}
-                    className="user-avatar"
-                  />
+                  <div className="user-avatar-container">
+                    <img
+                      src={user.avatar}
+                      alt={user.name}
+                      className="user-avatar"
+                    />
+                    {user.status === 'online' && <div className="status-dot"></div>} {/* Show dot only if user is online */}
+                  </div>
                   Dr. {user.name} {/* Added Dr. prefix */}
                 </li>
               ))}
@@ -107,7 +110,7 @@ function ParentChat() {
                       />
                       <span className="user-name">
                         {messageObj.userId === 0
-                          ? 'You'
+                          ? 'You '
                           : `Dr. ${user.name}`} {/* Added Dr. prefix */}
                       </span>
                     </div>

@@ -21,9 +21,9 @@
   
   /* Left Side - User List */
   .user-list {
-    width: 30%;
+    width: 25%;
     padding: 20px; /* Increased padding for better spacing */
-    border-right: 1px solid #ddd;
+    border: 1px solid #ddd;
     background-color: #f4f4f4;
     box-sizing: border-box; /* Ensures padding doesn't overflow */
     overflow-y: auto; /* Allows scrolling if the list is too long */
@@ -61,10 +61,29 @@
     margin-right: 15px; /* Space between avatar and name */
     object-fit: cover; /* Ensure the image fits the circle */
   }
+
+  /* This styles the user avatar container, so the dot can be positioned correctly on the avatar */
+.user-avatar-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Green dot for online status */
+  .status-dot {
+    position: absolute;
+    bottom: 0;
+    right: 25%;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: green; /* Green dot indicates user is online */
+    border: 2px solid white; /* Adds a border to make the dot stand out */
+  }
+  
   
   /* Right Side - Chat Window */
   .chat-window {
-    width: 70%;
+    width: 75%;
     padding: 20px; /* Increased padding for better spacing */
     box-sizing: border-box;
     overflow-y: auto; /* Allows scrolling if the messages are too long */
