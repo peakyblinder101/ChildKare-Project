@@ -7,6 +7,7 @@ function DoctorRegister({ closeModal }) {
   const [lastName, setLastName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmpassword, setConfirmPassword] = useState("");
   const [position, setPosition] = useState("");
   const [gender, setGender] = useState("");
 
@@ -76,13 +77,14 @@ function DoctorRegister({ closeModal }) {
            <input
             type="text"
             placeholder=""
-            value={position}
-            onChange={(e) => setPosition(e.target.value)}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <span>Position</span>
+          <span>Password</span>
+          </div> 
           </div>
-          </div>
+
 
           <div className="input_box">
             <div className="box-reg">
@@ -102,12 +104,25 @@ function DoctorRegister({ closeModal }) {
            <input
             type="text"
             placeholder=""
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={confirmpassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-          <span>Password</span>
+          <span>Confirm Password</span>
           </div> 
+          </div> 
+
+          <div className="input_box">
+            <div className="box-reg">
+           <input
+            type="text"
+            placeholder=""
+            value={position}
+            onChange={(e) => setPosition(e.target.value)}
+            required
+          />
+          <span>Position</span>
+          </div>
           </div>
 
           <div className="input_box">

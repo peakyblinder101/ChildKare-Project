@@ -7,6 +7,8 @@ function ParentRegister({ closeModal }) {
   const [lastName, setLastName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [age, setAge] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmpassword, setConfirmPassword] = useState("");
   const [babyFirstName, setBabyFirstName] = useState("");
   const [babyLastName, setBabyLastName] = useState("");
   const [babyWeight, setBabyWeight] = useState("");
@@ -54,37 +56,11 @@ function ParentRegister({ closeModal }) {
            <input
             type="text"
             placeholder=""
-            value={babyFirstName}
-            onChange={(e) => setBabyFirstName(e.target.value)}
-            required
-          />
-          <span>Baby's First Name</span>
-          </div>
-          </div>
-
-          <div className="input_box">
-            <div className="box-reg">
-           <input
-            type="text"
-            placeholder=""
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
           />
           <span>Mothers Last Name</span>
-          </div>
-          </div>
-
-          <div className="input_box">
-            <div className="box-reg">
-           <input
-            type="text"
-            placeholder=""
-            value={babyLastName}
-            onChange={(e) => setBabyLastName(e.target.value)}
-            required
-          />
-          <span>Baby's Last Name</span>
           </div>
           </div>
 
@@ -104,15 +80,15 @@ function ParentRegister({ closeModal }) {
           <div className="input_box">
             <div className="box-reg">
            <input
-            type="number"
+            type="text"
             placeholder=""
-            value={babyWeight}
-            onChange={(e) => setBabyWeight(e.target.value)}
+            value={confirmpassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-          <span>Baby's Weight</span>
-          </div>
-          </div>
+          <span>Confirm Password</span>
+          </div> 
+          </div> 
 
           <div className="input_box">
             <div className="box-reg">
@@ -128,34 +104,17 @@ function ParentRegister({ closeModal }) {
           </div>
 
           <div className="input_box">
-          <div className="gender">
-           <span className="gender-title">Baby's Gender</span>
-            <div className="gender-category">
-              <label htmlFor="male">
-                <input
-                  type="radio"
-                  name="gender"
-                  id="male"
-                  value="Male"
-                  onChange={(e) => setBabyGender(e.target.value)}
-                  required
-                />
-                Male
-              </label>
-              <label htmlFor="female">
-                <input
-                  type="radio"
-                  name="gender"
-                  id="female"
-                  value="Female"
-                  onChange={(e) => setBabyGender(e.target.value)}
-                  required
-                />
-                Female
-              </label>
-            </div>
-          </div>
-          </div>      
+            <div className="box-reg">
+           <input
+            type="text"
+            placeholder=""
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <span>Password</span>
+          </div> 
+          </div> 
 
         </div>
       </form>
