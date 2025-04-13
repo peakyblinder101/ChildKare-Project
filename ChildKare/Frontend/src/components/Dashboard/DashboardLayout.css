@@ -10,7 +10,7 @@
 .sidebar {
   width: 25%; /* Sidebar takes 25% of the screen width */
   max-width: 250px; /* Max width of the sidebar (can be adjusted as per design) */
-  background-color: #f4f4f4;
+  background-color: #ffffff;
   padding: 10px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   transition: width 0.3s ease-in-out;
@@ -94,7 +94,7 @@
 
 .sidebar li.active {
   font-weight: bold;
-  background-color: #e2e2e2;
+  background-color: #f2f0f0b7;
 }
 
 /* Updated logout button container */

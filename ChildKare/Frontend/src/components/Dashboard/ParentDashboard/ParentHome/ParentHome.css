@@ -7,13 +7,11 @@
   padding: 20px;
 }
 
-/* Add a wrapper around the main content to limit its width */
 .home-main-content-wrapper {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
 }
-
 
 .home-main-content {
   display: flex;
@@ -29,7 +27,7 @@
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-right: 20px;
-  width: auto; /* Limit max width */
+  width: auto;
 }
 
 .baby-details h3 {
@@ -52,7 +50,7 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: auto; /* Limit max width */
+  width: auto;
   margin-left: 20px;
 }
 
@@ -62,15 +60,15 @@
 }
 
 .react-responsive-carousel .carousel .slide {
-  text-decoration: none; /* No underline by default */
-  list-style: none; /* No list-style for <a> tags */
-  padding: 20px; /* Add padding to ensure content within the slide is properly spaced */
+  text-decoration: none;
+  list-style: none; 
+  padding: 20px;
 }
 
 .read-more {
   color: #007bff;
   text-decoration: none;
-  list-style: none; /* Remove any list style (if inherited) */
+  list-style: none;
 }
 
 .read-more:hover {
@@ -80,47 +78,61 @@
 /* Schedule Section */
 .schedule-section {
   width: 100%;
-  min-height: 300px;
-  height: auto;
+  height: 320px;
   margin-top: 20px;
-  text-align: center;
   background-color: #ffffff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid black;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .schedule-section h3 {
-  text-align: left;
-  padding: 10px;
-  margin: 0%;
+  margin-bottom: 10px;
   font-size: 24px;
 }
 
-.event-cards {
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  flex-wrap: no-wrap; /* Ensure no wrapping */
+.event-table-wrapper {
+  flex: 1; 
+  overflow-y: auto;
 }
 
-.event-card {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid black;
-  width: 18%; /* Adjust width of each card */
-  min-width: auto; /* Prevent card from getting too small */
-  text-align: center;
+.event-table-wrapper {
+  flex: 1;
+  overflow-y: auto;
 }
 
-.event-card h4 {
-  font-size: 18px;
-  margin-bottom: 10px;
+.event-table-wrapper::-webkit-scrollbar {
+  width: 8px;
 }
 
-.event-card p {
-  font-size: 14px;
-  color: #555;
+.event-table-wrapper::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.event-table-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
+}
+
+.event-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.event-table th,
+.event-table td {
+  border: 1px solid #ccc;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.event-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.event-table tr:nth-child(even) {
+  background-color: #f9f9f9;
 }

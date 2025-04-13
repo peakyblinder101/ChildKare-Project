@@ -195,3 +195,46 @@
         font-size: 14px;
     }
 }
+
+ 
+.child-selection {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .child-selection h3 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .child-options {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .child-card {
+    background-color: #f6f8fa;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    width: 200px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .child-card:hover {
+    background-color: #e3f2fd;
+    transform: scale(1.05);
+  }
+  
+  .child-card p {
+    margin: 8px 0;
+    font-size: 16px;
+    color: #333;
+  }
+  

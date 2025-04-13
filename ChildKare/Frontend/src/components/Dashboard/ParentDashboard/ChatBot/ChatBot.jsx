@@ -1,9 +1,9 @@
 import React from "react";
 import { Carousel } from "react-responsive-carousel"; // Correct import for the carousel
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import carousel styles
-import "./ChildTips.css"; // Import the CSS for Child Tips section
+import "./ChatBot.css"; // Import the CSS for chatbot section
 
-function ChildTips() {
+function ChatBot() {
   // Parenting Tips data
   const tips = [
     {
@@ -46,4 +46,4 @@ function ChildTips() {
   );
 }
 
-export default ChildTips;
+export default ChatBot;

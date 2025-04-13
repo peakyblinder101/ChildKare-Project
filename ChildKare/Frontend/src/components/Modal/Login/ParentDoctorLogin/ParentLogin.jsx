@@ -7,15 +7,28 @@ function ParentLogin({ closeModal }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate(); // Initialize navigate
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
+
+  const dummyChildren = [
+    { id: 1, firstname: "John", lastName: "Smith", gender: "Male", weight: "3.5kg", age: 6 },
+    { id: 2, firstname: "Jane", lastName: "Smith", gender: "Female", weight: "3.2kg", age: 5 },
+  ];
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Parent logging in with", { username, password });
 
-    // After successful login, navigate to the Parent Dashboard
-    navigate("/parent-dashboard"); // Redirect to Parent Dashboard
-    closeModal(); // Close the modal
+    // Simulate login success
+    setIsLoggedIn(true); // Show child selection
+  };
+
+  const handleChildSelect = (child) => {
+    console.log("Selected child:", child);
+    localStorage.setItem("selectedChild", JSON.stringify(child));
+    closeModal(); // Close modal
+    navigate("/parent-dashboard"); // Navigate to dashboard
   };
 
   const togglePasswordVisibility = () => {
@@ -24,38 +37,64 @@ function ParentLogin({ closeModal }) {
 
   return (
     <div className="parent-login-container">
-      <div className="login-container">
-        <h1>Parent Login</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="box">
-            <input
-              type="text"
-              placeholder=""
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-            <span>Username</span>
+      {!isLoggedIn ? (
+        <div className="login-container">
+          <h1>Parent Login</h1>
+          <form onSubmit={handleSubmit}>
+            <div className="box">
+              <input
+                type="text"
+                placeholder=""
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+              <span>Username</span>
+            </div>
+
+            <div className="box">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder=""
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <span>Password</span>
+
+              <i className="eye-icon" onClick={togglePasswordVisibility}>
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </i>
+            </div>
+
+            <a href="#" onClick={handleSubmit}>Login</a>
+          </form>
+        </div>
+      ) : (
+        <div className="child-selection">
+          <h3>Select a Child to Continue:</h3>
+          <div className="child-options">
+            {dummyChildren.map((child) => (
+              <div
+                key={child.id}
+                className="child-card"
+                onClick={() => handleChildSelect(child)}
+                style={{
+                  border: "1px solid #ccc",
+                  padding: "15px",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  margin: "10px 0"
+                }}
+              >
+                <p><strong>Baby {child.firstname}</strong></p>
+                <p>Gender: {child.gender}</p>
+                <p>Weight: {child.weight}</p>
+              </div>
+            ))}
           </div>
-
-          <div className="box">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder=""
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <span>Password</span>
-
-            <i className="eye-icon" onClick={togglePasswordVisibility}>
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </i>
-          </div>
-
-          <a href="#" onClick={handleSubmit}>Login</a>
-        </form>
-      </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { FaUserAlt, FaComments, FaCalendarAlt, FaHome } from 'react-icons/fa';
 import DashboardLayout from '../DashboardLayout';
 import ParentHome from './ParentHome/ParentHome';
 import ParentProfile from './ParentProfile/ParentProfile';
-import ChildTips from './ChildTips/ChildTips';
+import ChatBot from './ChatBot/ChatBot';
 import ParentChat from './ParentChat/ParentChat';
 import ParentSchedule from './ParentSchedule/ParentSchedule';
 
@@ -14,7 +14,7 @@ function ParentDashboard() {
   const sidebarItems = [
     { label: 'Parent Home', icon: FaHome },
     { label: 'Parent Profile', icon: FaUserAlt },
-    { label: 'Child Tips', icon: FaComments },
+    { label: 'ChatBot', icon: FaComments },
     { label: 'Parent Chat', icon: FaComments },
     { label: 'Parent Schedule', icon: FaCalendarAlt },
   ];
@@ -33,7 +33,7 @@ function ParentDashboard() {
       <div className="content">
         {content === 'Parent Home' && <ParentHome />}
         {content === 'Parent Profile' && <ParentProfile />}
-        {content === 'Child Tips' && <ChildTips />}
+        {content === 'ChatBot' && <ChatBot />}
         {content === 'Parent Chat' && <ParentChat />}
         {content === 'Parent Schedule' && <ParentSchedule />}
       </div>
