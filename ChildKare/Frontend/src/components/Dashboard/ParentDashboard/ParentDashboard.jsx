@@ -12,11 +12,11 @@ function ParentDashboard() {
 
   // Define sidebar items for Parent Dashboard
   const sidebarItems = [
-    { label: 'Parent Home', icon: FaHome },
-    { label: 'Parent Profile', icon: FaUserAlt },
+    { label: 'Home', icon: FaHome },
+    { label: 'Profile', icon: FaUserAlt },
     { label: 'ChatBot', icon: FaComments },
-    { label: 'Parent Chat', icon: FaComments },
-    { label: 'Parent Schedule', icon: FaCalendarAlt },
+    { label: 'Chat', icon: FaComments },
+    { label: 'Schedule', icon: FaCalendarAlt },
   ];
 
   // Callback to handle content change when sidebar menu item is clicked

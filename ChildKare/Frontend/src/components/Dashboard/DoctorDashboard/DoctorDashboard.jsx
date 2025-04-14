@@ -7,10 +7,10 @@ function DoctorDashboard() {
 
   // Define sidebar items for Doctor Dashboard
   const sidebarItems = [
-    { label: 'Doctor Profile', icon: FaUserMd },
+    { label: 'Profile', icon: FaUserMd },
     { label: 'Upload Tips', icon: FaUpload },
-    { label: 'Doctor Chat', icon: FaComments },
-    { label: 'Accept Schedule', icon: FaCalendarAlt },
+    { label: 'Chat', icon: FaComments },
+    { label: 'Schedule', icon: FaCalendarAlt },
   ];
 
   // Callback to handle content change when sidebar menu item is clicked
