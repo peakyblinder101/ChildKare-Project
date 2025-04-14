@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import "../RegisterStyle/RegisterStyle.css";
+import { useNavigate } from "react-router-dom"; 
 
 function DoctorRegister({ closeModal }) {
+  const navigate = useNavigate();
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
@@ -13,6 +16,7 @@ function DoctorRegister({ closeModal }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     console.log("Doctor registering with", {
       firstName,
       lastName,
@@ -23,7 +27,10 @@ function DoctorRegister({ closeModal }) {
       contactNumber,
       clinicAddress,
     });
-    closeModal();
+
+    navigate("/doctor-dashboard");
+
+    // closeModal();
   };
 
   return (
@@ -103,7 +110,6 @@ function DoctorRegister({ closeModal }) {
               <input
                 type="number"
                 placeholder=" "
-                pattern="[0-9]{10,15}"
                 value={contactNumber}
                 onChange={(e) => setContactNumber(e.target.value)}
                 required
