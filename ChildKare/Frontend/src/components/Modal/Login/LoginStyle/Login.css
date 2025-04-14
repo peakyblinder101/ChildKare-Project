@@ -86,11 +86,12 @@
     top: 31%;
 }
 
-.login-container .box input:focus + span, 
-.login-container .box input:valid + span {
-    color: #028ef9;
-    top: -35%;
+.login-container .box input:focus + span,
+.login-container .box input:not(:placeholder-shown) + span {
+  color: #028ef9;
+  top: -35%;
 }
+
 
 .login-container .box textarea + span {
     top: 13px;

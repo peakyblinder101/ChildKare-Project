@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../LoginStyle/Login.css";
 
 function ParentLogin({ closeModal }) {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -18,7 +18,7 @@ function ParentLogin({ closeModal }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Parent logging in with", { username, password });
+    console.log("Parent logging in with", { email, password });
 
     // Simulate login success
     setIsLoggedIn(true); // Show child selection
@@ -42,14 +42,8 @@ function ParentLogin({ closeModal }) {
           <h1>Parent Login</h1>
           <form onSubmit={handleSubmit}>
             <div className="box">
-              <input
-                type="text"
-                placeholder=""
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-              <span>Username</span>
+            <input type="email" placeholder=" " value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <span>Email</span>
             </div>
 
             <div className="box">

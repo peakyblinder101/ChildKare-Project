@@ -63,11 +63,12 @@
     top: 31%;
   }
   
-   .box-reg input:focus + span, 
-   .box-reg input:valid + span {
+  .box-reg input:focus + span,
+  .box-reg input:not(:placeholder-shown) + span {
     color: #028ef9;
     top: -35%;
   }
+  
   
   .box-reg textarea + span {
     top: 13px;

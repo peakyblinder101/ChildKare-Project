@@ -4,14 +4,14 @@ import { useNavigate } from "react-router-dom";
 import "../LoginStyle/Login.css";
 
 function DoctorLogin({ closeModal }) {
-  const [doctorId, setDoctorId] = useState("");
+  const [licenseNumber, setLicenseNumber] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate(); // Initialize navigate
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Doctor logging in with", { doctorId, password });
+    console.log("Doctor logging in with", {licenseNumber, password });
 
     // After successful login, navigate to the Doctor Dashboard
     navigate("/doctor-dashboard"); // Redirect to Doctor Dashboard
@@ -29,13 +29,13 @@ function DoctorLogin({ closeModal }) {
         <form onSubmit={handleSubmit}>
           <div className="box">
             <input
-              type="text"
+              type="number"
               placeholder=""
-              value={doctorId}
-              onChange={(e) => setDoctorId(e.target.value)}
+              value={licenseNumber}
+              onChange={(e) => setLicenseNumber(e.target.value)}
               required
             />
-            <span>Doctor ID</span>
+            <span>License number</span>
           </div>
           <div className="box">
             <input
