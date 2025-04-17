@@ -84,7 +84,7 @@ function ParentSchedule() {
   };
 
   const handleDateClick = (value) => {
-    const dateStr = value.toISOString().split('T')[0];
+    const dateStr = value.toLocaleDateString('en-CA'); // Fix: Use local date
     const foundAppointment = appointments.find(app => app.date === dateStr);
 
     if (foundAppointment) {
@@ -101,7 +101,7 @@ function ParentSchedule() {
 
   const tileClassName = ({ date, view }) => {
     const today = new Date();
-    const dateStr = date.toISOString().split('T')[0];
+    const dateStr = date.toLocaleDateString('en-CA'); // Fix: Use local date
 
     const hasAppointment = appointments.some(app => app.date === dateStr);
     const isPast = date < new Date(today.setHours(0, 0, 0, 0));
@@ -148,7 +148,7 @@ function ParentSchedule() {
               onChange={handleDateClick}
               value={date}
               tileClassName={tileClassName}
-              calendarType="US" // This makes Sunday the first day
+              calendarType="US" // Ensures Sunday starts first
             />
           </div>
 
