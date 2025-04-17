@@ -8,15 +8,15 @@ import ParentChat from './ParentChat/ParentChat';
 import ParentSchedule from './ParentSchedule/ParentSchedule';
 
 function ParentDashboard() {
-  const [content, setContent] = useState('Parent Home'); // Default content when page loads
+  const [content, setContent] = useState('Home'); // Default content when page loads
 
   // Define sidebar items for Parent Dashboard
   const sidebarItems = [
     { label: 'Home', icon: FaHome },
     { label: 'Profile', icon: FaUserAlt },
     { label: 'ChatBot', icon: FaComments },
-    { label: 'Chat', icon: FaComments },
-    { label: 'Schedule', icon: FaCalendarAlt },
+    { label: 'Consult', icon: FaComments },
+    { label: 'Appointment', icon: FaCalendarAlt },
   ];
 
   // Callback to handle content change when sidebar menu item is clicked
@@ -28,14 +28,14 @@ function ParentDashboard() {
     <DashboardLayout
       sidebarItems={sidebarItems}
       onMenuItemClick={handleMenuItemClick}
-      defaultSelected="Parent Home"  // Pass the default selected item to the layout
+      defaultSelected="Home"  // Pass the default selected item to the layout
     >
       <div className="content">
-        {content === 'Parent Home' && <ParentHome />}
-        {content === 'Parent Profile' && <ParentProfile />}
+        {content === 'Home' && <ParentHome />}
+        {content === 'Profile' && <ParentProfile />}
         {content === 'ChatBot' && <ChatBot />}
-        {content === 'Parent Chat' && <ParentChat />}
-        {content === 'Parent Schedule' && <ParentSchedule />}
+        {content === 'Consult' && <ParentChat />}
+        {content === 'Appointment' && <ParentSchedule />}
       </div>
     </DashboardLayout>
   );
