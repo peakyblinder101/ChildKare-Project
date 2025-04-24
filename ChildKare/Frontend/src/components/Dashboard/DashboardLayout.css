@@ -2,21 +2,24 @@
 .dashboard-layout {
   display: flex;
   height: 100vh;
-  flex-direction: row; /* Default direction for larger screens */
+  flex-direction: row;
   position: relative;
 }
 
 /* Sidebar Styling */
 .sidebar {
-  width: 25%; /* Sidebar takes 25% of the screen width */
-  max-width: 250px; /* Max width of the sidebar (can be adjusted as per design) */
+  width: 25%;
+  max-width: 250px;
   background-color: #ffffff;
   padding: 10px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   transition: width 0.3s ease-in-out;
-  display: block; /* Ensure sidebar is visible */
+  display: flex; /* Make sidebar a flex container */
+  flex-direction: column; /* Stack children vertically */
+  position: relative;
 }
 
+/* Logo container */
 .logo-image-container {
   display: flex;
   align-items: center;
@@ -36,6 +39,7 @@
   font-weight: bolder;
 }
 
+/* User Profile Section */
 .user-profile {
   display: flex;
   flex-direction: column;
@@ -74,6 +78,7 @@
   margin-bottom: 20px;
 }
 
+/* Sidebar Navigation */
 .sidebar ul {
   list-style: none;
   padding: 0;
@@ -97,41 +102,42 @@
   background-color: #dadada;
 }
 
-/* Updated logout button container */
+/* Logout Button Container */
 .logout-btn-container {
-  display: flex;
-  justify-content: center; /* Center the button */
-  margin-top: auto; /* Push the button to the bottom */
+  margin-top: auto; /* Push to bottom of sidebar */
   padding: 10px;
+  display: flex;
+  justify-content: center;
 }
 
 /* Logout Button Styling */
-.sidebar .logout-btn {
+.logout-btn {
   padding: 10px;
   background-color: red;
   color: white;
   border: none;
   cursor: pointer;
-  width: 100%; /* Button will take up all the available space */
-  text-align: center; /* Center the text inside the button */
-  box-sizing: border-box; /* Ensure padding is included in width */
-  border-radius: 5px; /* Optional: rounded corners */
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+  border-radius: 5px;
 }
 
 /* Sidebar hidden on mobile */
 .sidebar.hidden {
-  display: none; /* Hide sidebar when toggled */
+  display: none;
 }
 
 /* Main Content */
 .main-content {
-  width: 75%; /* Main content takes the remaining 75% of the screen width */
+  width: 75%;
   flex-grow: 1;
   padding: 0;
   margin: 0;
-  overflow: hidden; /* Avoids any content overflow */
+  overflow: hidden;
   box-sizing: border-box;
 }
+
 
 /* Hamburger icon for mobile */
 .hamburger {

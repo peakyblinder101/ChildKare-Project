@@ -1,0 +1,123 @@
+.doctor-home-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+  }
+  
+  .doctor-home {
+    width: 100%;
+    height: 90vh;
+    background-color: #ffffff;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .doctor-content {
+    display: flex;
+    gap: 30px;
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .doctor-calendar {
+    width: 75%;
+    padding-right: 20px;
+    border-right: 1px solid #ccc;
+  }
+  
+  .react-calendar {
+    width: 100% !important;
+    font-size: 1.2rem;
+    border: none;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 10px;
+  }
+  
+  /* Appointments panel */
+  .doctor-appointments-list {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  /* Title stays fixed */
+  .doctor-appointments-list h2 {
+    margin: 0;
+    padding-bottom: 10px;
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 2;
+  }
+  
+  /* Header stays fixed */
+  .appointments-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+    position: sticky;
+    top: 40px; /* Height of h2 + spacing */
+    background-color: #fff;
+    z-index: 1;
+  }
+  
+  .appointments-header span {
+    flex: 1;
+    font-size: 0.95rem;
+    text-align: left;
+  }
+  
+  /* Scrollable appointment list */
+  .appointments-list-scroll {
+    overflow-y: auto;
+    flex: 1;
+    max-height: 70vh; /* Set the height to limit the scrolling area */
+    padding-right: 5px;
+  }
+  
+  /* List structure */
+  .appointments-list-scroll ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .appointments-list-scroll li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 0.95rem;
+  }
+  
+  .time,
+  .date,
+  .status {
+    flex: 1;
+  }
+  
+  .status {
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .status::before {
+    content: '● ';
+    color: #007bff;
+  }
+  
