@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./LandingPage.css";
 import Modal from "../Modal/Modal/Modal";
 
@@ -23,6 +23,8 @@ const LandingPage = () => {
   const handleCardClick = (index) => {
     setActiveContent(index);
   };
+
+
 
   // Define card data for each card (number and label)
   const cardData = [
@@ -91,7 +93,7 @@ const LandingPage = () => {
                 <p>
                   Our intelligent chatbot is available <br/> 
                   24/7, to answer any questions you <br/>
-                  may have. Whether you're seeking <br/>
+                  may have. Whether youre seeking <br/>
                   advice or need quick information, <br/>
                   the chatbot is always ready to help!
                 </p>
@@ -125,7 +127,7 @@ const LandingPage = () => {
               <h1>Helpful Tips</h1>
               <p>
                 Our website is packed with informative articles on <br/>
-                parenting, health, and baby care. Click "Read More" <br/> 
+                parenting, health, and baby care. Click Read More <br/> 
                 to explore full articles and get expert advice on <br/>
                 all things related to motherhood.
               </p>

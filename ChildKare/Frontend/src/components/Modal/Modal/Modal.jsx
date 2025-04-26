@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable react/prop-types */
+
+import { useState, useEffect } from "react";
 import "./Modal.css";
 // Parent
 import ParentLogin from "../Login/ParentDoctorLogin/ParentLogin";

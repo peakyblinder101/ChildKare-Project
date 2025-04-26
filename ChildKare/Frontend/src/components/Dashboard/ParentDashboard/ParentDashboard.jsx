@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState } from 'react';
 import { FaUserAlt, FaComments, FaCalendarAlt, FaHome } from 'react-icons/fa';
 import DashboardLayout from '../DashboardLayout';
 import ParentHome from './ParentHome/ParentHome';

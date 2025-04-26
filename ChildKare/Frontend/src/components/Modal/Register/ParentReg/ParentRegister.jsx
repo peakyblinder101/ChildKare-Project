@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+/* eslint-disable react/prop-types */
+
+
+import { useState } from "react";
 import "../RegisterStyle/RegisterStyle.css";
 import { useNavigate } from "react-router-dom";
+
 
 function ParentRegister({ closeModal }) {
   const [step, setStep] = useState("parent"); // step: 'parent' | 'baby'
@@ -60,28 +64,28 @@ function ParentRegister({ closeModal }) {
               <div className="input_box">
                 <div className="box-reg">
                   <input type="text" placeholder=" " value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
-                  <span>Mother's First Name</span>
+                  <span>Mothers First Name</span>
                 </div>
               </div>
 
               <div className="input_box">
                 <div className="box-reg">
                   <input type="text" placeholder=" " value={lastName} onChange={(e) => setLastName(e.target.value)} required />
-                  <span>Mother's Last Name</span>
+                  <span>Mothers Last Name</span>
                 </div>
               </div>
 
               <div className="input_box">
                 <div className="box-reg">
                   <input type="text" placeholder=" " value={middleName} onChange={(e) => setMiddleName(e.target.value)} required />
-                  <span>Mother's Middle Name</span>
+                  <span>Mothers Middle Name</span>
                 </div>
               </div>
 
               <div className="input_box">
                 <div className="box-reg">
                   <input type="number" placeholder=" " value={age} onChange={(e) => setAge(e.target.value)} required />
-                  <span>Mother's Age</span>
+                  <span>Mothers Age</span>
                 </div>
               </div>
 
@@ -197,5 +201,6 @@ function ParentRegister({ closeModal }) {
     </div>
   );
 }
+
 
 export default ParentRegister;
