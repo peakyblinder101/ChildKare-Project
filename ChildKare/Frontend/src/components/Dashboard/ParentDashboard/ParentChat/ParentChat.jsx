@@ -56,8 +56,8 @@ function ParentChat() {
       <div className="parent-chat">
         <div className="chat-container">
           {/* Left Side - User List */}
-          <div className="user-list">
-            <h2>User List</h2>
+          <div className="doctor-user-list">
+            <h2>Doctor List</h2>
             <ul>
               {users.map((user) => (
                 <li

@@ -1,46 +1,43 @@
-/* Ensure the parent container takes up the full screen */
+
 .parent-chat-container {
     width: 100%;
-    height: 100vh; /* Full height of the viewport */
+    height: 100vh; 
   }
   
-  /* The main chat container */
   .parent-chat {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    height: 100%; /* Ensures the container takes up the full height */
+    height: 100%;
   }
   
-  /* Main container to divide left and right */
   .chat-container {
     display: flex;
-    width: 100%; /* Takes up the full width of the parent container */
-    height: 100%; /* Takes up the full height */
+    width: 100%; 
+    height: 100%;
   }
   
-  /* Left Side - User List */
-  .user-list {
+  .doctor-user-list {
     width: 25%;
-    padding: 20px; /* Increased padding for better spacing */
+    padding: 20px; 
     border: 1px solid #ddd;
     background-color: #f4f4f4;
-    box-sizing: border-box; /* Ensures padding doesn't overflow */
-    overflow-y: auto; /* Allows scrolling if the list is too long */
+    box-sizing: border-box; 
+    overflow-y: auto; 
   }
   
-  .user-list h2 {
+  .doctor-user-list h2 {
     text-align: center;
     margin-bottom: 20px;
   }
   
-  .user-list ul {
+  .doctor-user-list ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
   }
   
-  .user-list li {
+  .doctor-user-list li {
     display: flex;
     align-items: center;
     padding: 12px 15px;
@@ -49,26 +46,24 @@
     transition: background-color 0.3s ease;
   }
   
-  .user-list li:hover,
-  .user-list li.selected {
-    background-color: #e0e0e0; /* Highlight the selected user */
+  .doctor-user-list li:hover,
+  .doctor-user-list li.selected {
+    background-color: #e0e0e0; 
   }
   
-  .user-list .user-avatar {
+  .doctor-user-list .user-avatar {
     width: 40px;
     height: 40px;
-    border-radius: 50%; /* Make the profile picture circular */
-    margin-right: 15px; /* Space between avatar and name */
-    object-fit: cover; /* Ensure the image fits the circle */
+    border-radius: 50%; 
+    margin-right: 15px; 
+    object-fit: cover; 
   }
 
-  /* This styles the user avatar container, so the dot can be positioned correctly on the avatar */
 .user-avatar-container {
     position: relative;
     display: inline-block;
   }
-  
-  /* Green dot for online status */
+ 
   .status-dot {
     position: absolute;
     bottom: 0;
@@ -76,17 +71,15 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background-color: green; /* Green dot indicates user is online */
-    border: 2px solid white; /* Adds a border to make the dot stand out */
+    background-color: green; 
+    border: 2px solid white;
   }
-  
-  
-  /* Right Side - Chat Window */
+
   .chat-window {
     width: 75%;
-    padding: 20px; /* Increased padding for better spacing */
+    padding: 20px; 
     box-sizing: border-box;
-    overflow-y: auto; /* Allows scrolling if the messages are too long */
+    overflow-y: auto; 
   }
   
   .chat-window h2 {
@@ -101,16 +94,15 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    margin-right: 10px; /* Space between avatar and user name */
+    margin-right: 10px; 
   }
   
   .messages {
-    max-height: calc(100vh - 150px); /* Adjusts message window height */
+    max-height: calc(100vh - 200px);
     overflow-y: auto;
     margin-bottom: 20px;
   }
   
-  /* Message styles */
   .message {
     display: flex;
     flex-direction: column;
@@ -118,11 +110,11 @@
   }
   
   .message-sender {
-    align-items: flex-end; /* Aligns the sender's messages to the right */
+    align-items: flex-end; 
   }
   
   .message-receiver {
-    align-items: flex-start; /* Aligns the receiver's messages to the left */
+    align-items: flex-start; 
   }
   
   .message-header {
@@ -144,30 +136,28 @@
   }
   
   .message-text {
-    max-width: 75%; /* Limit the text area */
+    max-width: 75%; 
     background-color: #f1f1f1;
     padding: 10px;
     border-radius: 5px;
     word-wrap: break-word;
   }
-  
-  /* Styles for the input section */
-  /* Styles for the input section */
+
 .input-section {
-    display: flex; /* Use flexbox to align input and button horizontally */
-    align-items: center; /* Vertically center input and button */
+    display: flex; 
+    align-items: center;
     margin-top: 20px;
-    width: 100%; /* Ensure the container takes up the full width */
+    width: 100%;
   }
   
   .chat-window input {
-    flex-grow: 1; /* Make the input take up the remaining space */
+    flex-grow: 1;
     padding: 12px;
     font-size: 16px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    box-sizing: border-box; /* Prevents overflow */
-    margin-right: 10px; /* Space between input and button */
+    box-sizing: border-box; 
+    margin-right: 10px;
   }
   
   .chat-window button {

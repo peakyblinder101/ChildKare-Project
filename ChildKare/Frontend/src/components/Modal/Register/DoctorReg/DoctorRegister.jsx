@@ -16,8 +16,8 @@ function DoctorRegister({ closeModal }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    console.log("Doctor registering with", {
+  
+    const doctorInfo = {
       firstName,
       lastName,
       password,
@@ -26,12 +26,13 @@ function DoctorRegister({ closeModal }) {
       licenseNumber,
       contactNumber,
       clinicAddress,
-    });
-
+    };
+  
+    localStorage.setItem("doctorData", JSON.stringify(doctorInfo));
+  
     navigate("/doctor-dashboard");
-
-    // closeModal();
   };
+  
 
   return (
     <div className="register-container">

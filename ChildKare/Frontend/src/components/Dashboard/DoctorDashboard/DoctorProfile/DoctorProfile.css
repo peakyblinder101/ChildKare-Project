@@ -1,0 +1,94 @@
+.doctor-profile {
+    width: 70%;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .profile-title {
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 24px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+  }
+  
+  /* Profile Image Styling */
+  .profile-image-container {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .profile-image-label {
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .doc-profile-circle-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #e0e0e0;
+  }
+  
+  .doc-profile-circle-image:hover {
+    opacity: 0.8;
+  }
+  
+  /* Grid-style two column table layout */
+  .profile-grid-table {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .half-table {
+    width: 50%;
+    border-collapse: collapse;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  .full-width-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  /* Table header column */
+  .profile-table th {
+    text-align: left;
+    background-color: #f5f5f5;
+    color: #555;
+    font-weight: 600;
+    padding: 12px 14px;
+    width: 40%;
+    font-size: 0.95rem;
+    border-bottom: 2px solid #e0e0e0; /* Border applied here */
+    vertical-align: top;
+  }
+  
+  /* Table value column (removing border-bottom from td to avoid double borders) */
+  .profile-table td {
+    padding: 12px 14px;
+    font-weight: 500;
+    color: #333;
+    font-size: 0.98rem;
+    border-bottom: none; /* Removed border-bottom here */
+  }
+  
+  /* Clinic address label narrower */
+  .full-width-table th {
+    width: 145px;
+  }
+  

@@ -7,10 +7,11 @@ function ParentSchedule() {
   const [date, setDate] = useState(new Date());
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [appointments, setAppointments] = useState([
-    { time: '9:00 AM', doctor: 'Dr. Smith', date: '2025-04-18' },
-    { time: '10:30 AM', doctor: 'Dr. Johnson', date: '2025-04-19' },
-    { time: '1:00 PM', doctor: 'Dr. Lee', date: '2025-04-20' }
+    { time: '09:00', doctor: 'Dr. Smith', date: '2025-04-18' },
+    { time: '10:30', doctor: 'Dr. Johnson', date: '2025-04-19' },
+    { time: '13:00', doctor: 'Dr. Lee', date: '2025-04-20' },
   ]);
+  
   const [newAppointment, setNewAppointment] = useState({
     date: '',
     time: '',
@@ -118,6 +119,20 @@ function ParentSchedule() {
     return '';
   };
 
+  const formatTime = (time24) => {
+    if (!time24) return '';
+    const [hour, minute] = time24.split(':');
+    const date = new Date();
+    date.setHours(+hour);
+    date.setMinutes(+minute);
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  };
+  
+
   return (
     <div className="parent-schedule">
       <h1>Appointment Schedule</h1>
@@ -152,27 +167,41 @@ function ParentSchedule() {
             />
           </div>
 
-          {/* Appointments Section */}
-          <div className="appointments-list">
+          <div className="par-appointments-list">
             <h2>Appointments</h2>
-            <ul>
+
+            <div className="par-appointments-header">
+              <div className="par-appointment-time">Time</div>
+              <div className="par-appointment-date">Date</div>
+              <div className="par-appointment-doctor">Doctor</div>
+            </div>
+
+            {/* Make this the scrollable part */}
+            <div className="par-appointments-body">
               {appointments.map((appointment, index) => (
-                <li key={index}>
-                  <span className="time">{appointment.time}</span>
-                  <span className="date">{appointment.date}</span>
-                  <span className="doctor-name">{appointment.doctor}</span>
-                </li>
+                <div key={index} className="par-appointment-row">
+                  <div className="par-appointment-time">{formatTime(appointment.time)}</div>
+                  <div className="par-appointment-date">
+                    {new Date(appointment.date).toLocaleDateString('en-US', {
+                      year: '2-digit',
+                      month: '2-digit',
+                      day: '2-digit'
+                    })}
+                  </div>
+                  <div className="par-appointment-doctor">{appointment.doctor}</div>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
+          
         </div>
       </div>
 
       {/* Appointment Modal */}
       {isAppointmentModalOpen && (
         <div className="appointment-modal">
-          <div className="modal-content">
-            <span className="close-btn" onClick={handleCloseModal}>X</span>
+          <div className="parent-modal-content">
+            <span className="par-close-modal" onClick={handleCloseModal}>×</span>
 
             {/* Step 1: Doctor Info */}
             {!isAppointmentFormStep && selectedDoctor && (

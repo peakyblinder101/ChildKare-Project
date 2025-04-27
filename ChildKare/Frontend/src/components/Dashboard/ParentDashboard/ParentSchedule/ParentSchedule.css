@@ -27,7 +27,7 @@
 
 .doctors-list,
 .calendar,
-.appointments-list {
+.par-appointments-list {
   flex: 1;
   padding: 15px;
   border: 1px solid #ccc;
@@ -77,6 +77,7 @@
   font-size: 14px;
   color: gray;
 }
+
 /* Calendar */
 .calendar {
     flex: 1;
@@ -94,19 +95,19 @@
     background-color: #fff;
     padding: 20px;
     font-size: 18px;
-    margin: 0 auto; /* Center the calendar inside the container */
+    margin: 0 auto; 
   }
   
   /* Adjust day cell size */
   .react-calendar__month-view__days__day {
-    height: 70px !important; /* Increased height */
-    width: 70px !important;  /* Increased width */
-    font-size: 22px !important; /* Adjusted font size for days */
+    height: 70px !important; 
+    width: 70px !important;  
+    font-size: 22px !important;
   }
   
   /* Adjust day names (Mon, Tue, etc.) */
   .react-calendar__month-view__weekdays__weekday {
-    font-size: 18px !important; /* Increased font size */
+    font-size: 18px !important; 
     padding: 15px 0 !important;
   }
   
@@ -124,26 +125,23 @@
   
   /* Styling for the date cells */
   .react-calendar__tile {
-    font-size: 20px !important; /* Larger date font size */
+    font-size: 20px !important; 
     height: 65px !important;
     width: 70px !important;
   }
   
   .react-calendar__tile.has-appointment {
     background-color: #e6f7ff;
-    color: #007bff;
+    color: #469fff;
     border-radius: 6px;
   }
-  
-  /* Adjust navigation buttons */
+ 
   .react-calendar__navigation button {
     font-size: 20px;
     padding: 10px 15px;
   }
   
-
-/* Appointments Section */
-.appointments-list {
+  .par-appointments-list {
     max-width: 25%;
     padding: 15px;
     background-color: #f9f9f9;
@@ -152,10 +150,10 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0px;
   }
   
-  .appointments-list h2 {
+  .par-appointments-list h2 {
     font-size: 22px;
     font-weight: bold;
     margin-bottom: 10px;
@@ -163,84 +161,86 @@
     color: #333;
   }
   
-  /* List items */
-  .appointments-list ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .appointments-list li {
-    background-color: #f0f8ff; /* Light blue background */
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    font-size: 14px;
+  .par-appointments-header,
+  .par-appointment-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: 14px;
+    padding: 10px 5px;
+  }
+  
+  .par-appointments-header {
+    font-weight: bold;
+    border-bottom: 2px solid #ccc;
+  }
+  
+  .par-appointment-row {
+    background-color: #f0f8ff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 0;
     transition: background-color 0.3s ease;
   }
   
-  .appointments-list li:hover {
-    background-color: #e0f7fa; /* Slightly darker blue when hovered */
+  .par-appointment-row:hover {
+    background-color: #e0f7fa;
   }
   
-  /* Time text */
-  .appointments-list li .time {
-    font-weight: bold;
-    color: #333;
+  .par-appointments-body {
+    overflow-y: auto;
+    flex: 1; 
+  }
+
+  .par-appointment-time,
+  .par-appointment-date,
+  .par-appointment-doctor {
+    flex: 1;
+    text-align: center;
+    padding: 5px;
+    word-break: break-word;
   }
   
-  /* Date */
-  .appointments-list li .date {
-    font-size: 14px;
-    color: #777;
-    margin-left: 10px;
-    font-style: italic;
-  }
-  
-  /* Doctor name */
-  .appointments-list li .doctor-name {
-    font-size: 14px;
-    color: #555;
-    margin-left: 10px;
-    font-style: italic;
-  }
-  
- /* Make Appointment Modal Styles */
+
 .appointment-modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.5); 
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Ensure it appears above other content */
+    z-index: 1000; 
   }
   
-  .appointment-modal .modal-content {
+  .appointment-modal .parent-modal-content {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
     width: 50%;
     height: 67%;
     position: relative;
-    display: flex; /* Use flexbox to arrange items horizontally */
-    max-width: 800px; /* Prevent the modal from becoming too large */
+    display: flex;
+    max-width: 800px;
   }
   
-  .appointment-modal .close-btn {
+  .appointment-modal .par-close-modal {
     position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #aaa;
     cursor: pointer;
+    transition: 0.2s ease-in-out;
   }
   
+  .par-close-modal:hover {
+    color: #111;
+  }
+
   .appointment-modal h2,
   .appointment-modal h3 {
     font-size: 24px;
@@ -283,33 +283,32 @@
   .appointment-modal button:hover {
     background-color: #45a049;
   }
-  
-  /* Doctor Info Section */
+
   .doctor-info-modal {
-    display: flex; /* Flexbox layout */
-    align-items: center; /* Vertically align items */
-    gap: 20px; /* Add some gap between image and details */
+    display: flex;
+    align-items: center; 
+    gap: 20px; 
   }
   
   .doctor-avatar-modal {
-    width: 320px; /* Set width of doctor's image */
-    height: 460px; /* Set height of doctor's image */
-    border-radius: 0%; /* Make the image circular */
-    object-fit: cover; /* Ensure the image covers the area without stretching */
+    width: 320px;
+    height: 460px;
+    border-radius: 0%; 
+    object-fit: cover;
   }
   
   .doctor-details {
-    flex: 1; /* Allow the doctor details to take up the remaining space */
+    flex: 1; 
   }
   
   .doctor-details h2 {
-    margin: 0; /* Remove margin from heading */
-    font-size: 28px; /* Increase font size for doctor name */
+    margin: 0;
+    font-size: 28px; 
   }
   
   .doctor-details p {
     font-size: 16px;
-    margin: 5px 0; /* Add some space between paragraphs */
+    margin: 5px 0;
   }
   
   .doctor-details button {
