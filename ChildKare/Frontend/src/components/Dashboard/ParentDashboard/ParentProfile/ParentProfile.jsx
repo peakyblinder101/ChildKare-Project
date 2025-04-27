@@ -5,6 +5,9 @@ function ParentProfile() {
   const [selectedBaby, setSelectedBaby] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showAddBabyModal, setShowAddBabyModal] = useState(false);
+  const [imageUrl, setImageUrl] = useState(
+    'https://img.freepik.com/free-photo/mother-baby-laying-bed_1150-18379.jpg?t=st=1744045266~exp=1744048866~hmac=e2967ab7d452a9a45b4ce3ff6270c3c8e8d720c26923a41fd9f5a9dbde2c65d2&w=740'
+  );
 
   // Baby form states
   const [babyId, setBabyId] = useState('');
@@ -14,32 +17,7 @@ function ParentProfile() {
   const [babyMonths, setBabyMonths] = useState('');
   const [babyGender, setBabyGender] = useState('');
 
-  const [imageUrl, setImageUrl] = useState(
-    'https://img.freepik.com/free-photo/mother-baby-laying-bed_1150-18379.jpg?t=st=1744045266~exp=1744048866~hmac=e2967ab7d452a9a45b4ce3ff6270c3c8e8d720c26923a41fd9f5a9dbde2c65d2&w=740'
-  );
-
-  const handleOpenModal = (baby) => {
-    setSelectedBaby(baby);
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedBaby(null);
-    setShowModal(false);
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageUrl(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const parentData = {
+  const [parentData, setParentData] = useState({
     firstName: 'John',
     middleName: 'Paul',
     lastName: 'Doe',
@@ -65,6 +43,54 @@ function ParentProfile() {
         gender: 'Female',
       },
     ],
+  });
+
+  const handleOpenModal = (baby) => {
+    setSelectedBaby(baby);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedBaby(null);
+    setShowModal(false);
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAddBabySubmit = (e) => {
+    e.preventDefault();
+
+    const newBaby = {
+      idNo: babyId,
+      firstName: babyFirstName,
+      lastName: babyLastName,
+      weight: `${babyWeight} kg`,
+      age: `${babyMonths} months`,
+      gender: babyGender,
+    };
+
+    setParentData((prev) => ({
+      ...prev,
+      babies: [...prev.babies, newBaby],
+    }));
+
+    // Reset form fields
+    setBabyId('');
+    setBabyFirstName('');
+    setBabyLastName('');
+    setBabyWeight('');
+    setBabyMonths('');
+    setBabyGender('');
+    setShowAddBabyModal(false);
   };
 
   return (
@@ -141,8 +167,7 @@ function ParentProfile() {
         </div>
       </div>
 
-
-      {/* Modal */}
+      {/* View Baby Modal */}
       {showModal && (
         <div className="par-pro-modal-overlay">
           <div className="par-pro-modal-content">
@@ -166,7 +191,6 @@ function ParentProfile() {
                       <tr><th>Gender</th><td>{selectedBaby.gender}</td></tr>
                     </tbody>
                   </table>
-
                   <div className="par-pro-modal-button-wrapper">
                     <button className="par-pro-modal-action-button">Switch</button>
                   </div>
@@ -177,94 +201,74 @@ function ParentProfile() {
         </div>
       )}
 
-        {showAddBabyModal && (
-          <div className="par-pro-modal-overlay">
-            <div className="par-pro-modal-content">
-              <button className="par-pro-close-button" onClick={() => setShowAddBabyModal(false)}>×</button>
-              <form className="user_details" onSubmit={(e) => {
-                e.preventDefault();
-                // For now just log it
-                console.log({
-                  babyId, babyFirstName, babyLastName, babyWeight, babyMonths, babyGender
-                });
-                setShowAddBabyModal(false); // Close modal
-              }}>
-                {/* Your fields go here */}
-                <div className="input_box">
-                  <div className="box-reg">
-                    <input type="text" placeholder=" " value={babyId} onChange={(e) => setBabyId(e.target.value)} required />
-                    <span>Baby ID</span>
-                  </div>
+      {/* Add Baby Modal */}
+      {showAddBabyModal && (
+        <div className="par-pro-modal-overlay">
+          <div className="par-pro-modal-content">
+            <button className="par-pro-close-button" onClick={() => setShowAddBabyModal(false)}>×</button>
+            <form className="user_details" onSubmit={handleAddBabySubmit}>
+              <div className="input_box">
+                <div className="box-reg">
+                  <input type="text" placeholder=" " value={babyId} onChange={(e) => setBabyId(e.target.value)} required />
+                  <span>Baby ID</span>
                 </div>
+              </div>
 
-                <div className="input_box">
-                  <div className="box-reg">
-                    <input type="text" placeholder=" " value={babyFirstName} onChange={(e) => setBabyFirstName(e.target.value)} required />
-                    <span>Baby First Name</span>
-                  </div>
+              <div className="input_box">
+                <div className="box-reg">
+                  <input type="text" placeholder=" " value={babyFirstName} onChange={(e) => setBabyFirstName(e.target.value)} required />
+                  <span>Baby First Name</span>
                 </div>
+              </div>
 
-                <div className="input_box">
-                  <div className="box-reg">
-                    <input type="text" placeholder=" " value={babyLastName} onChange={(e) => setBabyLastName(e.target.value)} required />
-                    <span>Baby Last Name</span>
-                  </div>
+              <div className="input_box">
+                <div className="box-reg">
+                  <input type="text" placeholder=" " value={babyLastName} onChange={(e) => setBabyLastName(e.target.value)} required />
+                  <span>Baby Last Name</span>
                 </div>
+              </div>
 
-                <div className="input_box">
-                  <div className="box-reg">
-                    <input type="text" placeholder=" " value={babyWeight} onChange={(e) => setBabyWeight(e.target.value)} required />
-                    <span>Weight</span>
-                  </div>
+              <div className="input_box">
+                <div className="box-reg">
+                  <input type="text" placeholder=" " value={babyWeight} onChange={(e) => setBabyWeight(e.target.value)} required />
+                  <span>Weight</span>
                 </div>
+              </div>
 
-                <div className="input_box">
-                  <div className="box-reg">
-                    <input type="number" placeholder=" " value={babyMonths} onChange={(e) => setBabyMonths(e.target.value)} required />
-                    <span>Age (in months)</span>
-                  </div>
+              <div className="input_box">
+                <div className="box-reg">
+                  <input type="number" placeholder=" " value={babyMonths} onChange={(e) => setBabyMonths(e.target.value)} required />
+                  <span>Age (in months)</span>
                 </div>
+              </div>
 
-                <div className="input_box">
-                  <div className="box-reg">
-                    <div className="input_box gender">
-                      <div className="gender-title">Gender</div>
-                      <div className="gender-category">
-                        <label>
-                          <input
-                            type="radio"
-                            name="babyGender"
-                            value="Male"
-                            checked={babyGender === "Male"}
-                            onChange={(e) => setBabyGender(e.target.value)}
-                            required
-                          />
-                          Male
-                        </label>
-                        <label>
-                          <input
-                            type="radio"
-                            name="babyGender"
-                            value="Female"
-                            checked={babyGender === "Female"}
-                            onChange={(e) => setBabyGender(e.target.value)}
-                            required
-                          />
-                          Female
-                        </label>
-                      </div>
+              <div className="input_box">
+                <div className="box-reg">
+                  <div className="input_box gender">
+                    <div className="gender-title">Gender</div>
+                    <div className="gender-category">
+                      <label>
+                        <input type="radio" name="babyGender" value="Male" checked={babyGender === "Male"} onChange={(e) => setBabyGender(e.target.value)} required />
+                        Male
+                      </label>
+                      <label>
+                        <input type="radio" name="babyGender" value="Female" checked={babyGender === "Female"} onChange={(e) => setBabyGender(e.target.value)} required />
+                        Female
+                      </label>
                     </div>
                   </div>
                 </div>
+              </div>
 
-                <div className="modal-btn-add-baby">
-                  <button type="submit">Add Baby</button>
-                </div>
-              </form>
-            </div>
+              <div className="modal-btn-add-baby">
+                <button type="submit">Add Baby</button>
+              </div>
+            </form>
           </div>
-        )}
+        </div>
+      )}
     </div>
   );
 }
+
 export default ParentProfile;
