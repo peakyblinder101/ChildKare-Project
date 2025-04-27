@@ -42,6 +42,16 @@
   padding-right: 10px; 
 }
 
+.doctor-search {
+  width: 85%;
+  padding: 10px;
+  margin: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+
 .doctor-items {
   list-style: none;
   padding: 0;

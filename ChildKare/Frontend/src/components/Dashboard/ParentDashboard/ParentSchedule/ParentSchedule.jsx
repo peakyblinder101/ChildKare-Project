@@ -21,6 +21,8 @@ function ParentSchedule() {
   const [isAppointmentFormStep, setIsAppointmentFormStep] = useState(false);
   const [activeDate, setActiveDate] = useState(null);
 
+  const [searchQuery, setSearchQuery] = useState('');
+
   const doctorList = [
     {
       name: 'Dr. Smith',
@@ -140,21 +142,35 @@ function ParentSchedule() {
       <div className="schedule-wrapper">
         <div className="schedule-container">
 
-          {/* Doctors Section */}
-          <div className="doctors-list">
-            <h2>Doctors</h2>
-            <ul className="doctor-items">
-              {doctorList.map((doctor, index) => (
-                <li key={index} className="doctor-card" onClick={() => handleDoctorClick(doctor)}>
-                  <img src={doctor.imageUrl} alt={doctor.name} className="doctor-avatar" />
-                  <div className="doctor-info">
-                    <div className="doctor-name">{doctor.name}</div>
-                    <div className="doctor-specialization">{doctor.specialization}</div>
-                  </div>
-                </li>
-              ))}
-            </ul>
+        <div className="doctors-list">
+  <h2>Doctors</h2>
+
+  {/* Search Bar */}
+  <input
+    type="text"
+    className="doctor-search"
+    placeholder="Search doctor by name..."
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+  />
+
+  <ul className="doctor-items">
+    {doctorList
+      .filter((doctor) =>
+        doctor.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      .map((doctor, index) => (
+        <li key={index} className="doctor-card" onClick={() => handleDoctorClick(doctor)}>
+          <img src={doctor.imageUrl} alt={doctor.name} className="doctor-avatar" />
+          <div className="doctor-info">
+            <div className="doctor-name">{doctor.name}</div>
+            <div className="doctor-specialization">{doctor.specialization}</div>
           </div>
+        </li>
+    ))}
+  </ul>
+</div>
+
 
           {/* Calendar Section */}
           <div className="calendar">
