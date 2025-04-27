@@ -49,12 +49,12 @@ const LandingPage = () => {
               />
               <span className="logo-name">ChildKare</span>
             </div>
-            <div className="center-nav">
+            {/*<div className="center-nav">
               <span>About Us</span>
               <span>Our Goals</span>
               <span>Blog</span>
               <span>Child Tips</span>
-            </div>
+            </div>*/}
           </header>
           <div className="first-content">
             <div className="description">

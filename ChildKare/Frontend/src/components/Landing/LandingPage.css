@@ -115,7 +115,7 @@ header {
   color: #ffffff;
 }
 
-.center-nav {
+/*.center-nav {
   margin-right: 30px;
   font: 1.2em sans-serif;
   font-weight: bold;
@@ -128,7 +128,7 @@ header {
 
 .center-nav span:hover {
   text-decoration: underline;
-}
+}*/
 
 .auth-buttons {
   display: flex;
