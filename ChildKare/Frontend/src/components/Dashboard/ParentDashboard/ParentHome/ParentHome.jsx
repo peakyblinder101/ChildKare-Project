@@ -106,8 +106,6 @@ function ParentHome() {
             </table>
           </div>
         </div>
-
-
       </div>
     </div>
   );
