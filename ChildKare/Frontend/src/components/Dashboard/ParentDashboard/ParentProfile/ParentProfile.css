@@ -1,12 +1,11 @@
 .par-pro-parent-profile-wrapper {
     padding: 20px;
     width: 90%;
-    height: auto; /* Allow height to expand as needed */
-    margin: 0 auto;
+    height: auto;
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden; /* Prevent overflow outside of this wrapper */
+    overflow: hidden; 
   }
   
   .par-pro-profile-image-container {
@@ -48,7 +47,7 @@
   
   .par-pro-left-column,
   .par-pro-right-column {
-    width: 48%; /* Create two columns with 48% width */
+    width: 48%;
   }
   
   .par-pro-profile-table {
@@ -89,24 +88,23 @@
   .par-pro-baby-cards {
     display: flex;
     gap: 10px;
-    overflow-x: auto; /* Enable horizontal scrolling */
-    padding-bottom: 10px; /* Adds space for the scrollbar */
+    overflow-x: auto; 
+    padding-bottom: 10px;
   }
   
   .par-pro-baby-card {
-    flex: 0 0 auto; /* Prevent cards from shrinking or expanding */
-    width: 300px; /* Set a fixed width for the cards */
+    flex: 0 0 auto;
+    width: 300px; 
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     margin-bottom: 20px;
-    min-width: 250px; /* Ensure card doesn't shrink below 250px */
-    max-width: 350px; /* Ensure card doesn't exceed 350px */
-    max-height: 500px; /* Prevent excessive height */
-    overflow: hidden; /* Prevent overflow of content */
-    height: auto; /* Allow the card to adjust its height */
+    min-width: 250px; 
+    max-width: 350px;
+    max-height: 500px; 
+    height: auto; 
     display: flex;
     flex-direction: column;
   }
@@ -118,11 +116,11 @@
   
   .par-pro-baby-card .par-pro-profile-table {
     width: 100%;
-    flex-grow: 1; /* Ensure the table takes up available space in the card */
+    flex-grow: 1;
   }
 
   .par-pro-profile-table th {
-    width: 40%; /* or try 30% depending on look */
+    width: 40%;
     white-space: nowrap;
   }
   

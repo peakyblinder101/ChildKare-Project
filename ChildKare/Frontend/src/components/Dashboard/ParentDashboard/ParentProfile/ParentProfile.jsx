@@ -46,7 +46,8 @@ function ParentProfile() {
 
   return (
     <div className="par-pro-parent-profile-wrapper">
-     
+      <h2>Parent Profile</h2>
+      {/* Profile Image */}
       <div className="par-pro-profile-image-container">
         <img
           src="https://thumbs.dreamstime.com/b/profile-anonymous-face-icon-gray-silhouette-person-male-businessman-profile-default-avatar-photo-placeholder-isolated-white-107003824.jpg"
