@@ -5,7 +5,7 @@ function ParentProfile() {
   const [selectedBaby, setSelectedBaby] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [imageUrl, setImageUrl] = useState(
-    'https://thumbs.dreamstime.com/b/profile-anonymous-face-icon-gray-silhouette-person-male-businessman-profile-default-avatar-photo-placeholder-isolated-white-107003824.jpg'
+    'https://img.freepik.com/free-photo/mother-baby-laying-bed_1150-18379.jpg?t=st=1744045266~exp=1744048866~hmac=e2967ab7d452a9a45b4ce3ff6270c3c8e8d720c26923a41fd9f5a9dbde2c65d2&w=740'
   );
 
   const handleOpenModal = (baby) => {
@@ -150,6 +150,10 @@ function ParentProfile() {
                       <tr><th>Gender</th><td>{selectedBaby.gender}</td></tr>
                     </tbody>
                   </table>
+
+                  <div className="par-pro-modal-button-wrapper">
+                    <button className="par-pro-modal-action-button">Switch</button>
+                  </div>
                 </div>
               </div>
             )}
