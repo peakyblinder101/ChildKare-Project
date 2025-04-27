@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./ParentHome.css";
@@ -51,8 +51,8 @@ function ParentHome() {
             {babyDetails ? (
               <ul>
                 <li><strong>ID:</strong> {babyDetails.id}</li>
-                <li><strong>First Name:</strong> {babyDetails.firstname}</li>
-                <li><strong>Last Name:</strong> {babyDetails.lastName}</li>
+                <li><strong>First Name:</strong> {babyDetails.first_name}</li>
+                <li><strong>Last Name:</strong> {babyDetails.last_name}</li>
                 <li><strong>Gender:</strong> {babyDetails.gender}</li>
                 <li><strong>Weight:</strong> {babyDetails.weight}</li>
                 <li><strong>Age (months):</strong> {babyDetails.age}</li>
