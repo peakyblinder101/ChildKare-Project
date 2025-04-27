@@ -112,7 +112,10 @@ function ParentProfile() {
 
       {/* Baby Info Buttons */}
       <div className="par-pro-baby-info-wrapper">
-        <h3>Baby's Information</h3>
+        <div className="par-pro-baby-header">
+          <h3>Baby's Information</h3>
+          <button className="par-pro-add-baby-button">+ Add Baby</button>
+        </div>
         <div className="par-pro-baby-cards">
           {parentData.babies.map((baby, index) => (
             <button
@@ -125,6 +128,7 @@ function ParentProfile() {
           ))}
         </div>
       </div>
+
 
       {/* Modal */}
       {showModal && (
@@ -163,5 +167,4 @@ function ParentProfile() {
     </div>
   );
 }
-
 export default ParentProfile;
