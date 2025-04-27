@@ -18,12 +18,12 @@ function ParentProfile() {
   const [babyGender, setBabyGender] = useState('');
 
   const [parentData, setParentData] = useState({
-    firstName: 'John',
-    middleName: 'Paul',
-    lastName: 'Doe',
+    firstName: 'Franzie',
+    middleName: 'N',
+    lastName: 'Erica',
     age: '35',
     contactNumber: '+1 234 567 890',
-    email: 'john.doe@example.com',
+    email: 'Franzie.Erica@example.com',
     location: 'New York, USA',
     babies: [
       {
