@@ -143,33 +143,31 @@ function ParentSchedule() {
         <div className="schedule-container">
 
         <div className="doctors-list">
-  <h2>Doctors</h2>
+          <h2>Doctors</h2>
+          <input
+            type="text"
+            className="doctor-search"
+            placeholder="Search doctor by name..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
 
-  {/* Search Bar */}
-  <input
-    type="text"
-    className="doctor-search"
-    placeholder="Search doctor by name..."
-    value={searchQuery}
-    onChange={(e) => setSearchQuery(e.target.value)}
-  />
-
-  <ul className="doctor-items">
-    {doctorList
-      .filter((doctor) =>
-        doctor.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-      .map((doctor, index) => (
-        <li key={index} className="doctor-card" onClick={() => handleDoctorClick(doctor)}>
-          <img src={doctor.imageUrl} alt={doctor.name} className="doctor-avatar" />
-          <div className="doctor-info">
-            <div className="doctor-name">{doctor.name}</div>
-            <div className="doctor-specialization">{doctor.specialization}</div>
-          </div>
-        </li>
-    ))}
-  </ul>
-</div>
+          <ul className="doctor-items">
+            {doctorList
+              .filter((doctor) =>
+                doctor.name.toLowerCase().includes(searchQuery.toLowerCase())
+              )
+              .map((doctor, index) => (
+                <li key={index} className="doctor-card" onClick={() => handleDoctorClick(doctor)}>
+                  <img src={doctor.imageUrl} alt={doctor.name} className="doctor-avatar" />
+                  <div className="doctor-info">
+                    <div className="doctor-name">{doctor.name}</div>
+                    <div className="doctor-specialization">{doctor.specialization}</div>
+                  </div>
+                </li>
+            ))}
+          </ul>
+        </div>
 
 
           {/* Calendar Section */}
