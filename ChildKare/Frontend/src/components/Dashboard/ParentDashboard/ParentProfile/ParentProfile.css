@@ -120,6 +120,12 @@
     width: 100%;
     flex-grow: 1; /* Ensure the table takes up available space in the card */
   }
+
+  .par-pro-profile-table th {
+    width: 40%; /* or try 30% depending on look */
+    white-space: nowrap;
+  }
+  
   
   .par-pro-baby-card .par-pro-profile-table th,
   .par-pro-baby-card .par-pro-profile-table td {
