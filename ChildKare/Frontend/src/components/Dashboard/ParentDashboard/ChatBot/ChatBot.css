@@ -1,55 +1,138 @@
-/* Ensure child tips container takes up the available space in main-content */
-.child-tips-wrapper {
-  display: flex;
-  justify-content: center;  /* Center the content horizontally */
-  align-items: center;  /* Center the content vertically */
-  width: 100%;  /* Full width of the parent */
-  height: 100vh;  /* Full height of the viewport */
-  padding: 20px;
-  box-sizing: border-box;
-  overflow-y: auto;  /* Allow vertical scrolling if content exceeds the height */
-}
-
-/* Make sure the child-tips takes full width and height */
-.child-tips {
-  position: relative;  /* Establish a positioning context */
-  width: 100%;  /* Full width of the parent container */
-  height: 90vh;
-  background-color: #ffffff;
-  padding: 20px;
-  box-sizing: border-box; /* Include padding in the element's total height and width */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+.chatbot-page-wrapper {
+  margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #000;
+  overflow: hidden;
+}
+
+.chatbot-container {
+  position: relative;
+  width: 100%;
+  max-width: 1280px;
+  height: 90vh;
+  background-color: #ffffff;
+  padding: 20px;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
   border: 2px solid black;
 }
 
-/* Position h3 at the top-left corner */
-.child-tips h3 {
+.chatbot-container h2 {
   position: absolute;
-  top: 20px; /* Adjust based on desired space from the top */
-  left: 20px; /* Adjust based on desired space from the left */
+  top: 20px;
+  left: 20px;
   margin: 0;
-  text-align: left;  /* Align text to the left */
   font-size: 24px;
   font-weight: bold;
-  color: #333; /* Optional: set text color */
+  color: #333;
+  display: flex;
+  align-items: center;
 }
 
-.react-responsive-carousel .carousel .slide {
-  text-decoration: none; /* No underline for links inside carousel */
-  list-style: none;
-  padding: 20px;
+.online-status {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  color: green;
+  margin-left: 10px;
 }
 
-/* Styling for the 'Read More' link */
-.read-more {
-  color: #007bff;
-  text-decoration: none;
+.online-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: green;
+  margin-right: 8px; 
 }
 
-.read-more:hover {
-  text-decoration: underline;
+.chatbot-window {
+  flex: 1;
+  margin-top: 60px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: calc(100% - 80px);
+}
+
+.chatbot-message-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.chatbot-message {
+  max-width: 80%;
+  padding: 15px 20px;
+  border-radius: 20px;
+  font-size: 18px;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  word-break: break-word;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+.chatbot-bot {
+  background-color: #f1f0f0;
+  color: #000;
+}
+
+.chatbot-user {
+  background-color: #007bff;
+  color: white;
+  margin-left: auto;
+}
+
+.chatbot-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.chatbot-input {
+  display: flex;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.chatbot-input input {
+  flex: 1;
+  padding: 15px;
+  font-size: 18px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.chatbot-input button {
+  padding: 15px 30px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.chatbot-input button:hover {
+  background-color: #0056b3;
 }

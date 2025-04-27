@@ -1,46 +1,68 @@
-import React from "react";
-import { Carousel } from "react-responsive-carousel"; // Correct import for the carousel
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import carousel styles
-import "./ChatBot.css"; // Import the CSS for chatbot section
+import React, { useState } from "react";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import "./ChatBot.css";
 
 function ChatBot() {
-  // Parenting Tips data
-  const tips = [
-    {
-      title: "Parenting Tip #1",
-      description:
-        "Learn how to deal with tantrums effectively. Children can have challenging emotions...",
-      link: "https://kidshealth.org/en/parents/guide-parents.html",
-    },
-    {
-      title: "Child's Vaccination Tips",
-      description:
-        "Vaccinations are essential for your child's health. Here's why you should stay up-to-date...",
-      link: "https://www.unicef.org/parenting/health/parents-frequently-asked-questions-vaccines",
-    },
-  ];
+  const [messages, setMessages] = useState([
+    { sender: "bot", text: "Hi! How can I help you today?" }
+  ]);
+  const [input, setInput] = useState("");
+
+  const handleSend = () => {
+    if (input.trim() === "") return;
+
+    const newMessages = [...messages, { sender: "user", text: input }];
+    setMessages(newMessages);
+
+    setTimeout(() => {
+      setMessages(prev => [...prev, { sender: "bot", text: "Got it! 👍" }]);
+    }, 1000);
+
+    setInput("");
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") handleSend();
+  };
 
   return (
-    <div className="child-tips-wrapper">
-      <div className="child-tips">
-        <h3>Parenting Tips</h3>
-        {/* Carousel component with autoplay */}
-        <Carousel autoPlay infiniteLoop interval={3000} showThumbs={false}>
-          {tips.map((tip, index) => (
-            <div key={index}>
-              <h4>{tip.title}</h4>
-              <p>{tip.description}</p>
-              <a
-                href={tip.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="read-more"
-              >
-                Read More
-              </a>
+    <div className="chatbot-page-wrapper">
+      <div className="chatbot-container">
+        <h2>
+          AI Assistant
+          <span className="online-status">
+            <span className="online-dot"></span> Online
+          </span>
+        </h2>
+        <div className="chatbot-window">
+          {messages.map((msg, idx) => (
+            <div
+              key={idx}
+              className={`chatbot-message-container ${msg.sender === "user" ? "user-message" : "bot-message"}`}
+            >
+              {msg.sender === "bot" && (
+                <img
+                  src="https://botnation.ai/site/wp-content/uploads/2022/02/meilleur-chatbot.jpg"
+                  alt="bot avatar"
+                  className="chatbot-avatar"
+                />
+              )}
+              <div className={`chatbot-message ${msg.sender === "user" ? "chatbot-user" : "chatbot-bot"}`}>
+                {msg.text}
+              </div>
             </div>
           ))}
-        </Carousel>
+        </div>
+        <div className="chatbot-input">
+          <input
+            type="text"
+            placeholder="Type your message..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+          <button onClick={handleSend}>Send</button>
+        </div>
       </div>
     </div>
   );
