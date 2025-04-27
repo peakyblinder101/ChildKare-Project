@@ -82,7 +82,7 @@
   /* Baby Info Wrapper with Card Style */
   .par-pro-baby-info-wrapper {
     margin-top: 10px;
-    padding-bottom: 20px; /* Add padding at the bottom to prevent overflow */
+    padding-bottom: 20px;
   }
   
   .par-pro-baby-cards {

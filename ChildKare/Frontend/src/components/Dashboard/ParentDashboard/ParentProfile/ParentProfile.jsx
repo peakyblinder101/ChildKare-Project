@@ -4,6 +4,9 @@ import './ParentProfile.css';
 function ParentProfile() {
   const [selectedBaby, setSelectedBaby] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [imageUrl, setImageUrl] = useState(
+    'https://thumbs.dreamstime.com/b/profile-anonymous-face-icon-gray-silhouette-person-male-businessman-profile-default-avatar-photo-placeholder-isolated-white-107003824.jpg'
+  );
 
   const handleOpenModal = (baby) => {
     setSelectedBaby(baby);
@@ -13,6 +16,17 @@ function ParentProfile() {
   const handleCloseModal = () => {
     setSelectedBaby(null);
     setShowModal(false);
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const parentData = {
@@ -41,18 +55,23 @@ function ParentProfile() {
         gender: 'Female',
       },
     ],
-    
   };
 
   return (
     <div className="par-pro-parent-profile-wrapper">
       <h2>Parent Profile</h2>
-      {/* Profile Image */}
+
+      {/* Profile Image with Upload */}
       <div className="par-pro-profile-image-container">
-        <img
-          src="https://thumbs.dreamstime.com/b/profile-anonymous-face-icon-gray-silhouette-person-male-businessman-profile-default-avatar-photo-placeholder-isolated-white-107003824.jpg"
-          alt="Profile"
-          className="par-pro-profile-img"
+        <label htmlFor="image-upload" style={{ cursor: 'pointer' }}>
+          <img src={imageUrl} alt="Profile" className="par-pro-profile-img" />
+        </label>
+        <input
+          id="image-upload"
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          style={{ display: 'none' }}
         />
       </div>
 
@@ -91,7 +110,7 @@ function ParentProfile() {
         </div>
       </div>
 
-      {/* Baby Info Button Section */}
+      {/* Baby Info Buttons */}
       <div className="par-pro-baby-info-wrapper">
         <h3>Baby's Information</h3>
         <div className="par-pro-baby-cards">
@@ -107,14 +126,13 @@ function ParentProfile() {
         </div>
       </div>
 
+      {/* Modal */}
       {showModal && (
-      <div className="par-pro-modal-overlay">
-        <div className="par-pro-modal-content">
-          <button className="par-pro-close-button" onClick={handleCloseModal}>×</button>
-          {selectedBaby && (
-            <table className="par-pro-profile-table">
+        <div className="par-pro-modal-overlay">
+          <div className="par-pro-modal-content">
+            <button className="par-pro-close-button" onClick={handleCloseModal}>×</button>
+            {selectedBaby && (
               <div className="par-pro-modal-grid">
-                {/* Left Column */}
                 <div className="par-pro-modal-left">
                   <table className="par-pro-profile-table">
                     <tbody>
@@ -124,8 +142,6 @@ function ParentProfile() {
                     </tbody>
                   </table>
                 </div>
-
-                {/* Right Column */}
                 <div className="par-pro-modal-right">
                   <table className="par-pro-profile-table">
                     <tbody>
@@ -136,8 +152,7 @@ function ParentProfile() {
                   </table>
                 </div>
               </div>
-            </table>
-          )}
+            )}
           </div>
         </div>
       )}
