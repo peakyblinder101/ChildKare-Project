@@ -35,14 +35,14 @@
   .par-pro-profile-details-section h3,
   .par-pro-baby-info-wrapper h3 {
     margin-top: 0;
-    font-size: 20px;
+    font-size: 18px;
     color: #333;
   }
   
   .par-pro-details-grid {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
+    margin-top: 10px;
   }
   
   .par-pro-left-column,
