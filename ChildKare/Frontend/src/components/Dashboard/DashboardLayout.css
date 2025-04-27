@@ -9,7 +9,7 @@
 /* Sidebar Styling */
 .sidebar {
   width: 250px !important;
-  height: 100vh;
+
   background-color: #ffffff;
   padding: 20px 15px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
@@ -147,7 +147,7 @@
   flex: 1; /* Takes the remaining space */
   min-width: 0; /* Prevents content overflow */
   background-color: #ffffff;
-  padding: 20px;
+  /*padding: 20px;*/
 }
 
 /* Hamburger Menu */
