@@ -113,9 +113,17 @@
   }
   
 .accepted-date {
-    background-color: #4ccbf8 !important; 
-    color: white !important; 
+  background-color: #e6f7ff !important; 
+  color: #469fff !important; 
+  transition: background-color 0.3s ease;
   }
+
+.accepted-date:hover {
+  background-color: #b3e5fc;
+  cursor: pointer;
+  transform: scale(1.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
   
 .pending-date {
     background-color: transparent !important;

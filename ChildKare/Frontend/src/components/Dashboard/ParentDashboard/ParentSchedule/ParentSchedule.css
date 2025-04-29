@@ -140,10 +140,16 @@
     width: 70px !important;
   }
   
-  .react-calendar__tile.has-appointment {
+  .parent-calendar .react-calendar__tile.has-appointment {
     background-color: #e6f7ff;
     color: #469fff;
     border-radius: 6px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .parent-calendar .react-calendar__tile.has-appointment:hover {
+    background-color: #b3e5fc;
+    cursor: pointer;
   }
  
   .react-calendar__navigation button {

@@ -171,15 +171,16 @@ function ParentSchedule() {
 
 
           {/* Calendar Section */}
-          <div className="calendar">
-            <h2>Calendar</h2>
-            <Calendar
-              onChange={handleDateClick}
-              value={date}
-              tileClassName={tileClassName}
-              calendarType="US" // Ensures Sunday starts first
-            />
-          </div>
+          <div className="parent-calendar calendar">
+  <h2>Calendar</h2>
+  <Calendar
+    onChange={handleDateClick}
+    value={date}
+    tileClassName={tileClassName}
+    calendarType="US"
+  />
+</div>
+
 
           <div className="par-appointments-list">
             <h2>Appointments</h2>
