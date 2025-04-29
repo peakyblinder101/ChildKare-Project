@@ -50,6 +50,13 @@ function DoctorHome() {
     setSelectedAppointment(null);
   };
 
+  const markAsDone = (appointment) => {
+    const updatedAppointments = appointments.filter(app => app.idNo !== appointment.idNo);
+    setAppointments(updatedAppointments);
+    setModalVisible(false);
+    setSelectedAppointment(null);
+  };
+
   const tileClassName = ({ date, view }) => {
     const today = new Date();
     const dateStr = date.toLocaleDateString('en-CA');
@@ -109,12 +116,12 @@ function DoctorHome() {
               <h3 className="group-title">Pending</h3>
               <ul>
                 {appointments
-                  .filter(app => app.status === 'Pending') 
+                  .filter(app => app.status === 'Pending')
                   .map((appointment, index) => (
                     <li
                       key={`pending-${index}`}
                       style={{ cursor: 'pointer' }}
-                      onClick={() => handlePendingClick(appointment)} 
+                      onClick={() => handlePendingClick(appointment)}
                     >
                       <span className="time">{appointment.time}</span>
                       <span className="date">
@@ -139,7 +146,14 @@ function DoctorHome() {
                 {appointments
                   .filter(app => app.status === 'Accepted')
                   .map((appointment, index) => (
-                    <li key={`accepted-${index}`}>
+                    <li
+                      key={`accepted-${index}`}
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => {
+                        setSelectedAppointment(appointment);
+                        setModalVisible(true);
+                      }}
+                    >
                       <span className="time">{appointment.time}</span>
                       <span className="date">
                         {new Date(appointment.date).toLocaleDateString('en-US', {
@@ -165,44 +179,49 @@ function DoctorHome() {
           <div className="doctor-modal-content">
             <span className="doc-close-modal" onClick={closeModal}>×</span>
             <h3>Appointment Details</h3>
-              <table className="modal-table">
-                <tbody>
-                  <tr>
-                    <th>Parent Name</th>
-                    <td>{selectedAppointment.parentName}</td>
-                  </tr>
-                  <tr>
-                    <th>Baby ID No</th>
-                    <td>{selectedAppointment.idNo}</td>
-                  </tr>
-                  <tr>
-                    <th>Time</th>
-                    <td>{selectedAppointment.time}</td>
-                  </tr>
-                  <tr>
-                    <th>Date</th>
-                    <td>{new Date(selectedAppointment.date).toLocaleDateString('en-US')}</td>
-                  </tr>
-                  <tr>
-                    <th>Reason</th>
-                    <td>{selectedAppointment.reason}</td>
-                  </tr>
-                </tbody>
-              </table>
+            <table className="modal-table">
+              <tbody>
+                <tr>
+                  <th>Parent Name</th>
+                  <td>{selectedAppointment.parentName}</td>
+                </tr>
+                <tr>
+                  <th>Baby ID No</th>
+                  <td>{selectedAppointment.idNo}</td>
+                </tr>
+                <tr>
+                  <th>Time</th>
+                  <td>{selectedAppointment.time}</td>
+                </tr>
+                <tr>
+                  <th>Date</th>
+                  <td>{new Date(selectedAppointment.date).toLocaleDateString('en-US')}</td>
+                </tr>
+                <tr>
+                  <th>Reason</th>
+                  <td>{selectedAppointment.reason}</td>
+                </tr>
+              </tbody>
+            </table>
 
+            {selectedAppointment.status === 'Pending' && (
               <div className="modal-actions">
-                {selectedAppointment.status === 'Pending' && (
-                  <>
-                    <button className="accept-btn" onClick={() => acceptAppointment(selectedAppointment)}>
-                      Accept
-                    </button>
-                    <button className="cancel-btn" onClick={() => cancelAppointment(selectedAppointment)}>
-                      Cancel
-                    </button>
-                  </>
-                )}
+                <button className="accept-btn" onClick={() => acceptAppointment(selectedAppointment)}>
+                  Accept
+                </button>
+                <button className="cancel-btn" onClick={() => cancelAppointment(selectedAppointment)}>
+                  Cancel
+                </button>
               </div>
+            )}
 
+            {selectedAppointment.status === 'Accepted' && (
+              <div className="modal-actions done-section">
+                <button className="done-btn" onClick={() => markAsDone(selectedAppointment)}>
+                  Done
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}

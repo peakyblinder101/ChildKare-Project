@@ -113,7 +113,7 @@
   }
   
 .accepted-date {
-    background-color: #7dfa81 !important; 
+    background-color: #4ccbf8 !important; 
     color: white !important; 
   }
   
@@ -304,5 +304,29 @@
   
   .cancel-btn:hover {
     background-color: #d94444;
+  }
+  
+  .modal-actions.done-section {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 10px;
+  }
+  
+  .done-btn {
+    background-color: #028ef9;
+    color: white;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+  }
+  
+  .done-btn:hover {
+    background-color: #004d88;
   }
   
