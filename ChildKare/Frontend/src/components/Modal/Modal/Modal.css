@@ -48,8 +48,8 @@
 /* Common button styling for Close and Back buttons */
 .modal-button {
   padding: 8px 16px;
-  background-color: #7dc2f7; 
-  color: #fff;
+  background-color: transparent;
+  color: #aaa;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -60,7 +60,8 @@
 
 /* Hover Effect for both Close and Back Buttons */
 .modal-button:hover {
-  background-color: #028ef9;
+  color: #090909ab;
+  background-color: transparent;
   transform: scale(1.1);
 }
 
@@ -70,17 +71,22 @@
 }
 
 /* Positioning for Close Button */
-.close-modal {
+.close-modal, .back-button {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
 }
 
-/* Positioning for Back Button */
+.close-modal{
+  right: 18px;
+  font-size: 30px;
+}
+
 .back-button {
-  position: absolute;
-  top: 10px;
-  left: 10px;
+  left: 18px;
+  font-size: 25px;
 }
 
 /* Styling for Role Images (Parent/Doctor) */

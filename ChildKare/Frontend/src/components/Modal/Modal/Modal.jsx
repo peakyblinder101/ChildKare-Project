@@ -52,13 +52,13 @@ function Modal({ isModalOpen, closeModal, formType }) {
       <div className="modal">
         {/* Close Button */}
         <button className="modal-button close-modal" onClick={closeModal}>
-          Close
+          ×
         </button>
 
         {/* Back Button */}
         {role && (
           <button className="modal-button back-button" onClick={handleBack}>
-            Back
+            🡄
           </button>
         )}
 
