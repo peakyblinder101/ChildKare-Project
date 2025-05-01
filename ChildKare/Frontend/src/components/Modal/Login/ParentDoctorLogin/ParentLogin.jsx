@@ -27,7 +27,7 @@ function ParentLogin({ closeModal }) {
         try {
         const token = localStorage.getItem("token"); // assuming you saved it after login
   
-          const response = await axios.get(`http://localhost:5000/api/children`, {
+          const response = await axios.get(`https://8fdsdscs-5000.asse.devtunnels.ms/api/children`, {
             headers: {
               Authorization: `Bearer ${token}`, // 🔥 Add the token here
             },

@@ -395,4 +395,57 @@
   .form-actions button:hover {
     background-color: #026fca;
   }
+  .status-tag {
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+  
+  .status-tag.pending {
+    background-color: #ffeb3b;
+    color: #333;
+  }
+  
+  .status-tag.approved {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .status-tag.rejected {
+    background-color: #f44336;
+    color: white;
+  }
+  .par-appointment-row {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    background-color: #fdfdfd;
+  }
+  
+  .par-appointment-doctor {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-align: center; /* Center the doctor's name */
+  }
+  
+  .par-appointment-details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+    text-align: center; /* Center-align the other details */
+  }
+  
+  .par-appointment-time,
+  .par-appointment-date,
+  .par-appointment-status {
+    font-size: 0.9rem;
+  }
+  
   

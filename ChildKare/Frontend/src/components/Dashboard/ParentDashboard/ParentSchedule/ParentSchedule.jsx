@@ -1,17 +1,13 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './ParentSchedule.css';
+import axios from 'axios';
 
 function ParentSchedule() {
   const [date, setDate] = useState(new Date());
   const [selectedDoctor, setSelectedDoctor] = useState(null);
-  const [appointments, setAppointments] = useState([
-    { time: '09:00', doctor: 'Dr. Smith', date: '2025-04-18' },
-    { time: '10:30', doctor: 'Dr. Johnson', date: '2025-04-19' },
-    { time: '13:00', doctor: 'Dr. Lee', date: '2025-04-20' },
-  ]);
-  
+  const [appointments, setAppointments] = useState([]);
   const [newAppointment, setNewAppointment] = useState({
     date: '',
     time: '',
@@ -19,39 +15,58 @@ function ParentSchedule() {
   });
   const [isAppointmentModalOpen, setIsAppointmentModalOpen] = useState(false);
   const [isAppointmentFormStep, setIsAppointmentFormStep] = useState(false);
-  const [activeDate, setActiveDate] = useState(null);
-
   const [searchQuery, setSearchQuery] = useState('');
+  const [doctorList, setDoctorList] = useState([]);
 
-  const doctorList = [
-    {
-      name: 'Dr. Smith',
-      specialization: 'Cardiology',
-      imageUrl: 'https://img.freepik.com/free-photo/mother-baby-laying-bed_1150-18379.jpg',
-      contact: '123-456-7890',
-      license: 'LIC123456',
-      address: '123 Heart St, Health City',
-      description: 'Experienced cardiologist specializing in heart diseases.'
-    },
-    {
-      name: 'Dr. Johnson',
-      specialization: 'Neurology',
-      imageUrl: 'https://img.freepik.com/free-photo/mother-baby-laying-bed_1150-18379.jpg',
-      contact: '234-567-8901',
-      license: 'LIC987654',
-      address: '456 Brain Ave, Neurotown',
-      description: 'Expert neurologist with years of experience in brain and spinal cord disorders.'
-    },
-    {
-      name: 'Dr. Lee',
-      specialization: 'Dermatology',
-      imageUrl: 'https://img.freepik.com/free-photo/mother-baby-laying-bed_1150-18379.jpg',
-      contact: '345-678-9012',
-      license: 'LIC543210',
-      address: '789 Skin Blvd, Dermaville',
-      description: 'Specializes in skin conditions and cosmetic dermatology.'
+  const [babyDetails, setBabyDetails] = useState(null);
+
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState(false);
+
+
+  useEffect(() => {
+    const savedChild = localStorage.getItem("selectedChild");
+    if (savedChild) {
+      setBabyDetails(JSON.parse(savedChild));
     }
-  ];
+  }, []);
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const response = await axios.get('https://8fdsdscs-5000.asse.devtunnels.ms/api/getAllDoctors');
+        const transformedDoctors = response.data.map((doc) => ({
+          doctor_id: doc.doctor_id,
+          name: `Dr. ${doc.first_name} ${doc.last_name}`,
+          specialization: doc.specialization,
+          imageUrl: 'https://img.freepik.com/free-photo/mother-baby-laying-bed_1150-18379.jpg',
+          contact: doc.contact_number,
+          license: doc.license_number,
+          address: doc.clinic_address,
+          description: `Specialist in ${doc.specialization}.`
+        }));
+        setDoctorList(transformedDoctors);
+      } catch (error) {
+        console.error('Failed to fetch doctors:', error);
+      }
+    };
+    fetchDoctors();
+  }, []);
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('https://8fdsdscs-5000.asse.devtunnels.ms/api/getAppointments', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setAppointments(response.data);
+      } catch (error) {
+        console.error('Failed to fetch appointments:', error);
+      }
+    };
+    fetchAppointments();
+  }, []);
 
   const handleDoctorClick = (doctor) => {
     setSelectedDoctor(doctor);
@@ -64,16 +79,42 @@ function ParentSchedule() {
     setNewAppointment({ ...newAppointment, [name]: value });
   };
 
-  const handleMakeAppointment = () => {
-    const appointment = {
-      ...newAppointment,
-      doctor: selectedDoctor.name,
-    };
+  const handleMakeAppointment = async () => {
+    try {
+      const combinedDateTime = new Date(`${newAppointment.date}T${newAppointment.time}`);
 
-    setAppointments([...appointments, appointment]);
-    setIsAppointmentModalOpen(false);
-    setSelectedDoctor(null);
-    setNewAppointment({ date: '', time: '', reason: '' });
+      const appointmentData = {
+        child_id: babyDetails.id,
+        doctor_id: selectedDoctor?.doctor_id || 1,
+        appointment_date: combinedDateTime.toISOString(),
+        reason: newAppointment.reason,
+        status: "pending"
+      };
+
+      const token = localStorage.getItem('token');
+
+      await axios.post('https://8fdsdscs-5000.asse.devtunnels.ms/api/createAppointment', appointmentData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      // setAppointments([...appointments, {
+      //   doctor: selectedDoctor.name,
+      //   date: newAppointment.date,
+      //   time: newAppointment.time,
+      //   reason: newAppointment.reason,
+      // }]);
+
+      // setIsAppointmentModalOpen(false);
+      // setSelectedDoctor(null);
+      // setNewAppointment({ date: '', time: '', reason: '' });
+
+    } catch (error) {
+      console.error('Error creating appointment:', error);
+      alert('Failed to book appointment. Please try again.');
+    }
   };
 
   const handleCloseModal = () => {
@@ -87,138 +128,147 @@ function ParentSchedule() {
   };
 
   const handleDateClick = (value) => {
-    const dateStr = value.toLocaleDateString('en-CA'); // Fix: Use local date
-    const foundAppointment = appointments.find(app => app.date === dateStr);
-
+    const clickedDate = value.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+    const foundAppointment = appointments.find(app => 
+      new Date(app.appointment_date).toISOString().split('T')[0] === clickedDate
+    );
+  
+    setDate(value); // Highlight the selected date
+  
     if (foundAppointment) {
-      setNewAppointment({ date: dateStr, time: foundAppointment.time, reason: foundAppointment.reason || '' });
-      const matchedDoctor = doctorList.find(doc => doc.name === foundAppointment.doctor);
-      setSelectedDoctor(matchedDoctor);
-      setIsAppointmentModalOpen(true);
-      setIsAppointmentFormStep(true);
+      setSelectedAppointment(foundAppointment);
+      setIsAppointmentDetailModalOpen(true);
     }
-
-    setDate(value);
-    setActiveDate(value);
   };
+  
 
   const tileClassName = ({ date, view }) => {
-    const today = new Date();
-    const dateStr = date.toLocaleDateString('en-CA'); // Fix: Use local date
-
-    const hasAppointment = appointments.some(app => app.date === dateStr);
-    const isPast = date < new Date(today.setHours(0, 0, 0, 0));
-    const isSunday = date.getDay() === 0;
-
     if (view === 'month') {
-      return [
-        hasAppointment ? 'has-appointment' : '',
-        isPast ? 'past-date' : '',
-        isSunday ? 'sunday-date' : ''
-      ].join(' ');
+      // Format the calendar date as YYYY-MM-DD
+      const calendarDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
+        .toISOString()
+        .split('T')[0];
+  
+      // Check if any appointment matches the calendar date
+      const hasAppointment = appointments.some((appointment) => {
+        const appointmentDate = new Date(appointment.appointment_date).toISOString().split('T')[0];
+        return appointmentDate === calendarDate;
+      });
+  
+      if (hasAppointment) {
+        return 'has-appointment'; // Add a custom class for dates with appointments
+      }
     }
-
     return '';
   };
 
-  const formatTime = (time24) => {
-    if (!time24) return '';
-    const [hour, minute] = time24.split(':');
-    const date = new Date();
-    date.setHours(+hour);
-    date.setMinutes(+minute);
-    return date.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
-    });
-  };
-  
+  // const formatTime = (time24) => {
+  //   if (!time24) return '';
+  //   const [hour, minute] = time24.split(':');
+  //   const date = new Date();
+  //   date.setHours(+hour);
+  //   date.setMinutes(+minute);
+  //   return date.toLocaleTimeString('en-US', {
+  //     hour: '2-digit',
+  //     minute: '2-digit',
+  //     hour12: true
+  //   });
+  // };
 
   return (
     <div className="parent-schedule">
       <h1>Appointment Schedule</h1>
-
       <div className="schedule-wrapper">
         <div className="schedule-container">
 
-        <div className="doctors-list">
-          <h2>Doctors</h2>
-          <input
-            type="text"
-            className="doctor-search"
-            placeholder="Search doctor by name..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+          <div className="doctors-list">
+            <h2>Doctors</h2>
+            <input
+              type="text"
+              className="doctor-search"
+              placeholder="Search doctor by name..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <ul className="doctor-items">
+              {doctorList
+                .filter((doctor) =>
+                  doctor.name.toLowerCase().includes(searchQuery.toLowerCase())
+                )
+                .map((doctor, index) => (
+                  <li key={index} className="doctor-card" onClick={() => handleDoctorClick(doctor)}>
+                    <img src={doctor.imageUrl} alt={doctor.name} className="doctor-avatar" />
+                    <div className="doctor-info">
+                      <div className="doctor-name">{doctor.name}</div>
+                      <div className="doctor-specialization">{doctor.specialization}</div>
+                    </div>
+                  </li>
+                ))}
+            </ul>
+          </div>
 
-          <ul className="doctor-items">
-            {doctorList
-              .filter((doctor) =>
-                doctor.name.toLowerCase().includes(searchQuery.toLowerCase())
-              )
-              .map((doctor, index) => (
-                <li key={index} className="doctor-card" onClick={() => handleDoctorClick(doctor)}>
-                  <img src={doctor.imageUrl} alt={doctor.name} className="doctor-avatar" />
-                  <div className="doctor-info">
-                    <div className="doctor-name">{doctor.name}</div>
-                    <div className="doctor-specialization">{doctor.specialization}</div>
-                  </div>
-                </li>
-            ))}
-          </ul>
-        </div>
-
-
-          {/* Calendar Section */}
           <div className="parent-calendar calendar">
-  <h2>Calendar</h2>
-  <Calendar
-    onChange={handleDateClick}
-    value={date}
-    tileClassName={tileClassName}
-    calendarType="US"
-  />
-</div>
-
+            <h2>Calendar</h2>
+            <Calendar
+              onChange={handleDateClick}
+              value={date}
+              tileClassName={tileClassName}
+              calendarType="US"
+            />
+          </div>
 
           <div className="par-appointments-list">
             <h2>Appointments</h2>
-
             <div className="par-appointments-header">
               <div className="par-appointment-time">Time</div>
               <div className="par-appointment-date">Date</div>
               <div className="par-appointment-doctor">Doctor</div>
             </div>
-
-            {/* Make this the scrollable part */}
             <div className="par-appointments-body">
-              {appointments.map((appointment, index) => (
-                <div key={index} className="par-appointment-row">
-                  <div className="par-appointment-time">{formatTime(appointment.time)}</div>
-                  <div className="par-appointment-date">
-                    {new Date(appointment.date).toLocaleDateString('en-US', {
-                      year: '2-digit',
-                      month: '2-digit',
-                      day: '2-digit'
-                    })}
-                  </div>
-                  <div className="par-appointment-doctor">{appointment.doctor}</div>
-                </div>
-              ))}
-            </div>
+  {appointments.map((appointment, index) => {
+    const dateObj = new Date(appointment.appointment_date);
+    const formattedDate = dateObj.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+    const formattedTime = dateObj.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+
+    // Find the doctor by doctor_id to get the name
+    const matchedDoctor = doctorList.find(doc => doc.doctor_id === appointment.doctor_id);
+    const doctorName = matchedDoctor ? matchedDoctor.name : `Doctor ID: ${appointment.doctor_id}`;
+
+    return (
+      <div key={index} className="par-appointment-row">
+        <div className="par-appointment-doctor">{doctorName}</div>
+        <div className="par-appointment-details">
+          <div className="par-appointment-time">{formattedTime}</div>
+          <div className="par-appointment-date">{formattedDate}</div>
+          <div className="par-appointment-status">
+            <span className={`status-tag ${appointment.status}`}>{appointment.status}</span>
           </div>
-          
         </div>
       </div>
+    );
+  })}
+</div>
 
-      {/* Appointment Modal */}
+
+          </div>
+
+        </div>
+      </div>
+      
+
       {isAppointmentModalOpen && (
         <div className="appointment-modal">
           <div className="parent-modal-content">
             <span className="par-close-modal" onClick={handleCloseModal}>×</span>
 
-            {/* Step 1: Doctor Info */}
             {!isAppointmentFormStep && selectedDoctor && (
               <div className="doctor-info-modal">
                 <img src={selectedDoctor.imageUrl} alt={selectedDoctor.name} className="doctor-avatar-modal" />
@@ -234,7 +284,6 @@ function ParentSchedule() {
               </div>
             )}
 
-            {/* Step 2: Appointment Form */}
             {isAppointmentFormStep && selectedDoctor && (
               <div className="appointment-form-section">
                 <h3>Make an Appointment with {selectedDoctor.name}</h3>
@@ -277,11 +326,41 @@ function ParentSchedule() {
                   </div>
 
                   <div className="form-actions">
-                    <button type="button" onClick={handleMakeAppointment}>Book Appointment</button>
+                  <button type="button" onClick={handleMakeAppointment}>Book Appointment</button>
+
                   </div>
                 </form>
               </div>
             )}
+            {isAppointmentDetailModalOpen && selectedAppointment && (
+  <div className="appointment-modal">
+    <div className="parent-modal-content">
+      <span className="par-close-modal" onClick={() => setIsAppointmentDetailModalOpen(false)}>×</span>
+
+      <h2>Appointment Details</h2>
+      <p><strong>Date:</strong> {new Date(selectedAppointment.appointment_date).toLocaleDateString()}</p>
+      <p><strong>Time:</strong> {new Date(selectedAppointment.appointment_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
+      <p><strong>Reason:</strong> {selectedAppointment.reason}</p>
+      <p><strong>Status:</strong> <span className={`status-tag ${selectedAppointment.status}`}>{selectedAppointment.status}</span></p>
+
+      {(() => {
+        const matchedDoc = doctorList.find(doc => doc.doctor_id === selectedAppointment.doctor_id);
+        if (matchedDoc) {
+          return (
+            <>
+              <p><strong>Doctor:</strong> {matchedDoc.name}</p>
+              <p><strong>Specialization:</strong> {matchedDoc.specialization}</p>
+              <p><strong>Clinic Address:</strong> {matchedDoc.address}</p>
+              <p><strong>Contact:</strong> {matchedDoc.contact}</p>
+            </>
+          );
+        }
+        return <p><strong>Doctor ID:</strong> {selectedAppointment.doctor_id}</p>;
+      })()}
+    </div>
+  </div>
+)}
+
           </div>
         </div>
       )}
