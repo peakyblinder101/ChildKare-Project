@@ -63,7 +63,6 @@ function ParentLogin({ closeModal }) {
   };
 
   const handleChildSelect = (child) => {
-    alert(`Selected child: ${child.firstname}`);
     localStorage.setItem("selectedChild", JSON.stringify(child));
     closeModal(); // Close modal
     navigate("/parent-dashboard"); // Navigate to dashboard
