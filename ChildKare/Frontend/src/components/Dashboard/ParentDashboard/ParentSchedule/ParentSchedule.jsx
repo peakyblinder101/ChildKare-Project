@@ -70,8 +70,9 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
 
   const handleDoctorClick = (doctor) => {
     setSelectedDoctor(doctor);
-    setIsAppointmentModalOpen(true);
-    setIsAppointmentFormStep(false);
+    setIsAppointmentDetailModalOpen(false); // Ensure the details modal is closed
+    setIsAppointmentModalOpen(true); // Open the doctor appointment modal
+    setIsAppointmentFormStep(false); // Reset to the first step of the form
   };
 
   const handleInputChange = (e) => {
@@ -80,37 +81,36 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
   };
 
   const handleMakeAppointment = async () => {
+    if (!babyDetails || !babyDetails.id) {
+      alert('Please select a child before making an appointment.');
+      return;
+    }
+  
     try {
       const combinedDateTime = new Date(`${newAppointment.date}T${newAppointment.time}`);
-
+  
       const appointmentData = {
         child_id: babyDetails.id,
         doctor_id: selectedDoctor?.doctor_id || 1,
         appointment_date: combinedDateTime.toISOString(),
         reason: newAppointment.reason,
-        status: "pending"
+        status: "pending",
       };
-
+  
       const token = localStorage.getItem('token');
-
+  
       await axios.post('https://8fdsdscs-5000.asse.devtunnels.ms/api/createAppointment', appointmentData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       });
-
-      // setAppointments([...appointments, {
-      //   doctor: selectedDoctor.name,
-      //   date: newAppointment.date,
-      //   time: newAppointment.time,
-      //   reason: newAppointment.reason,
-      // }]);
-
-      // setIsAppointmentModalOpen(false);
-      // setSelectedDoctor(null);
-      // setNewAppointment({ date: '', time: '', reason: '' });
-
+  
+      setAppointments([...appointments, appointmentData]); // Add the new appointment to the list
+      setIsAppointmentModalOpen(false);
+      setSelectedDoctor(null);
+      setNewAppointment({ date: '', time: '', reason: '' });
+      alert('Appointment successfully created!');
     } catch (error) {
       console.error('Error creating appointment:', error);
       alert('Failed to book appointment. Please try again.');
@@ -119,6 +119,7 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
 
   const handleCloseModal = () => {
     setIsAppointmentModalOpen(false);
+    setIsAppointmentDetailModalOpen(false); // Close the details modal as well
     setSelectedDoctor(null);
     setIsAppointmentFormStep(false);
   };
@@ -128,8 +129,13 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
   };
 
   const handleDateClick = (value) => {
+    if (!appointments || appointments.length === 0) {
+      console.warn('No appointments available.');
+      return;
+    }
+  
     const clickedDate = value.toISOString().split('T')[0]; // Format as YYYY-MM-DD
-    const foundAppointment = appointments.find(app => 
+    const foundAppointment = appointments.find((app) =>
       new Date(app.appointment_date).toISOString().split('T')[0] === clickedDate
     );
   
@@ -137,19 +143,17 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
   
     if (foundAppointment) {
       setSelectedAppointment(foundAppointment);
-      setIsAppointmentDetailModalOpen(true);
+      setIsAppointmentModalOpen(false); // Ensure the doctor modal is closed
+      setIsAppointmentDetailModalOpen(true); // Open the appointment details modal
     }
   };
-  
 
   const tileClassName = ({ date, view }) => {
     if (view === 'month') {
-      // Format the calendar date as YYYY-MM-DD
       const calendarDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
         .toISOString()
         .split('T')[0];
   
-      // Check if any appointment matches the calendar date
       const hasAppointment = appointments.some((appointment) => {
         const appointmentDate = new Date(appointment.appointment_date).toISOString().split('T')[0];
         return appointmentDate === calendarDate;
@@ -159,7 +163,7 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
         return 'has-appointment'; // Add a custom class for dates with appointments
       }
     }
-    return '';
+    return ''; // Default return value
   };
 
   // const formatTime = (time24) => {
@@ -333,33 +337,37 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
               </div>
             )}
             {isAppointmentDetailModalOpen && selectedAppointment && (
-  <div className="appointment-modal">
-    <div className="parent-modal-content">
-      <span className="par-close-modal" onClick={() => setIsAppointmentDetailModalOpen(false)}>×</span>
+            <div className="appointment-modal">
+              <div className="parent-modal-content">
+                <span className="par-close-modal" onClick={() => setIsAppointmentDetailModalOpen(false)}>×</span>
 
-      <h2>Appointment Details</h2>
-      <p><strong>Date:</strong> {new Date(selectedAppointment.appointment_date).toLocaleDateString()}</p>
-      <p><strong>Time:</strong> {new Date(selectedAppointment.appointment_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
-      <p><strong>Reason:</strong> {selectedAppointment.reason}</p>
-      <p><strong>Status:</strong> <span className={`status-tag ${selectedAppointment.status}`}>{selectedAppointment.status}</span></p>
+                <h2>Appointment Details</h2>
+                <p><strong>Date:</strong> {new Date(selectedAppointment.appointment_date).toLocaleDateString()}</p>
+                <p><strong>Time:</strong> {new Date(selectedAppointment.appointment_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
+                <p><strong>Reason:</strong> {selectedAppointment.reason}</p>
+                <p><strong>Status:</strong> <span className={`status-tag ${selectedAppointment.status}`}>{selectedAppointment.status}</span></p>
 
-      {(() => {
-        const matchedDoc = doctorList.find(doc => doc.doctor_id === selectedAppointment.doctor_id);
-        if (matchedDoc) {
-          return (
-            <>
-              <p><strong>Doctor:</strong> {matchedDoc.name}</p>
-              <p><strong>Specialization:</strong> {matchedDoc.specialization}</p>
-              <p><strong>Clinic Address:</strong> {matchedDoc.address}</p>
-              <p><strong>Contact:</strong> {matchedDoc.contact}</p>
-            </>
-          );
-        }
-        return <p><strong>Doctor ID:</strong> {selectedAppointment.doctor_id}</p>;
-      })()}
-    </div>
-  </div>
-)}
+                {(() => {
+  if (!doctorList || doctorList.length === 0) {
+    return <p>Doctor information is not available.</p>;
+  }
+
+  const matchedDoc = doctorList.find(doc => doc.doctor_id === selectedAppointment.doctor_id);
+  if (matchedDoc) {
+    return (
+      <>
+        <p><strong>Doctor:</strong> {matchedDoc.name}</p>
+        <p><strong>Specialization:</strong> {matchedDoc.specialization}</p>
+        <p><strong>Clinic Address:</strong> {matchedDoc.address}</p>
+        <p><strong>Contact:</strong> {matchedDoc.contact}</p>
+      </>
+    );
+  }
+  return <p><strong>Doctor ID:</strong> {selectedAppointment.doctor_id}</p>;
+})()}
+              </div>
+            </div>
+          )}
 
           </div>
         </div>
