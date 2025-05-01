@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import './ParentProfile.css';
+
 function ParentProfile() {
-  const [selectedBaby, setSelectedBaby] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const [showAddBabyModal, setShowAddBabyModal] = useState(false);
   const [imageUrl, setImageUrl] = useState(
     'https://img.freepik.com/free-photo/mother-baby-laying-bed_1150-18379.jpg'
@@ -59,16 +58,6 @@ function ParentProfile() {
     fetchParentProfile();
   }, []);
 
-  const handleOpenModal = (baby) => {
-    setSelectedBaby(baby);
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedBaby(null);
-    setShowModal(false);
-  };
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -79,15 +68,6 @@ function ParentProfile() {
       reader.readAsDataURL(file);
     }
   };
-
-  const handleSwitchBaby = () => {
-    if (selectedBaby) {
-      localStorage.setItem('selectedChild', JSON.stringify(selectedBaby));
-    }
-    setShowModal(false); // Close the modal
-    window.location.reload(); // Optional: Refresh the page if needed
-  };
-  
 
   const handleAddBabySubmit = async (e) => {
     e.preventDefault();
@@ -111,11 +91,9 @@ function ParentProfile() {
         body: JSON.stringify(newBaby),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to add baby');
-      }
+      if (!response.ok) throw new Error('Failed to add baby');
 
-      // Reset form fields
+      // Reset form
       setBabyId('');
       setBabyFirstName('');
       setBabyLastName('');
@@ -123,8 +101,6 @@ function ParentProfile() {
       setBabyMonths('');
       setBabyGender('');
       setShowAddBabyModal(false);
-
-      // Refresh profile and baby list
       fetchParentProfile();
     } catch (error) {
       console.error('Error adding baby:', error);
@@ -169,65 +145,69 @@ function ParentProfile() {
             <div className="par-pro-location-section">
               <table className="par-pro-profile-table">
                 <tbody>
-                  <tr>
-                    <th>Location</th>
-                    <td>{parentData.location}</td>
-                  </tr>
+                  <tr><th>Location</th><td>{parentData.location}</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
 
+          {/* Baby Cards ADDED NEW CODE */}
           <div className="par-pro-baby-info-wrapper">
             <div className="par-pro-baby-header">
-              <h3>Baby Information</h3>
+              <h3>Baby's Information</h3>
               <button className="par-pro-add-baby-button" onClick={() => setShowAddBabyModal(true)}>
                 + Add Baby
               </button>
             </div>
             <div className="par-pro-baby-cards">
-              {parentData.babies.map((baby, index) => (
-                <button key={index} className="par-pro-baby-card-button" onClick={() => handleOpenModal(baby)}>
-                  View Baby {index + 1}
-                </button>
-              ))}
+              {parentData.babies.map((baby, index) => {
+                const selectedBaby = JSON.parse(localStorage.getItem("selectedChild") || "{}");
+                const isSelected = baby.idNo === selectedBaby.id;
+
+                return (
+                  <div
+                    key={index}
+                    className={`par-pro-baby-card ${isSelected ? "active-baby-card" : ""}`}
+                  >
+                    <h4>Baby {index + 1}: {baby.firstName} {baby.lastName}</h4>
+                    <table className="par-pro-profile-table">
+                      <tbody>
+                        <tr><th>ID No</th><td>{baby.idNo}</td></tr>
+                        <tr><th>First Name</th><td>{baby.firstName}</td></tr>
+                        <tr><th>Last Name</th><td>{baby.lastName}</td></tr>
+                        <tr><th>Weight</th><td>{baby.weight}</td></tr>
+                        <tr><th>Age</th><td>{baby.age}</td></tr>
+                        <tr><th>Gender</th><td>{baby.gender}</td></tr>
+                      </tbody>
+                    </table>
+                    <div className="par-pro-modal-button-wrapper">
+                      <button
+                        className="par-pro-modal-action-button"
+                        onClick={() => {
+                          const newSelected = {
+                            id: baby.idNo,
+                            first_name: baby.firstName,
+                            last_name: baby.lastName,
+                            gender: baby.gender,
+                            weight: baby.weight,
+                            age: baby.age,
+                          };
+                          localStorage.setItem("selectedChild", JSON.stringify(newSelected));
+                          window.location.reload();
+                        }}
+                        disabled={isSelected}
+                      >
+                        {isSelected ? "Selected" : "Switch"}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </>
       ) : (
         <p>Loading parent profile...</p>
-      )}
-
-      {/* Baby Info Modal */}
-      {showModal && selectedBaby && (
-        <div className="par-pro-modal-overlay">
-          <div className="par-pro-modal-content">
-            <button className="par-pro-close-button" onClick={handleCloseModal}>×</button>
-            <div className="par-pro-modal-grid">
-              <div className="par-pro-modal-left">
-                <table className="par-pro-profile-table">
-                  <tbody>
-                    <tr><th>ID No</th><td>{selectedBaby.id_no}</td></tr>
-                    <tr><th>First Name</th><td>{selectedBaby.first_name}</td></tr>
-                    <tr><th>Last Name</th><td>{selectedBaby.last_name}</td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <div className="par-pro-modal-right">
-                <table className="par-pro-profile-table">
-                  <tbody>
-                    <tr><th>Weight</th><td>{selectedBaby.weight} kg</td></tr>
-                    <tr><th>Age</th><td>{selectedBaby.months} months</td></tr>
-                    <tr><th>Gender</th><td>{selectedBaby.gender}</td></tr>
-                  </tbody>
-                </table>
-                <div className="par-pro-modal-button-wrapper">
-                  <button className="par-pro-modal-action-button" onClick={handleSwitchBaby}>Switch</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       )}
 
       {/* Add Baby Modal */}
