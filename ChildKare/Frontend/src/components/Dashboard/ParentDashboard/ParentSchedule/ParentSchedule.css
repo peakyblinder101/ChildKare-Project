@@ -40,6 +40,7 @@
 .doctors-list {
   max-width: 25%;
   padding-right: 10px; 
+  cursor: pointer;
 }
 
 .doctor-search {
@@ -208,6 +209,15 @@
     flex: 1; 
   }
 
+  .par-appointment-row.clickable {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .par-appointment-row.clickable:hover {
+    background-color: #f0f0f0;
+  }
+  
   .par-appointment-time,
   .par-appointment-date,
   .par-appointment-doctor {
