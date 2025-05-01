@@ -268,110 +268,170 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
       </div>
       
 
-      {isAppointmentModalOpen && (
-        <div className="appointment-modal">
-          <div className="parent-modal-content">
-            <span className="par-close-modal" onClick={handleCloseModal}>×</span>
+      {/* Doctor Appointment Modal */}
+{isAppointmentModalOpen && (
+  <div className="appointment-modal">
+    <div className="parent-modal-content">
+      <span className="par-close-modal" onClick={handleCloseModal}>×</span>
 
-            {!isAppointmentFormStep && selectedDoctor && (
-              <div className="doctor-info-modal">
-                <img src={selectedDoctor.imageUrl} alt={selectedDoctor.name} className="doctor-avatar-modal" />
-                <div className="doctor-details">
-                  <h2>{selectedDoctor.name}</h2>
-                  <p><strong>Specialization:</strong> {selectedDoctor.specialization}</p>
-                  <p><strong>Contact:</strong> {selectedDoctor.contact}</p>
-                  <p><strong>License No.:</strong> {selectedDoctor.license}</p>
-                  <p><strong>Clinic Address:</strong> {selectedDoctor.address}</p>
-                  <p><strong>Description:</strong> {selectedDoctor.description}</p>
-                  <button onClick={handleProceedToAppointmentForm}>Make Appointment</button>
-                </div>
-              </div>
-            )}
-
-            {isAppointmentFormStep && selectedDoctor && (
-              <div className="appointment-form-section">
-                <h3>Make an Appointment with {selectedDoctor.name}</h3>
-                <form className="appointment-form">
-                  <div className="form-group">
-                    <label htmlFor="appointment-date">Date</label>
-                    <input
-                      id="appointment-date"
-                      type="date"
-                      name="date"
-                      value={newAppointment.date}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="appointment-time">Time</label>
-                    <input
-                      id="appointment-time"
-                      type="time"
-                      name="time"
-                      value={newAppointment.time}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="reason">Reason for Checkup</label>
-                    <textarea
-                      id="reason"
-                      name="reason"
-                      placeholder="Briefly describe your reason for the visit"
-                      rows="4"
-                      value={newAppointment.reason}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-
-                  <div className="form-actions">
-                  <button type="button" onClick={handleMakeAppointment}>Book Appointment</button>
-
-                  </div>
-                </form>
-              </div>
-            )}
-            {isAppointmentDetailModalOpen && selectedAppointment && (
-            <div className="appointment-modal">
-              <div className="parent-modal-content">
-                <span className="par-close-modal" onClick={() => setIsAppointmentDetailModalOpen(false)}>×</span>
-
-                <h2>Appointment Details</h2>
-                <p><strong>Date:</strong> {new Date(selectedAppointment.appointment_date).toLocaleDateString()}</p>
-                <p><strong>Time:</strong> {new Date(selectedAppointment.appointment_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
-                <p><strong>Reason:</strong> {selectedAppointment.reason}</p>
-                <p><strong>Status:</strong> <span className={`status-tag ${selectedAppointment.status}`}>{selectedAppointment.status}</span></p>
-
-                {(() => {
-  if (!doctorList || doctorList.length === 0) {
-    return <p>Doctor information is not available.</p>;
-  }
-
-  const matchedDoc = doctorList.find(doc => doc.doctor_id === selectedAppointment.doctor_id);
-  if (matchedDoc) {
-    return (
-      <>
-        <p><strong>Doctor:</strong> {matchedDoc.name}</p>
-        <p><strong>Specialization:</strong> {matchedDoc.specialization}</p>
-        <p><strong>Clinic Address:</strong> {matchedDoc.address}</p>
-        <p><strong>Contact:</strong> {matchedDoc.contact}</p>
-      </>
-    );
-  }
-  return <p><strong>Doctor ID:</strong> {selectedAppointment.doctor_id}</p>;
-})()}
-              </div>
-            </div>
-          )}
-
+      {!isAppointmentFormStep && selectedDoctor && (
+        <div className="doctor-info-modal">
+          <img src={selectedDoctor.imageUrl} alt={selectedDoctor.name} className="doctor-avatar-modal" />
+          <div className="doctor-details">
+            <h2>{selectedDoctor.name}</h2>
+            <p><strong>Specialization:</strong> {selectedDoctor.specialization}</p>
+            <p><strong>Contact:</strong> {selectedDoctor.contact}</p>
+            <p><strong>License No.:</strong> {selectedDoctor.license}</p>
+            <p><strong>Clinic Address:</strong> {selectedDoctor.address}</p>
+            <p><strong>Description:</strong> {selectedDoctor.description}</p>
+            <button onClick={handleProceedToAppointmentForm}>Make Appointment</button>
           </div>
         </div>
       )}
+
+      {isAppointmentFormStep && selectedDoctor && (
+        <div className="appointment-form-section">
+          <h3>Make an Appointment with {selectedDoctor.name}</h3>
+          <form className="appointment-form">
+            <div className="form-group">
+              <label htmlFor="appointment-date">Date</label>
+              <input
+                id="appointment-date"
+                type="date"
+                name="date"
+                value={newAppointment.date}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="appointment-time">Time</label>
+              <input
+                id="appointment-time"
+                type="time"
+                name="time"
+                value={newAppointment.time}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="reason">Reason for Checkup</label>
+              <textarea
+                id="reason"
+                name="reason"
+                placeholder="Briefly describe your reason for the visit"
+                rows="4"
+                value={newAppointment.reason}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+
+            <div className="form-actions">
+              <button type="button" onClick={handleMakeAppointment}>Book Appointment</button>
+            </div>
+          </form>
+        </div>
+      )}
+    </div>
+  </div>
+)}
+
+{/* Appointment Details Modal */}
+{isAppointmentDetailModalOpen && selectedAppointment && (
+  <div className="appointment-modal">
+    <div className="parent-modal-content">
+      <span
+        className="par-close-modal"
+        onClick={() => {
+          setIsAppointmentDetailModalOpen(false);
+          setSelectedAppointment(null);
+        }}
+      >
+        ×
+      </span>
+
+      <div className="appointment-form-section">
+        <h3>Appointment Details</h3>
+        <form className="appointment-form">
+          <div className="form-group">
+            <label>Date</label>
+            <input
+              type="text"
+              value={new Date(selectedAppointment.appointment_date).toLocaleDateString()}
+              readOnly
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Time</label>
+            <input
+              type="text"
+              value={new Date(selectedAppointment.appointment_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
+              readOnly
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Reason for Checkup</label>
+            <textarea
+              value={selectedAppointment.reason}
+              readOnly
+              rows="3"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Status</label>
+            <input
+              type="text"
+              className={`status-tag ${selectedAppointment.status}`}
+              value={selectedAppointment.status}
+              readOnly
+            />
+          </div>
+
+          {(() => {
+            const matchedDoc = doctorList.find(doc => doc.doctor_id === selectedAppointment.doctor_id);
+            if (matchedDoc) {
+              return (
+                <>
+                  <div className="form-group">
+                    <label>Doctor</label>
+                    <input type="text" value={matchedDoc.name} readOnly />
+                  </div>
+                  <div className="form-group">
+                    <label>Specialization</label>
+                    <input type="text" value={matchedDoc.specialization} readOnly />
+                  </div>
+                  <div className="form-group">
+                    <label>Clinic Address</label>
+                    <input type="text" value={matchedDoc.address} readOnly />
+                  </div>
+                  <div className="form-group">
+                    <label>Contact</label>
+                    <input type="text" value={matchedDoc.contact} readOnly />
+                  </div>
+                </>
+              );
+            }
+            return (
+              <div className="form-group">
+                <label>Doctor ID</label>
+                <input type="text" value={selectedAppointment.doctor_id} readOnly />
+              </div>
+            );
+          })()}
+        </form>
+      </div>
+    </div>
+  </div>
+)}
+
+
     </div>
   );
 }
