@@ -55,9 +55,11 @@ function ParentSchedule() {
 
   const handleDoctorClick = (doctor) => {
     setSelectedDoctor(doctor);
+    setNewAppointment({ date: '', time: '', reason: '' });
     setIsAppointmentModalOpen(true);
     setIsAppointmentFormStep(false);
   };
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -172,14 +174,14 @@ function ParentSchedule() {
 
           {/* Calendar Section */}
           <div className="parent-calendar calendar">
-  <h2>Calendar</h2>
-  <Calendar
-    onChange={handleDateClick}
-    value={date}
-    tileClassName={tileClassName}
-    calendarType="US"
-  />
-</div>
+            <h2>Calendar</h2>
+            <Calendar
+              onChange={handleDateClick}
+              value={date}
+              tileClassName={tileClassName}
+              calendarType="US"
+            />
+          </div>
 
 
           <div className="par-appointments-list">
@@ -193,19 +195,34 @@ function ParentSchedule() {
 
             {/* Make this the scrollable part */}
             <div className="par-appointments-body">
-              {appointments.map((appointment, index) => (
-                <div key={index} className="par-appointment-row">
-                  <div className="par-appointment-time">{formatTime(appointment.time)}</div>
-                  <div className="par-appointment-date">
-                    {new Date(appointment.date).toLocaleDateString('en-US', {
-                      year: '2-digit',
-                      month: '2-digit',
-                      day: '2-digit'
-                    })}
-                  </div>
-                  <div className="par-appointment-doctor">{appointment.doctor}</div>
-                </div>
-              ))}
+            {appointments.map((appointment, index) => (
+  <div
+    key={index}
+    className="par-appointment-row clickable"
+    onClick={() => {
+      const matchedDoctor = doctorList.find(doc => doc.name === appointment.doctor);
+      setSelectedDoctor(matchedDoctor);
+      setNewAppointment({
+        date: appointment.date,
+        time: appointment.time,
+        reason: appointment.reason || ''
+      });
+      setIsAppointmentFormStep(true);
+      setIsAppointmentModalOpen(true);
+    }}
+  >
+    <div className="par-appointment-time">{formatTime(appointment.time)}</div>
+    <div className="par-appointment-date">
+      {new Date(appointment.date).toLocaleDateString('en-US', {
+        year: '2-digit',
+        month: '2-digit',
+        day: '2-digit'
+      })}
+    </div>
+    <div className="par-appointment-doctor">{appointment.doctor}</div>
+  </div>
+))}
+
             </div>
           </div>
           
