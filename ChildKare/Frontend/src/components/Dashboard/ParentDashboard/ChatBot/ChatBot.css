@@ -1,3 +1,4 @@
+/* Layout and container */
 .chatbot-page-wrapper {
   margin: 0;
   display: flex;
@@ -5,7 +6,6 @@
   align-items: center;
   width: 100%;
   height: 100vh;
-
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -17,9 +17,6 @@
   height: 90vh;
   background-color: #ffffff;
   padding: 20px;
-
-
-
   display: flex;
   flex-direction: column;
 }
@@ -49,9 +46,10 @@
   height: 10px;
   border-radius: 50%;
   background-color: green;
-  margin-right: 8px; 
+  margin-right: 8px;
 }
 
+/* Chat window */
 .chatbot-window {
   flex: 1;
   margin-top: 60px;
@@ -62,15 +60,33 @@
   overflow-y: auto;
   overflow-x: hidden;
   max-height: calc(100% - 80px);
+  scroll-behavior: smooth;
 }
 
+/* Message container */
 .chatbot-message-container {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
   align-items: flex-start;
+  opacity: 0;
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
 }
 
+/* User message animation */
+.user-message {
+  justify-content: flex-end;
+  animation-name: slideInRight;
+}
+
+/* Bot message animation */
+.bot-message {
+  justify-content: flex-start;
+  animation-name: slideInLeft;
+}
+
+/* Message bubble */
 .chatbot-message {
   max-width: 80%;
   padding: 15px 20px;
@@ -98,6 +114,7 @@
   margin-left: auto;
 }
 
+/* Avatar */
 .chatbot-avatar {
   width: 50px;
   height: 50px;
@@ -106,6 +123,7 @@
   margin-right: 15px;
 }
 
+/* Input area */
 .chatbot-input {
   display: flex;
   gap: 10px;
@@ -134,3 +152,27 @@
 .chatbot-input button:hover {
   background-color: #0056b3;
 }
+
+/* Animations */
+@keyframes slideInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+

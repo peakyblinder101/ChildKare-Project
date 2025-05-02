@@ -1,4 +1,4 @@
-import{ useState } from "react";
+import { useState, useEffect } from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./ChatBot.css";
 
@@ -8,6 +8,14 @@ function ChatBot() {
   ]);
   const [input, setInput] = useState("");
 
+  // ✅ Auto-scroll on new message
+  useEffect(() => {
+    const chatWindow = document.querySelector(".chatbot-window");
+    if (chatWindow) {
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+  }, [messages]);
+
   const handleSend = () => {
     if (input.trim() === "") return;
 
@@ -15,7 +23,7 @@ function ChatBot() {
     setMessages(newMessages);
 
     setTimeout(() => {
-      setMessages(prev => [...prev, { sender: "bot", text: "Got it! 👍" }]);
+      setMessages((prev) => [...prev, { sender: "bot", text: "YES, SADBOY NA SIYA RON SABTA LANG" }]);
     }, 1000);
 
     setInput("");
