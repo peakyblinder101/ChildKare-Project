@@ -17,9 +17,9 @@ function DoctorProfile() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setProfileImage(reader.result); // Set image URL to the state
+        setProfileImage(reader.result);
       };
-      reader.readAsDataURL(file); // Read the image as a data URL
+      reader.readAsDataURL(file);
     }
   };
 
@@ -30,12 +30,15 @@ function DoctorProfile() {
   return (
     <div className="doctor-profile">
       <h2 className="profile-title">Doctor Profile</h2>
-      
+
       {/* Profile Image Section */}
       <div className="profile-image-container">
         <label htmlFor="profile-image-upload" className="profile-image-label">
           <img
-            src={profileImage || "https://thumbs.dreamstime.com/b/profile-anonymous-face-icon-gray-silhouette-person-male-businessman-profile-default-avatar-photo-placeholder-isolated-white-107003824.jpg"}
+            src={
+              profileImage ||
+              "https://thumbs.dreamstime.com/b/profile-anonymous-face-icon-gray-silhouette-person-male-businessman-profile-default-avatar-photo-placeholder-isolated-white-107003824.jpg"
+            }
             alt="Profile"
             className="doc-profile-circle-image"
           />
@@ -92,13 +95,17 @@ function DoctorProfile() {
         </div>
       </div>
 
-      {/* Full Width Clinic Address */}
+      {/* Full Width: Clinic Address and Email */}
       <div className="full-width-table">
         <table className="profile-table">
           <tbody>
             <tr>
               <th>Clinic Address</th>
               <td>{doctorData.clinicAddress}</td>
+            </tr>
+            <tr>
+              <th>Email</th>
+              <td>{doctorData.email}</td>
             </tr>
           </tbody>
         </table>
