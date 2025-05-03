@@ -81,7 +81,9 @@ function ParentChat() {
           <div className="doctor-user-list">
             <h2>Doctor List</h2>
             <ul>
-              {users.map((user) => (
+            {users
+              .filter((user) => user.id !== 4) // Exclude the client from the list
+              .map((user) => (
                 <li
                   key={user.id}
                   onClick={() => setSelectedUser(user.id)}
@@ -93,12 +95,13 @@ function ParentChat() {
                       alt={user.name}
                       className="user-avatar"
                     />
-                    {user.status === 'online' && <div className="status-dot"></div>} {/* Show dot only if user is online */}
+                    {user.status === 'online' && <div className="status-dot"></div>}
                   </div>
-                  {user.name} {/* Display name */}
+                  {user.name}
                 </li>
               ))}
-            </ul>
+          </ul>
+
           </div>
 
           {/* Right Side - Chat */}
