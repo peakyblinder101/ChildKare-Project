@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './DoctorChat.css';
 
 function DoctorChat() {
@@ -24,11 +24,30 @@ function DoctorChat() {
     if (message.trim()) {
       setChatHistory((prev) => ({
         ...prev,
-        [selectedUser]: [...prev[selectedUser], { userId: 0, message }],
+        [selectedUser]: [...prev[selectedUser], { userId: 0, message }], // Add user message
       }));
       setMessage('');
+
+      // Simulate a bot response after a short delay
+      setTimeout(() => {
+        setChatHistory(prev => ({
+          ...prev,
+          [selectedUser]: [
+            ...prev[selectedUser],
+            { userId: 1, message: 'Got it! I’ll help you with that.' }, // Bot message
+          ],
+        }));
+      }, 1000);
     }
   };
+
+  // Scroll to the bottom when new messages are added
+  useEffect(() => {
+    const chatWindow = document.querySelector('.doctor-chat-messages');
+    if (chatWindow) {
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+  }, [chatHistory]);
 
   return (
     <div className="doctor-chat-container">

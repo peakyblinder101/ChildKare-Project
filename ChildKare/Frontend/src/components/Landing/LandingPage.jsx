@@ -1,32 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./LandingPage.css";
 import Modal from "../Modal/Modal/Modal";
 
 const LandingPage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
-  const [formType, setFormType] = useState(""); // State to manage form type (Login/Register)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formType, setFormType] = useState("");
+  const [activeContent, setActiveContent] = useState(1);
 
-  // Function to open the modal with the appropriate form (Login/Register)
+  const [loading, setLoading] = useState(true); // 👶 New loading state
+
+  useEffect(() => {
+    // Simulate loading
+    const timer = setTimeout(() => setLoading(false), 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
   const openModal = (actionType) => {
-    setFormType(actionType); // Set the form type to "Login" or "Register"
-    setIsModalOpen(true); // Open the modal
+    setFormType(actionType);
+    setIsModalOpen(true);
   };
 
-  // Function to close the modal and reset formType state
   const closeModal = () => {
     setIsModalOpen(false);
-    setFormType(""); // Reset the form type when closing the modal
+    setFormType("");
   };
-
-  const [activeContent, setActiveContent] = useState(1);
 
   const handleCardClick = (index) => {
     setActiveContent(index);
   };
 
-
-
-  // Define card data for each card (number and label)
   const cardData = [
     { number: '01', label: 'Welcome' },
     { number: '02', label: 'ChatBot' },
@@ -34,6 +36,18 @@ const LandingPage = () => {
     { number: '04', label: 'Tips' },
   ];
 
+  if (loading) {
+    return (
+      <div className="loading-screen">
+        <img
+          src="/src/components/Landing/LandingImage/babycrawl-unscreen.gif"
+          alt="Loading..."
+          className="crawling-baby"
+        />
+        <p>Loading ChildKare...</p>
+      </div>
+    );
+  }
   return (  
     <div className="content">
 

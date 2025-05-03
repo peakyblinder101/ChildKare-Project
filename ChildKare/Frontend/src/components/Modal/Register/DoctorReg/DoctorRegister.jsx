@@ -7,7 +7,9 @@ function DoctorRegister({ closeModal }) {
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState(""); // New state for email
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState(""); // New state for confirm password
   const [gender, setGender] = useState("");
   const [specialization, setSpecialization] = useState("");
   const [licenseNumber, setLicenseNumber] = useState("");
@@ -16,10 +18,16 @@ function DoctorRegister({ closeModal }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
     const doctorInfo = {
       firstName,
       lastName,
+      email,
       password,
       gender,
       specialization,
@@ -27,13 +35,12 @@ function DoctorRegister({ closeModal }) {
       contactNumber,
       clinicAddress,
     };
-  
+
     localStorage.setItem("doctorData", JSON.stringify(doctorInfo));
-  
+
     navigate("/doctor-dashboard");
   };
   
-
   return (
     <div className="register-container">
       <div className="register-container-title">
@@ -55,6 +62,18 @@ function DoctorRegister({ closeModal }) {
           </div>
 
           <div className="input_box">
+                <div className="box-reg">
+                  <input 
+                    type="email" 
+                    placeholder=" " 
+                    value={email} onChange={(e) => setEmail(e.target.value)} 
+                    required 
+                  />
+                  <span>Email</span>
+                </div>
+            </div>
+
+            <div className="input_box">
             <div className="box-reg">
               <input
                 type="text"
@@ -90,6 +109,19 @@ function DoctorRegister({ closeModal }) {
                 required
               />
               <span>Specialization</span>
+            </div>
+          </div>
+
+          <div className="input_box">
+            <div className="box-reg">
+              <input
+                type="text"
+                placeholder=" "
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+              <span>Confirm Password</span>
             </div>
           </div>
 

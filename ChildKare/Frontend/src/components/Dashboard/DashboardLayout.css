@@ -120,7 +120,7 @@ html, body {
   flex: 1; /* Takes the remaining space */
   min-width: 0; /* Prevents content overflow */
   background-color: #ffffff;
-  padding: 20px;
+  /*padding: 20px;*/
   overflow-y: auto; /* Main content will scroll if content exceeds height */
 }
 
