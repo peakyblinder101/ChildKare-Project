@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './DoctorChat.css';
 
 function DoctorChat() {
   const [selectedUser, setSelectedUser] = useState(1);
   const [message, setMessage] = useState('');
+  const [sending, setSending] = useState(false);
+
   const [chatHistory, setChatHistory] = useState({
     1: [
       { userId: 1, message: 'Hello, Dr. John! My baby seems a bit feverish today.' },
@@ -20,26 +22,47 @@ function DoctorChat() {
     { id: 4, name: 'Megan Lee', avatar: 'https://img.freepik.com/free-photo/mother-baby-laying-bed_1150-18379.jpg', status: 'online' },
   ];
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (message.trim()) {
-      setChatHistory((prev) => ({
-        ...prev,
-        [selectedUser]: [...prev[selectedUser], { userId: 0, message }], // Add user message
-      }));
-      setMessage('');
+      const token = localStorage.getItem('token'); // or wherever you store it
+  
+      if (!token) {
+        alert('You are not authenticated. Please log in again.');
+        return;
+      }
+      setSending(true);
 
-      // Simulate a bot response after a short delay
-      setTimeout(() => {
-        setChatHistory(prev => ({
+      try {
+        const response = await fetch('https://8fdsdscs-5000.asse.devtunnels.ms/api/send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Include token here
+          },
+          body: JSON.stringify({
+            receiver_id: selectedUser,
+            message,
+          }),
+        });
+  
+        if (!response.ok) {
+          throw new Error("Failed to send message");
+        }
+        setSending(false);
+        // Add the sent message to the chat history
+        setChatHistory((prev) => ({
           ...prev,
-          [selectedUser]: [
-            ...prev[selectedUser],
-            { userId: 1, message: 'Got it! I’ll help you with that.' }, // Bot message
-          ],
+          [selectedUser]: [...(prev[selectedUser] || []), { userId: 0, message }],
         }));
-      }, 1000);
+        setMessage('');
+      } catch (error) {
+        console.error("Error sending message:", error);
+        alert("Failed to send message. Please try again.");
+      }
     }
   };
+  
+  
 
   // Scroll to the bottom when new messages are added
   useEffect(() => {
@@ -117,7 +140,10 @@ function DoctorChat() {
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Type a message..."
               />
-              <button onClick={handleSendMessage}>Send</button>
+             <button onClick={handleSendMessage} disabled={sending}>
+  {sending ? "Sending..." : "Send"}
+</button>
+
             </div>
           </div>
         </div>

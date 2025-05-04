@@ -8,8 +8,8 @@ function ParentChat() {
   const [loading, setLoading] = useState(false); // For loading state
 
   const users = [
-    { id: 3, name: 'Dr. Alice Johnson', avatar: 'https://img.freepik.com/free-photo/female-doctor-hospital-with-stethoscope_23-2148827774.jpg?t=st=1744045541~exp=1744049141~hmac=e189b3855db8a8edb4e2e293136c80e76880d6b0c5aa4a9c08fd374361bc076a&w=826', status: 'offline' },
-    { id: 4, name: 'You', avatar: 'https://img.freepik.com/free-photo/mother-baby-laying-bed_1150-18379.jpg?t=st=1744045266~exp=1744048866~hmac=e2967ab7d452a9a45b4ce3ff6270c3c8e8d720c26923a41fd9f5a9dbde2c65d2&w=740', status: 'online' },
+    { id: 3, name: 'Dr. Alice Johnson', avatar: 'https://img.freepik.com/free-photo/female-doctor-hospital-with-stethoscope_23-2148827774.jpg?t=st=1744045541~exp=1744049141~hmac=e189b3855db8a8edb4e2e293136c80e76880d6b0c5aa4a9c08fd374361bc076a&w=826'},
+    { id: 4, name: 'You', avatar: 'https://img.freepik.com/free-photo/mother-baby-laying-bed_1150-18379.jpg?t=st=1744045266~exp=1744048866~hmac=e2967ab7d452a9a45b4ce3ff6270c3c8e8d720c26923a41fd9f5a9dbde2c65d2&w=740' },
   ];
 
   // Fetch chat history when the selected user changes
