@@ -247,7 +247,17 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
     const doctorName = matchedDoctor ? matchedDoctor.name : `Doctor ID: ${appointment.doctor_id}`;
 
     return (
-      <div key={index} className="par-appointment-row">
+        <div
+          key={index}
+          className="par-appointment-row"
+          onClick={() => {
+            setSelectedAppointment(appointment);
+            setIsAppointmentDetailModalOpen(true);
+            setIsAppointmentModalOpen(false);
+          }}
+          style={{ cursor: 'pointer' }} // optional: shows a pointer cursor
+        >
+      
         <div className="par-appointment-doctor">{doctorName}</div>
         <div className="par-appointment-details">
           <div className="par-appointment-time">{formattedTime}</div>
@@ -260,10 +270,7 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
     );
   })}
 </div>
-
-
           </div>
-
         </div>
       </div>
       
@@ -327,6 +334,7 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
                 value={newAppointment.reason}
                 onChange={handleInputChange}
                 required
+                className="par-textarea"  // adjust the height of textarea(reason for checkup)
               />
             </div>
 
@@ -381,6 +389,7 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
               value={selectedAppointment.reason}
               readOnly
               rows="3"
+              className="par-textarea"  // adjust the height of textarea(reason for checkup)
             />
           </div>
 
@@ -425,13 +434,29 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
               </div>
             );
           })()}
+
+<div className="form-actions">
+  <button
+    type="button"
+    className="par-update-button"
+    onClick={() => handleUpdateAppointment(selectedAppointment)}
+  >
+    Update
+  </button>
+  <button
+    type="button"
+    className="par-delete-button"
+    onClick={() => handleDeleteAppointment(selectedAppointment)}
+  >
+    Delete
+  </button>
+</div>
+
         </form>
       </div>
     </div>
   </div>
 )}
-
-
     </div>
   );
 }
