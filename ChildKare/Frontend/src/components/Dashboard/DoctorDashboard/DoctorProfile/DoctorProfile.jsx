@@ -5,11 +5,31 @@ function DoctorProfile() {
   const [doctorData, setDoctorData] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
 
-  useEffect(() => {
-    const data = localStorage.getItem("doctorData");
-    if (data) {
-      setDoctorData(JSON.parse(data));
+  // Fetch doctor profile from the API
+  const fetchDoctorProfile = async () => {
+    try {
+      const token = localStorage.getItem("token"); // Retrieve token from localStorage
+      const response = await fetch("https://8fdsdscs-5000.asse.devtunnels.ms/api/getDoctorById", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include the token in the request headers
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch doctor profile");
+      }
+
+      const data = await response.json();
+      setDoctorData(data); // Set the fetched doctor data
+    } catch (error) {
+      console.error("Error fetching doctor profile:", error);
     }
+  };
+
+  useEffect(() => {
+    fetchDoctorProfile(); // Fetch doctor profile on component mount
   }, []);
 
   const handleImageChange = (e) => {
@@ -24,7 +44,7 @@ function DoctorProfile() {
   };
 
   if (!doctorData) {
-    return <div className="doctor-profile">No doctor data found.</div>;
+    return <div className="doctor-profile">Loading doctor profile...</div>;
   }
 
   return (
@@ -60,15 +80,15 @@ function DoctorProfile() {
             <tbody>
               <tr>
                 <th>First Name</th>
-                <td>{doctorData.firstName}</td>
+                <td>{doctorData.first_name}</td>
               </tr>
               <tr>
                 <th>Last Name</th>
-                <td>{doctorData.lastName}</td>
+                <td>{doctorData.last_name}</td>
               </tr>
               <tr>
                 <th>Gender</th>
-                <td>{doctorData.gender}</td>
+                <td>{doctorData.gender || "N/A"}</td>
               </tr>
             </tbody>
           </table>
@@ -84,11 +104,11 @@ function DoctorProfile() {
               </tr>
               <tr>
                 <th>License Number</th>
-                <td>{doctorData.licenseNumber}</td>
+                <td>{doctorData.license_number}</td>
               </tr>
               <tr>
                 <th>Contact Number</th>
-                <td>{doctorData.contactNumber}</td>
+                <td>{doctorData.contact_number}</td>
               </tr>
             </tbody>
           </table>
@@ -101,11 +121,11 @@ function DoctorProfile() {
           <tbody>
             <tr>
               <th>Clinic Address</th>
-              <td>{doctorData.clinicAddress}</td>
+              <td>{doctorData.clinic_address}</td>
             </tr>
             <tr>
               <th>Email</th>
-              <td>{doctorData.email}</td>
+              <td>{doctorData.email || "N/A"}</td>
             </tr>
           </tbody>
         </table>

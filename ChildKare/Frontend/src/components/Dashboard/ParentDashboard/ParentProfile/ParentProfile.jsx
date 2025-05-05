@@ -36,7 +36,7 @@ function ParentProfile() {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-      });
+      }); 
 
       const babies = await babiesResponse.json();
 

@@ -5,16 +5,11 @@ import './DoctorHome.css';
 function DoctorHome() {
   const [date, setDate] = useState(new Date());
   const [appointments, setAppointments] = useState([
-    { time: '9:00 AM', date: '2025-04-18', status: 'Pending', parentName: 'John Doe', idNo: '12345', reason: 'Routine Checkup' },
-    { time: '10:30 AM', date: '2025-04-19', status: 'Accepted', parentName: 'Jane Smith', idNo: '23456', reason: 'Vaccination' },
-    { time: '1:00 PM', date: '2025-04-20', status: 'Pending', parentName: 'Alice Green', idNo: '34567', reason: 'General Checkup' },
-    { time: '2:00 PM', date: '2025-04-21', status: 'Accepted', parentName: 'Bob Brown', idNo: '45678', reason: 'Routine Checkup' },
-    { time: '3:30 PM', date: '2025-04-22', status: 'Pending', parentName: 'Charlie Blue', idNo: '56789', reason: 'Consultation' },
-    { time: '9:30 AM', date: '2025-04-23', status: 'Pending', parentName: 'Diana White', idNo: '67890', reason: 'Checkup' },
-    { time: '11:00 AM', date: '2025-04-24', status: 'Accepted', parentName: 'Eva Black', idNo: '78901', reason: 'Vaccination' },
-    { time: '12:00 PM', date: '2025-04-25', status: 'Pending', parentName: 'Frank Grey', idNo: '89012', reason: 'General Checkup' },
-    { time: '4:00 PM', date: '2025-04-26', status: 'Accepted', parentName: 'Grace Pink', idNo: '90123', reason: 'Routine Checkup' },
-    { time: '10:00 AM', date: '2025-04-27', status: 'Pending', parentName: 'Hannah Red', idNo: '01234', reason: 'Consultation' },
+    { time: '9:00 AM', date: '2025-04-18', status: 'pending', parentName: 'John Doe', idNo: '12345', reason: 'Routine Checkup' },
+    { time: '10:30 AM', date: '2025-04-19', status: 'accepted', parentName: 'Jane Smith', idNo: '23456', reason: 'Vaccination' },
+    { time: '1:00 PM', date: '2025-04-20', status: 'pending', parentName: 'Alice Green', idNo: '34567', reason: 'General Checkup' },
+    { time: '2:00 PM', date: '2025-04-21', status: 'accepted', parentName: 'Bob Brown', idNo: '45678', reason: 'Routine Checkup' },
+    { time: '3:30 PM', date: '2025-04-22', status: 'pending', parentName: 'Charlie Blue', idNo: '56789', reason: 'Consultation' },
   ]);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -35,8 +30,8 @@ function DoctorHome() {
   };
 
   const acceptAppointment = (appointment) => {
-    const updatedAppointments = appointments.map(app =>
-      app.idNo === appointment.idNo ? { ...app, status: 'Accepted' } : app
+    const updatedAppointments = appointments.map((app) =>
+      app.idNo === appointment.idNo ? { ...app, status: 'accepted' } : app
     );
     setAppointments(updatedAppointments);
     setModalVisible(false);
@@ -44,42 +39,36 @@ function DoctorHome() {
   };
 
   const cancelAppointment = (appointment) => {
-    const updatedAppointments = appointments.filter(app => app.idNo !== appointment.idNo);
+    const updatedAppointments = appointments.filter((app) => app.idNo !== appointment.idNo);
     setAppointments(updatedAppointments);
     setModalVisible(false);
     setSelectedAppointment(null);
   };
 
   const markAsDone = (appointment) => {
-    const updatedAppointments = appointments.filter(app => app.idNo !== appointment.idNo);
+    const updatedAppointments = appointments.filter((app) => app.idNo !== appointment.idNo);
     setAppointments(updatedAppointments);
     setModalVisible(false);
     setSelectedAppointment(null);
   };
 
   const tileClassName = ({ date, view }) => {
-    const today = new Date();
     const dateStr = date.toLocaleDateString('en-CA');
-    const hasAppointment = appointments.some(app => app.date === dateStr);
-    const isAccepted = appointments.some(app => app.date === dateStr && app.status === 'Accepted');
-    const isPast = date < new Date(today.setHours(0, 0, 0, 0));
-    const isSunday = date.getDay() === 0;
-
+  
     if (view === 'month') {
-      return [
-        hasAppointment ? 'has-appointment' : '',
-        isAccepted ? 'accepted-date' : '',
-        isPast ? 'past-date' : '',
-        isSunday ? 'sunday-date' : ''
-      ].join(' ');
+      const hasAcceptedAppointment = appointments.some(
+        (app) => app.date === dateStr && app.status === 'accepted'
+      );
+  
+      return hasAcceptedAppointment ? 'accepted-date' : '';
     }
-
+  
     return '';
   };
-
+  
   const handleCalendarDayClick = (date) => {
     const dateStr = date.toLocaleDateString('en-CA');
-    const acceptedApp = appointments.filter(app => app.date === dateStr && app.status === 'Accepted');
+    const acceptedApp = appointments.filter((app) => app.date === dateStr && app.status === 'accepted');
     if (acceptedApp.length > 0) {
       setSelectedAppointment(acceptedApp[0]);
       setModalVisible(true);
@@ -116,7 +105,7 @@ function DoctorHome() {
               <h3 className="group-title">Pending</h3>
               <ul>
                 {appointments
-                  .filter(app => app.status === 'Pending')
+                  .filter((app) => app.status === 'pending')
                   .map((appointment, index) => (
                     <li
                       key={`pending-${index}`}
@@ -128,7 +117,7 @@ function DoctorHome() {
                         {new Date(appointment.date).toLocaleDateString('en-US', {
                           year: '2-digit',
                           month: '2-digit',
-                          day: '2-digit'
+                          day: '2-digit',
                         })}
                       </span>
                       <span className={`status ${appointment.status.toLowerCase()}`}>
@@ -144,7 +133,7 @@ function DoctorHome() {
               <h3 className="group-title">Accepted</h3>
               <ul>
                 {appointments
-                  .filter(app => app.status === 'Accepted')
+                  .filter((app) => app.status === 'accepted')
                   .map((appointment, index) => (
                     <li
                       key={`accepted-${index}`}
@@ -159,7 +148,7 @@ function DoctorHome() {
                         {new Date(appointment.date).toLocaleDateString('en-US', {
                           year: '2-digit',
                           month: '2-digit',
-                          day: '2-digit'
+                          day: '2-digit',
                         })}
                       </span>
                       <span className={`status ${appointment.status.toLowerCase()}`}>
@@ -177,7 +166,9 @@ function DoctorHome() {
       {modalVisible && selectedAppointment && (
         <div className="modal-doctor-app-sched">
           <div className="doctor-modal-content">
-            <span className="doc-close-modal" onClick={closeModal}>×</span>
+            <span className="doc-close-modal" onClick={closeModal}>
+              ×
+            </span>
             <h3>Appointment Details</h3>
             <table className="modal-table">
               <tbody>
@@ -204,18 +195,18 @@ function DoctorHome() {
               </tbody>
             </table>
 
-            {selectedAppointment.status === 'Pending' && (
+            {selectedAppointment.status === 'pending' && (
               <div className="modal-actions">
                 <button className="accept-btn" onClick={() => acceptAppointment(selectedAppointment)}>
                   Accept
                 </button>
                 <button className="cancel-btn" onClick={() => cancelAppointment(selectedAppointment)}>
-                  Cancel
+                  Reject
                 </button>
               </div>
             )}
 
-            {selectedAppointment.status === 'Accepted' && (
+            {selectedAppointment.status === 'accepted' && (
               <div className="modal-actions done-section">
                 <button className="done-btn" onClick={() => markAsDone(selectedAppointment)}>
                   Done

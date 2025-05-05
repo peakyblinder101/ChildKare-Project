@@ -337,4 +337,11 @@
   .done-btn:hover {
     background-color: #004d88;
   }
-  
+  /* Style for accepted dates in the calendar */
+/* Highlight accepted appointment dates in green */
+.accepted-date {
+  background-color: #c8f7c5 !important;
+  border-radius: 50%;
+  color: #2e7d32;
+  font-weight: bold;
+}

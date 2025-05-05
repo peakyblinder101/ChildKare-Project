@@ -23,12 +23,12 @@ function ParentSchedule() {
 const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState(false);
 
 
-  useEffect(() => {
-    const savedChild = localStorage.getItem("selectedChild");
-    if (savedChild) {
-      setBabyDetails(JSON.parse(savedChild));
-    }
-  }, []);
+  // useEffect(() => {
+  //   const savedChild = localStorage.getItem("selectedChild");
+  //   if (savedChild) {
+  //     setBabyDetails(JSON.parse(savedChild));
+  //   }
+  // }, []);
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -66,6 +66,44 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
     };
     fetchAppointments();
   }, []);
+  const handleUpdateAppointment = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.put(
+        `https://8fdsdscs-5000.asse.devtunnels.ms/api/updateAppointment/${selectedAppointment.id}`,
+        {
+          appointment_date: selectedAppointment.appointment_date,
+          reason: selectedAppointment.reason,
+          status: selectedAppointment.status,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+  
+      if (response.status === 200) {
+        // Update the local state with the updated appointment
+        setAppointments((prevAppointments) =>
+          prevAppointments.map((app) =>
+            app.id === selectedAppointment.id ? { ...app, ...selectedAppointment } : app
+          )
+        );
+        alert('Appointment successfully updated!');
+        setIsEditing(false); // Exit editing mode
+      } else {
+        alert('Failed to update the appointment. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error updating appointment:', error);
+      alert('An error occurred while updating the appointment.');
+    }
+  };
+
+
+  
 
   const handleDoctorClick = (doctor) => {
     setSelectedDoctor(doctor);
@@ -79,6 +117,9 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
 
   const handleDeleteAppointment = async (appointment) => {
     try {
+      console.log('Deleting appointment:', appointment.id);
+      console.log('Deleting appointment:', selectedAppointment.reason);
+      console.log('Deleting appointment:', selectedAppointment);
       const token = localStorage.getItem('token');
       const response = await axios.delete(
         `https://8fdsdscs-5000.asse.devtunnels.ms/api/deleteAppointment/${appointment.id}`,
@@ -88,16 +129,14 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
           },
         }
       );
-  
+      console.log('Delete response:', response);
       if (response.status === 200) {
         // Remove the deleted appointment from the local state
         setAppointments(appointments.filter((app) => app.id !== appointment.id));
         alert('Appointment successfully deleted!');
         setIsAppointmentDetailModalOpen(false);
         setSelectedAppointment(null);
-      } else {
-        alert('Failed to delete the appointment. Please try again.');
-      }
+      } 
     } catch (error) {
       console.error('Error deleting appointment:', error);
       alert('An error occurred while deleting the appointment.');
@@ -108,6 +147,7 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
     const { name, value } = e.target;
     setNewAppointment({ ...newAppointment, [name]: value });
   };
+  
 
   const handleMakeAppointment = async () => {
 
@@ -160,21 +200,23 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
   };
 
   const handleDateClick = (value) => {
-    if (!appointments || appointments.length === 0) {
-      console.warn('No appointments available.');
-      return;
-    }
+
   
     const clickedDate = value.toLocaleDateString('en-CA'); // Use local time
-  
-    const foundAppointment = appointments.find((app) =>
-      new Date(app.appointment_date).toLocaleDateString('en-CA') === clickedDate
-    );
+    console.log('Clicked Date:', clickedDate);
+    const foundAppointment = appointments.find((app) => {
+      const appointmentDate = new Date(app.appointment_date).toLocaleDateString('en-CA');
+      console.log('Appointment Date:', appointmentDate);
+      return appointmentDate;
+    });
   
     setDate(value); // Highlight the selected date
-  
+    console.log(appointments);
+    
     if (foundAppointment) {
       setSelectedAppointment(foundAppointment);
+      console.log('Found Appointment:', foundAppointment);  
+      console.log('Selected Appointment ID:', foundAppointment.id);
       setIsAppointmentModalOpen(false); // Ensure the doctor modal is closed
       setIsAppointmentDetailModalOpen(true); // Open the appointment details modal
     }
@@ -183,12 +225,10 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
 
   const tileClassName = ({ date, view }) => {
     if (view === 'month') {
-      const calendarDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
-        .toISOString()
-        .split('T')[0];
+      const calendarDate = date.toLocaleDateString('en-CA'); // Use local time zone
   
       const hasAppointment = appointments.some((appointment) => {
-        const appointmentDate = new Date(appointment.appointment_date).toISOString().split('T')[0];
+        const appointmentDate = new Date(appointment.appointment_date).toLocaleDateString('en-CA'); // Use local time zone
         return appointmentDate === calendarDate;
       });
   
@@ -198,7 +238,6 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
     }
     return ''; // Default return value
   };
-
   const [isEditing, setIsEditing] = useState(false);
 
 
@@ -253,49 +292,49 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
             </div>
             <div className="par-appointments-body">
             {appointments.map((appointment, index) => {
-  const dateObj = new Date(appointment.appointment_date);
+              const dateObj = new Date(appointment.appointment_date);
 
-  const formattedDate = dateObj.toLocaleDateString('en-PH', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  });
+              const formattedDate = dateObj.toLocaleDateString('en-PH', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+              });
 
-  const formattedTime = dateObj.toLocaleTimeString('en-PH', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true
-  });
+              const formattedTime = dateObj.toLocaleTimeString('en-PH', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+              });
 
 
-    // Find the doctor by doctor_id to get the name
-    const matchedDoctor = doctorList.find(doc => doc.doctor_id === appointment.doctor_id);
-    const doctorName = matchedDoctor ? matchedDoctor.name : `Doctor ID: ${appointment.doctor_id}`;
+                // Find the doctor by doctor_id to get the name
+                const matchedDoctor = doctorList.find(doc => doc.doctor_id === appointment.doctor_id);
+                const doctorName = matchedDoctor ? matchedDoctor.name : `Doctor ID: ${appointment.doctor_id}`;
 
-    return (
-        <div
-          key={index}
-          className="par-appointment-row"
-          onClick={() => {
-            setSelectedAppointment(appointment);
-            setIsAppointmentDetailModalOpen(true);
-            setIsAppointmentModalOpen(false);
-          }}
-          style={{ cursor: 'pointer' }} // optional: shows a pointer cursor
-        >
-      
-        <div className="par-appointment-doctor">{doctorName}</div>
-        <div className="par-appointment-details">
-          <div className="par-appointment-time">{formattedTime}</div>
-          <div className="par-appointment-date">{formattedDate}</div>
-          <div className="par-appointment-status">
-            <span className={`status-tag ${appointment.status}`}>{appointment.status}</span>
-          </div>
-        </div>
-      </div>
-    );
-  })}
-</div>
+                return (
+                    <div
+                      key={index}
+                      className="par-appointment-row"
+                      onClick={() => {
+                        setSelectedAppointment(appointment);
+                        setIsAppointmentDetailModalOpen(true);
+                        setIsAppointmentModalOpen(false);
+                      }}
+                      style={{ cursor: 'pointer' }} // optional: shows a pointer cursor
+                    >
+                  
+                    <div className="par-appointment-doctor">{doctorName}</div>
+                    <div className="par-appointment-details">
+                      <div className="par-appointment-time">{formattedTime}</div>
+                      <div className="par-appointment-date">{formattedDate}</div>
+                      <div className="par-appointment-status">
+                        <span className={`status-tag ${appointment.status}`}>{appointment.status}</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
@@ -382,7 +421,8 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
         className="par-close-modal"
         onClick={() => {
           setIsAppointmentDetailModalOpen(false);
-          setSelectedAppointment(null);
+          setSelectedAppointment(selectedAppointment.id);
+          console.log(selectedAppointment.id);
           setIsEditing(false); // Reset to "Update" state when closing the modal
         }}
       >
@@ -399,25 +439,28 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
               value={new Date(selectedAppointment.appointment_date).toLocaleDateString('en-CA')}
               readOnly={!isEditing}
               onChange={(e) => setSelectedAppointment({
-                ...selectedAppointment,
+                ...selectedAppointment, id: selectedAppointment.reason,
                 appointment_date: e.target.value
               })}
             />
           </div>
 
           <div className="form-group">
-            <label>Time</label>
-            <input
-              type="time"
-              value={new Date(selectedAppointment.appointment_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
-              readOnly={!isEditing}
-              onChange={(e) => setSelectedAppointment({
+          <label>Time</label>
+          <input
+            type="time"
+            value={new Date(selectedAppointment.appointment_date)
+              .toISOString()
+              .substring(11, 16)} // Extracts the time in HH:mm format
+            readOnly={!isEditing}
+            onChange={(e) =>
+              setSelectedAppointment({
                 ...selectedAppointment,
-                appointment_time: e.target.value
-              })}
-            />
-          </div>
-
+                appointment_date: `${selectedAppointment.appointment_date.substring(0, 10)}T${e.target.value}`,
+              })
+            }
+          />
+        </div>
           <div className="form-group">
             <label>Reason for Checkup</label>
             <textarea
@@ -474,26 +517,31 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
             );
           })()}
 
-          <div className="form-actions">
-            <button
-              type="button"
-              className="par-update-button"
-              onClick={() => {
-                if (isEditing) {
-                  // You can implement save logic here if needed
-                }
-                setIsEditing(!isEditing); // Toggle between edit and view modes
-              }}
-            >
-              {isEditing ? 'Save' : 'Update'}
-            </button>
-            <button
-              type="button"
-              className="par-delete-button"
-              onClick={() => handleDeleteAppointment(selectedAppointment)}
-            >
-              Delete
-            </button>
+<div className="form-actions">
+            {/* Conditionally render buttons if the status is not 'approved' */}
+            {selectedAppointment.status !== 'approved' && (
+              <>
+                <button
+                  type="button"
+                  className="par-update-button"
+                  onClick={() => {
+                    if (isEditing) {
+                      handleUpdateAppointment();
+                    }
+                    setIsEditing(!isEditing); // Toggle between edit and view modes
+                  }}
+                >
+                  {isEditing ? 'Save' : 'Update'}
+                </button>
+                <button
+                  type="button"
+                  className="par-delete-button"
+                  onClick={() => handleDeleteAppointment(selectedAppointment)}
+                >
+                  Delete
+                </button>
+              </>
+            )}
           </div>
 
         </form>

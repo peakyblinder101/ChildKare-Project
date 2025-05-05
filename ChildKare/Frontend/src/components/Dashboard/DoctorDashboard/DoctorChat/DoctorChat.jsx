@@ -2,148 +2,162 @@ import { useState, useEffect } from 'react';
 import './DoctorChat.css';
 
 function DoctorChat() {
-  const [selectedUser, setSelectedUser] = useState(1);
+  const currentUserId = 3; // Doctor ID
+  const [selectedUser, setSelectedUser] = useState(null); // Selected parent ID
   const [message, setMessage] = useState('');
-  const [sending, setSending] = useState(false);
+  const [chatHistory, setChatHistory] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [parents, setParents] = useState([]); // Store parent list
+  const [parentName, setParentName] = useState(''); // Store selected parent's name
 
-  const [chatHistory, setChatHistory] = useState({
-    1: [
-      { userId: 1, message: 'Hello, Dr. John! My baby seems a bit feverish today.' },
-      { userId: 0, message: 'Hi, how should I care for him? He’s feeling warm.' },
-      { userId: 1, message: 'I suggest you monitor his temperature. Try giving him some fever medicine.' },
-      { userId: 0, message: 'Thank you! I’ll do that and make sure to keep him hydrated.' },
-    ],
-  });
+  // Fetch chat history for the selected parent
+  const fetchChatHistory = async (userId) => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`https://8fdsdscs-5000.asse.devtunnels.ms/api/history/${userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      setChatHistory(data);
+    } catch (error) {
+      console.error('Error fetching chat history:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const users = [
-    { id: 1, name: 'Emily Johnson', avatar: 'https://img.freepik.com/free-photo/mother-baby-laying-bed_1150-18379.jpg', status: 'online' },
-    { id: 2, name: 'Laura Smith', avatar: 'https://img.freepik.com/free-photo/mother-baby-laying-bed_1150-18379.jpg', status: 'offline' },
-    { id: 3, name: 'Sophia Brown', avatar: 'https://img.freepik.com/free-photo/mother-baby-laying-bed_1150-18379.jpg', status: 'offline' },
-    { id: 4, name: 'Megan Lee', avatar: 'https://img.freepik.com/free-photo/mother-baby-laying-bed_1150-18379.jpg', status: 'online' },
-  ];
+  // Fetch parent list
+  const fetchParentList = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('https://8fdsdscs-5000.asse.devtunnels.ms/api/conversationsForDoctors', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      setParents(data); // Store the fetched parents
+    } catch (error) {
+      console.error('Error fetching parent list:', error);
+    }
+  };
 
+  // Send a message
   const handleSendMessage = async () => {
     if (message.trim()) {
-      const token = localStorage.getItem('token'); // or wherever you store it
-  
-      if (!token) {
-        alert('You are not authenticated. Please log in again.');
-        return;
-      }
-      setSending(true);
+      const newMessage = {
+        sender_id: currentUserId,
+        receiver_id: selectedUser,
+        message,
+        created_at: new Date().toISOString(),
+      };
+
+      // Append locally
+      setChatHistory((prev) => [...prev, newMessage]);
 
       try {
+        const token = localStorage.getItem('token');
         const response = await fetch('https://8fdsdscs-5000.asse.devtunnels.ms/api/send', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`, // Include token here
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             receiver_id: selectedUser,
             message,
           }),
         });
-  
-        if (!response.ok) {
-          throw new Error("Failed to send message");
-        }
-        setSending(false);
-        // Add the sent message to the chat history
-        setChatHistory((prev) => ({
-          ...prev,
-          [selectedUser]: [...(prev[selectedUser] || []), { userId: 0, message }],
-        }));
-        setMessage('');
+
+        if (!response.ok) throw new Error('Failed to send message');
       } catch (error) {
-        console.error("Error sending message:", error);
-        alert("Failed to send message. Please try again.");
+        console.error('Error sending message:', error);
       }
+
+      setMessage('');
     }
   };
-  
-  
 
-  // Scroll to the bottom when new messages are added
+  // Handle parent selection
+  const handleUserClick = (userId, first_name, last_name) => {
+    setSelectedUser(userId);
+    console.log(`Selected user ID: ${userId}`); // Log the selected parent ID
+    setParentName(`${first_name} ${last_name}`); // Set the selected parent's name
+    setChatHistory([]); // Clear previous chat history when switching users
+  };
+
+  // Fetch parent list on component mount
   useEffect(() => {
-    const chatWindow = document.querySelector('.doctor-chat-messages');
-    if (chatWindow) {
-      chatWindow.scrollTop = chatWindow.scrollHeight;
+    fetchParentList();
+  }, []);
+
+  // Fetch chat history when a parent is selected
+  useEffect(() => {
+    if (selectedUser) {
+      fetchChatHistory(selectedUser);
     }
-  }, [chatHistory]);
+  }, [selectedUser]);
 
   return (
     <div className="doctor-chat-container">
       <div className="doctor-chat">
-        <div className="doctor-chat-wrapper">
+        <div className="chat-container">
+          {/* Left Side - Parent List */}
           <div className="parent-user-list">
-            <h2>Parent List</h2>
+            <h2>Parents</h2>
             <ul>
-              {users.map((user) => (
+              {parents.map((parent) => (
                 <li
-                  key={user.id}
-                  onClick={() => setSelectedUser(user.id)}
-                  className={selectedUser === user.id ? 'doctor-chat-selected' : ''}
+                  key={parent.id}
+                  onClick={() => handleUserClick(parent.user_id, parent.first_name, parent.last_name)}
+                  className={selectedUser === parent.id ? 'selected' : ''}
                 >
-                  <div className="doctor-chat-avatar-container">
-                    <img src={user.avatar} alt={user.name} className="doctor-chat-avatar" />
-                    {user.status === 'online' && <div className="doctor-chat-status-dot"></div>}
-                  </div>
-                  {user.name}
+                  <span className="user-avatar-placeholder">{parent.first_name} {parent.last_name}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="doctor-chat-window">
-            <h2>
-              <img
-                src={users.find((u) => u.id === selectedUser)?.avatar}
-                alt={users.find((u) => u.id === selectedUser)?.name}
-                className="doctor-chat-avatar"
-              />
-              Chat with {users.find((u) => u.id === selectedUser)?.name}
-            </h2>
-            <div className="doctor-chat-messages">
-              {chatHistory[selectedUser]?.map((msg, index) => {
-                const user =
-                  msg.userId === 0
-                    ? {
-                        name: 'You',
-                        avatar: 'https://img.freepik.com/free-photo/bearded-doctor-glasses_23-2147896187.jpg',
-                      }
-                    : users.find((u) => u.id === msg.userId);
-                return (
+          {/* Right Side - Chat Window */}
+          <div className="chat-window">
+            <h2>Chat with {parentName}</h2>
+            <div className="messages">
+              {loading ? (
+                <p>Loading...</p>
+              ) : (
+                chatHistory.map((msg, index) => (
                   <div
                     key={index}
-                    className={`doctor-chat-message ${
-                      msg.userId === 0 ? 'doctor-chat-message-sender' : 'doctor-chat-message-receiver'
-                    }`}
+                    className={`message ${msg.sender_id === currentUserId ? 'message-sender' : 'message-receiver'}`}
                   >
-                    <div className="doctor-chat-message-header">
-                      <img src={user.avatar} alt={user.name} className="doctor-chat-avatar-small" />
-                      <span className="doctor-chat-user-name">
-                        {msg.userId === 0 ? 'You' : user.name}
+                    <div className="message-header">
+                      <span className="user-name">
+                        {msg.sender_id === currentUserId ? 'You' : msg.sender_id}
                       </span>
                     </div>
-                    <div className="doctor-chat-message-text">
+                    <div className="message-text">
                       <p>{msg.message}</p>
                     </div>
                   </div>
-                );
-              })}
+                ))
+              )}
             </div>
-            <div className="doctor-chat-input-section">
+
+            <div className="input-section">
               <input
                 type="text"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Type a message..."
               />
-             <button onClick={handleSendMessage} disabled={sending}>
-  {sending ? "Sending..." : "Send"}
-</button>
-
+              <button onClick={handleSendMessage}>Send</button>
             </div>
           </div>
         </div>
