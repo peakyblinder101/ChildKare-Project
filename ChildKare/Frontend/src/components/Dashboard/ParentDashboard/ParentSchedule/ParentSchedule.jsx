@@ -18,7 +18,6 @@ function ParentSchedule() {
   const [searchQuery, setSearchQuery] = useState('');
   const [doctorList, setDoctorList] = useState([]);
   const [doctorId, setDoctorId] = useState(null);
-  const [babyDetails, setBabyDetails] = useState(null);
 
   const [selectedAppointment, setSelectedAppointment] = useState(null);
 const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState(false);
@@ -76,6 +75,33 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
     setIsAppointmentDetailModalOpen(false); // Ensure the details modal is closed
     setIsAppointmentModalOpen(true); // Open the doctor appointment modal
     setIsAppointmentFormStep(false); // Reset to the first step of the form
+  };
+
+  const handleDeleteAppointment = async (appointment) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.delete(
+        `https://8fdsdscs-5000.asse.devtunnels.ms/api/deleteAppointment/${appointment.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      if (response.status === 200) {
+        // Remove the deleted appointment from the local state
+        setAppointments(appointments.filter((app) => app.id !== appointment.id));
+        alert('Appointment successfully deleted!');
+        setIsAppointmentDetailModalOpen(false);
+        setSelectedAppointment(null);
+      } else {
+        alert('Failed to delete the appointment. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error deleting appointment:', error);
+      alert('An error occurred while deleting the appointment.');
+    }
   };
 
   const handleInputChange = (e) => {
