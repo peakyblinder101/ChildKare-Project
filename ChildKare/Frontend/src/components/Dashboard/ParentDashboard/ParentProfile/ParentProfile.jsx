@@ -12,11 +12,12 @@ function ParentProfile() {
   const [babyFirstName, setBabyFirstName] = useState('');
   const [babyLastName, setBabyLastName] = useState('');
   const [babyWeight, setBabyWeight] = useState('');
-  const [babyMonths, setBabyMonths] = useState('');
+  const [babyBirthdate, setBabyBirthdate] = useState('');
   const [babyGender, setBabyGender] = useState('');
 
   const token = localStorage.getItem('token');
   const [parentData, setParentData] = useState(null);
+  const [conversations, setConversations] = useState([]);
 
   const fetchParentProfile = async () => {
     try {
@@ -49,8 +50,21 @@ function ParentProfile() {
         location: data.location,
         babies: babies || [],
       });
+
+      // Fetch conversation history (assuming there's an endpoint for this)
+      const chatHistoryResponse = await fetch(`https://8fdsdscs-5000.asse.devtunnels.ms/api/parentProfile/${data.id}/chats`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!chatHistoryResponse.ok) throw new Error('Failed to fetch chat history');
+      const chatHistory = await chatHistoryResponse.json();
+      setConversations(chatHistory);
+
     } catch (error) {
-      console.error('Error fetching parent profile or babies:', error);
+      console.error('Error fetching parent profile or babies or conversations:', error);
     }
   };
 
@@ -77,7 +91,7 @@ function ParentProfile() {
       first_name: babyFirstName,
       last_name: babyLastName,
       weight: babyWeight,
-      months: babyMonths,
+      birthdate: babyBirthdate,
       gender: babyGender,
     };
 
@@ -98,13 +112,32 @@ function ParentProfile() {
       setBabyFirstName('');
       setBabyLastName('');
       setBabyWeight('');
-      setBabyMonths('');
+      setBabyBirthdate('');
       setBabyGender('');
       setShowAddBabyModal(false);
       fetchParentProfile();
     } catch (error) {
       console.error('Error adding baby:', error);
     }
+  };
+
+  const calculateBabyAge = (birthdate) => {
+    const birthDate = new Date(birthdate);
+    const ageInMilliseconds = new Date() - birthDate;
+    const ageInMonths = Math.floor(ageInMilliseconds / (1000 * 60 * 60 * 24 * 30));
+    return ageInMonths;
+  };
+
+  const renderConversations = () => {
+    return conversations.map((chat, index) => {
+      return (
+        <div key={index}>
+          <h4>{chat.first_name} {chat.last_name}</h4>
+          <p>Contact: {chat.contact_number}</p>
+          <p>Location: {chat.location}</p>
+        </div>
+      );
+    });
   };
 
   return (
@@ -151,10 +184,10 @@ function ParentProfile() {
             </div>
           </div>
 
-          {/* Baby Cards ADDED NEW CODE */}
+          {/* Baby Cards */}
           <div className="par-pro-baby-info-wrapper">
             <div className="par-pro-baby-header">
-              <h3>Baby's Information</h3>
+              <h3>Babys Information</h3>
               <button className="par-pro-add-baby-button" onClick={() => setShowAddBabyModal(true)}>
                 + Add Baby
               </button>
@@ -162,21 +195,21 @@ function ParentProfile() {
             <div className="par-pro-baby-cards">
               {parentData.babies.map((baby, index) => {
                 const selectedBaby = JSON.parse(localStorage.getItem("selectedChild") || "{}");
-                const isSelected = baby.idNo === selectedBaby.id;
+                const isSelected = baby.id === selectedBaby.id;
 
                 return (
                   <div
                     key={index}
                     className={`par-pro-baby-card ${isSelected ? "active-baby-card" : ""}`}
                   >
-                    <h4>Baby {index + 1}: {baby.firstName} {baby.lastName}</h4>
+                    <h4>Baby {index + 1}: {baby.first_name} {baby.last_name}</h4>
                     <table className="par-pro-profile-table">
                       <tbody>
-                        <tr><th>ID No</th><td>{baby.idNo}</td></tr>
-                        <tr><th>First Name</th><td>{baby.firstName}</td></tr>
-                        <tr><th>Last Name</th><td>{baby.lastName}</td></tr>
+                        <tr><th>ID No</th><td>{baby.id}</td></tr>
+                        <tr><th>First Name</th><td>{baby.first_name}</td></tr>
+                        <tr><th>Last Name</th><td>{baby.last_name}</td></tr>
                         <tr><th>Weight</th><td>{baby.weight}</td></tr>
-                        <tr><th>Age</th><td>{baby.age}</td></tr>
+                        <tr><th>Age (Months)</th><td>{calculateBabyAge(baby.birthdate)}</td></tr>
                         <tr><th>Gender</th><td>{baby.gender}</td></tr>
                       </tbody>
                     </table>
@@ -185,12 +218,12 @@ function ParentProfile() {
                         className="par-pro-modal-action-button"
                         onClick={() => {
                           const newSelected = {
-                            id: baby.idNo,
-                            first_name: baby.firstName,
-                            last_name: baby.lastName,
+                            id: baby.id,
+                            first_name: baby.first_name,
+                            last_name: baby.last_name,
                             gender: baby.gender,
                             weight: baby.weight,
-                            age: baby.age,
+                            age: calculateBabyAge(baby.birthdate),
                           };
                           localStorage.setItem("selectedChild", JSON.stringify(newSelected));
                           window.location.reload();
@@ -205,6 +238,12 @@ function ParentProfile() {
               })}
             </div>
           </div>
+
+          {/* Conversations */}
+          <div className="par-pro-conversations">
+            <h3>Conversations</h3>
+            {renderConversations()}
+          </div>
         </>
       ) : (
         <p>Loading parent profile...</p>
@@ -217,20 +256,14 @@ function ParentProfile() {
             <button className="par-pro-close-button" onClick={() => setShowAddBabyModal(false)}>×</button>
             <form className="user_details" onSubmit={handleAddBabySubmit}>
               <div className="input_box"><div className="box-reg"><input type="text" placeholder=" " value={babyId} onChange={(e) => setBabyId(e.target.value)} required /><span>Baby ID</span></div></div>
-              <div className="input_box"><div className="box-reg"><input type="text" placeholder=" " value={babyFirstName} onChange={(e) => setBabyFirstName(e.target.value)} required /><span>Baby First Name</span></div></div>
-              <div className="input_box"><div className="box-reg"><input type="text" placeholder=" " value={babyLastName} onChange={(e) => setBabyLastName(e.target.value)} required /><span>Baby Last Name</span></div></div>
+              <div className="input_box"><div className="box-reg"><input type="text" placeholder=" " value={babyFirstName} onChange={(e) => setBabyFirstName(e.target.value)} required /><span>First Name</span></div></div>
+              <div className="input_box"><div className="box-reg"><input type="text" placeholder=" " value={babyLastName} onChange={(e) => setBabyLastName(e.target.value)} required /><span>Last Name</span></div></div>
               <div className="input_box"><div className="box-reg"><input type="text" placeholder=" " value={babyWeight} onChange={(e) => setBabyWeight(e.target.value)} required /><span>Weight</span></div></div>
-              <div className="input_box"><div className="box-reg"><input type="number" placeholder=" " value={babyMonths} onChange={(e) => setBabyMonths(e.target.value)} required /><span>Age (in months)</span></div></div>
-              <div className="input_box">
-                <div className="box-reg">
-                  <div className="gender-title">Gender</div>
-                  <div className="gender-category">
-                    <label><input type="radio" name="babyGender" value="Male" checked={babyGender === "Male"} onChange={(e) => setBabyGender(e.target.value)} required />Male</label>
-                    <label><input type="radio" name="babyGender" value="Female" checked={babyGender === "Female"} onChange={(e) => setBabyGender(e.target.value)} required />Female</label>
-                  </div>
-                </div>
+              <div className="input_box"><div className="box-reg"><input type="date" placeholder=" " value={babyBirthdate} onChange={(e) => setBabyBirthdate(e.target.value)} required /><span>Birthdate</span></div></div>
+              <div className="input_box"><div className="box-reg"><select value={babyGender} onChange={(e) => setBabyGender(e.target.value)} required><option value="">Select Gender</option><option value="Male">Male</option><option value="Female">Female</option></select></div></div>
+              <div className="modal-buttons-wrapper">
+                <button className="par-pro-modal-action-button" type="submit">Add Baby</button>
               </div>
-              <div className="modal-btn-add-baby"><button type="submit">Add Baby</button></div>
             </form>
           </div>
         </div>
