@@ -229,30 +229,45 @@
     word-break: break-word;
   }
   
-
 .appointment-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; 
-  }
-  
-  .appointment-modal .parent-modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 50%;
-    height: 80%;
-    position: relative;
-    display: flex;
-    max-width: 800px;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Book Appointment Modal */
+.book-modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 50%;
+  max-width: 700px;
+  height: auto;
+  max-height: 90%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Appointment Details Modal */
+.details-modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 60%;
+  max-width: 800px;
+  height: 80%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
   
   .appointment-modal .par-close-modal {
     position: absolute;
@@ -478,6 +493,5 @@
   
   .par-textarea {
     height: 50px;  
-    resize: vertical;  
   }
   
