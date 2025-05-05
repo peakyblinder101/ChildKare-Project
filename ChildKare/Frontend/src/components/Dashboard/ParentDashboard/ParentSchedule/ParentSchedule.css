@@ -267,7 +267,10 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
+
   
   .appointment-modal .par-close-modal {
     position: absolute;
