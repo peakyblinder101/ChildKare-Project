@@ -199,18 +199,8 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
     return ''; // Default return value
   };
 
-  // const formatTime = (time24) => {
-  //   if (!time24) return '';
-  //   const [hour, minute] = time24.split(':');
-  //   const date = new Date();
-  //   date.setHours(+hour);
-  //   date.setMinutes(+minute);
-  //   return date.toLocaleTimeString('en-US', {
-  //     hour: '2-digit',
-  //     minute: '2-digit',
-  //     hour12: true
-  //   });
-  // };
+  const [isEditing, setIsEditing] = useState(false);
+
 
   return (
     <div className="parent-schedule">
@@ -393,6 +383,7 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
         onClick={() => {
           setIsAppointmentDetailModalOpen(false);
           setSelectedAppointment(null);
+          setIsEditing(false); // Reset to "Update" state when closing the modal
         }}
       >
         ×
@@ -404,18 +395,26 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
           <div className="form-group">
             <label>Date</label>
             <input
-              type="text"
-              value={new Date(selectedAppointment.appointment_date).toLocaleDateString()}
-              readOnly
+              type="date"
+              value={new Date(selectedAppointment.appointment_date).toLocaleDateString('en-CA')}
+              readOnly={!isEditing}
+              onChange={(e) => setSelectedAppointment({
+                ...selectedAppointment,
+                appointment_date: e.target.value
+              })}
             />
           </div>
 
           <div className="form-group">
             <label>Time</label>
             <input
-              type="text"
+              type="time"
               value={new Date(selectedAppointment.appointment_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
-              readOnly
+              readOnly={!isEditing}
+              onChange={(e) => setSelectedAppointment({
+                ...selectedAppointment,
+                appointment_time: e.target.value
+              })}
             />
           </div>
 
@@ -423,9 +422,13 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
             <label>Reason for Checkup</label>
             <textarea
               value={selectedAppointment.reason}
-              readOnly
+              readOnly={!isEditing}
               rows="3"
-              className="par-textarea"  // adjust the height of textarea(reason for checkup)
+              className="par-textarea"
+              onChange={(e) => setSelectedAppointment({
+                ...selectedAppointment,
+                reason: e.target.value
+              })}
             />
           </div>
 
@@ -471,28 +474,34 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
             );
           })()}
 
-<div className="form-actions">
-  <button
-    type="button"
-    className="par-update-button"
-    onClick={() => handleUpdateAppointment(selectedAppointment)}
-  >
-    Update
-  </button>
-  <button
-    type="button"
-    className="par-delete-button"
-    onClick={() => handleDeleteAppointment(selectedAppointment)}
-  >
-    Delete
-  </button>
-</div>
+          <div className="form-actions">
+            <button
+              type="button"
+              className="par-update-button"
+              onClick={() => {
+                if (isEditing) {
+                  // You can implement save logic here if needed
+                }
+                setIsEditing(!isEditing); // Toggle between edit and view modes
+              }}
+            >
+              {isEditing ? 'Save' : 'Update'}
+            </button>
+            <button
+              type="button"
+              className="par-delete-button"
+              onClick={() => handleDeleteAppointment(selectedAppointment)}
+            >
+              Delete
+            </button>
+          </div>
 
         </form>
       </div>
     </div>
   </div>
 )}
+
     </div>
   );
 }
