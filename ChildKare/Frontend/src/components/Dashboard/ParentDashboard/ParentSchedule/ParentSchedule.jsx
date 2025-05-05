@@ -17,7 +17,7 @@ function ParentSchedule() {
   const [isAppointmentFormStep, setIsAppointmentFormStep] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [doctorList, setDoctorList] = useState([]);
-
+  const [doctorId, setDoctorId] = useState(null);
   const [babyDetails, setBabyDetails] = useState(null);
 
   const [selectedAppointment, setSelectedAppointment] = useState(null);
@@ -36,7 +36,7 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
       try {
         const response = await axios.get('https://8fdsdscs-5000.asse.devtunnels.ms/api/getAllDoctors');
         const transformedDoctors = response.data.map((doc) => ({
-          doctor_id: doc.doctor_id,
+          doctor_id: doc.id,
           name: `Dr. ${doc.first_name} ${doc.last_name}`,
           specialization: doc.specialization,
           imageUrl: 'https://img.freepik.com/free-photo/mother-baby-laying-bed_1150-18379.jpg',
@@ -70,6 +70,9 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
 
   const handleDoctorClick = (doctor) => {
     setSelectedDoctor(doctor);
+    console.log('Selected doctor:', doctor);
+    console.log('Selected doctor:', doctor.doctor_id);
+    setDoctorId(doctor.doctor_id); // Store the selected doctor's ID
     setIsAppointmentDetailModalOpen(false); // Ensure the details modal is closed
     setIsAppointmentModalOpen(true); // Open the doctor appointment modal
     setIsAppointmentFormStep(false); // Reset to the first step of the form
@@ -81,18 +84,13 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
   };
 
   const handleMakeAppointment = async () => {
-    if (!babyDetails || !babyDetails.id) {
-      alert('Please select a child before making an appointment.');
-      return;
-    }
-  
+
     try {
       // Construct date-time string as-is without converting to UTC
       const localDateTime = `${newAppointment.date}T${newAppointment.time}`;
   
       const appointmentData = {
-        child_id: babyDetails.id,
-        doctor_id: selectedDoctor?.doctor_id || 1,
+        doctor_id: doctorId,
         appointment_date: localDateTime, // No toISOString() here
         reason: newAppointment.reason,
         status: "pending",
