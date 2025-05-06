@@ -1,19 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import './DoctorHome.css';
 
 function DoctorHome() {
   const [date, setDate] = useState(new Date());
-  const [appointments, setAppointments] = useState([
-    { time: '9:00 AM', date: '2025-04-18', status: 'pending', parentName: 'John Doe', idNo: '12345', reason: 'Routine Checkup' },
-    { time: '10:30 AM', date: '2025-04-19', status: 'accepted', parentName: 'Jane Smith', idNo: '23456', reason: 'Vaccination' },
-    { time: '1:00 PM', date: '2025-04-20', status: 'pending', parentName: 'Alice Green', idNo: '34567', reason: 'General Checkup' },
-    { time: '2:00 PM', date: '2025-04-21', status: 'accepted', parentName: 'Bob Brown', idNo: '45678', reason: 'Routine Checkup' },
-    { time: '3:30 PM', date: '2025-04-22', status: 'pending', parentName: 'Charlie Blue', idNo: '56789', reason: 'Consultation' },
-  ]);
-
+  const [appointments, setAppointments] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
+
+  // Fetch appointments from the API
+  const fetchAppointments = async () => {
+    try {
+      const token = localStorage.getItem('token'); // Retrieve token from localStorage
+      const response = await fetch('https://8fdsdscs-5000.asse.devtunnels.ms/api/getAppointmentsByDoctorId', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`, // Include the token in the request headers
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch appointments');
+      }
+
+      const data = await response.json();
+
+      // Transform the data to match the existing structure
+      const transformedAppointments = data.map((appointment) => ({
+        idNo: appointment.id,
+        parentName: `Parent ID: ${appointment.parent_id}`, // Replace with actual parent name if available
+        time: new Date(appointment.appointment_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        date: new Date(appointment.appointment_date).toLocaleDateString('en-CA'), // Format as 'YYYY-MM-DD'
+        reason: appointment.reason,
+        status: appointment.status.toLowerCase(), // Ensure status is lowercase for consistency
+      }));
+
+      setAppointments(transformedAppointments);
+    } catch (error) {
+      console.error('Error fetching appointments:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAppointments(); // Fetch appointments on component mount
+  }, []);
 
   const handleDateClick = (value) => {
     setDate(value);
@@ -29,46 +60,97 @@ function DoctorHome() {
     setSelectedAppointment(null);
   };
 
-  const acceptAppointment = (appointment) => {
+  const acceptAppointment = async (appointment) => {
+    console.log(appointment);
+    try {
+      const token = localStorage.getItem('token'); // get token
+      const response = await fetch(
+        `https://8fdsdscs-5000.asse.devtunnels.ms/api/updateAppointment/${appointment.idNo}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // Add auth if needed
+          },
+          body: JSON.stringify({ status: 'approved' }),
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error('Failed to update appointment status');
+      }
+  
+      // Update state after server confirms
+      const updatedAppointments = appointments.map((app) =>
+        app.idNo === appointment.idNo ? { ...app, status: 'approved' } : app
+      );
+      setAppointments(updatedAppointments);
+      setModalVisible(false);
+      setSelectedAppointment(null);
+    } catch (error) {
+      console.error('Error approving appointment:', error);
+    }
+  };
+  
+
+  const cancelAppointment = async (appointment) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(
+        `https://8fdsdscs-5000.asse.devtunnels.ms/api/updateAppointment/${appointment.idNo}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ status: 'declined' }),
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error('Failed to update appointment status to declined');
+      }
+  
+      // Update status locally
+      const updatedAppointments = appointments.map((app) =>
+        app.idNo === appointment.idNo ? { ...app, status: 'declined' } : app
+      );
+      setAppointments(updatedAppointments);
+      setModalVisible(false);
+      setSelectedAppointment(null);
+    } catch (error) {
+      console.error('Error declining appointment:', error);
+    }
+  };
+    
+
+  const markAsDone = (appointment) => {
     const updatedAppointments = appointments.map((app) =>
-      app.idNo === appointment.idNo ? { ...app, status: 'accepted' } : app
+      app.id === appointment.id ? { ...app, status: 'done' } : app
     );
     setAppointments(updatedAppointments);
     setModalVisible(false);
     setSelectedAppointment(null);
   };
-
-  const cancelAppointment = (appointment) => {
-    const updatedAppointments = appointments.filter((app) => app.idNo !== appointment.idNo);
-    setAppointments(updatedAppointments);
-    setModalVisible(false);
-    setSelectedAppointment(null);
-  };
-
-  const markAsDone = (appointment) => {
-    const updatedAppointments = appointments.filter((app) => app.idNo !== appointment.idNo);
-    setAppointments(updatedAppointments);
-    setModalVisible(false);
-    setSelectedAppointment(null);
-  };
+  
 
   const tileClassName = ({ date, view }) => {
-    const dateStr = date.toLocaleDateString('en-CA');
+    const dateStr = date.toLocaleDateString('en-CA'); // Format the date as 'YYYY-MM-DD'
   
     if (view === 'month') {
-      const hasAcceptedAppointment = appointments.some(
-        (app) => app.date === dateStr && app.status === 'accepted'
+      const hasApprovedAppointment = appointments.some(
+        (app) => app.date === dateStr && app.status === 'approved'
       );
   
-      return hasAcceptedAppointment ? 'accepted-date' : '';
+      return hasApprovedAppointment ? 'approved-date' : '';
     }
   
     return '';
   };
-  
   const handleCalendarDayClick = (date) => {
     const dateStr = date.toLocaleDateString('en-CA');
-    const acceptedApp = appointments.filter((app) => app.date === dateStr && app.status === 'accepted');
+    const acceptedApp = appointments.filter((app) => app.date === dateStr && app.status === 'approved');
     if (acceptedApp.length > 0) {
       setSelectedAppointment(acceptedApp[0]);
       setModalVisible(true);
@@ -130,13 +212,13 @@ function DoctorHome() {
 
             {/* Accepted Appointments */}
             <div className="appointments-scroll-container">
-              <h3 className="group-title">Accepted</h3>
+              <h3 className="group-title">Approved</h3>
               <ul>
                 {appointments
-                  .filter((app) => app.status === 'accepted')
+                  .filter((app) => app.status === 'approved')
                   .map((appointment, index) => (
                     <li
-                      key={`accepted-${index}`}
+                      key={`approved-${index}`}
                       style={{ cursor: 'pointer' }}
                       onClick={() => {
                         setSelectedAppointment(appointment);
@@ -198,7 +280,7 @@ function DoctorHome() {
             {selectedAppointment.status === 'pending' && (
               <div className="modal-actions">
                 <button className="accept-btn" onClick={() => acceptAppointment(selectedAppointment)}>
-                  Accept
+                  Approve
                 </button>
                 <button className="cancel-btn" onClick={() => cancelAppointment(selectedAppointment)}>
                   Reject
@@ -206,7 +288,7 @@ function DoctorHome() {
               </div>
             )}
 
-            {selectedAppointment.status === 'accepted' && (
+            {selectedAppointment.status === 'approved' && (
               <div className="modal-actions done-section">
                 <button className="done-btn" onClick={() => markAsDone(selectedAppointment)}>
                   Done

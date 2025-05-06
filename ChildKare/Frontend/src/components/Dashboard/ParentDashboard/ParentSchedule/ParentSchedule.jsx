@@ -38,7 +38,7 @@ const [isAppointmentDetailModalOpen, setIsAppointmentDetailModalOpen] = useState
           doctor_id: doc.id,
           name: `Dr. ${doc.first_name} ${doc.last_name}`,
           specialization: doc.specialization,
-          imageUrl: 'https://img.freepik.com/free-photo/mother-baby-laying-bed_1150-18379.jpg',
+          imageUrl: doc.profilePicture,
           contact: doc.contact_number,
           license: doc.license_number,
           address: doc.clinic_address,

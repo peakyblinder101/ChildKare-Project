@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import './ParentProfile.css';
+import {uploadImageToCloudinary} from "../../../../utils/imageUploader";
 
 function ParentProfile() {
   const [showAddBabyModal, setShowAddBabyModal] = useState(false);
   const [imageUrl, setImageUrl] = useState(
     'https://img.freepik.com/free-photo/mother-baby-laying-bed_1150-18379.jpg'
   );
+  const [profileImage, setProfileImage] = useState(null);
 
   // Baby form states
   const [babyId, setBabyId] = useState('');
@@ -48,6 +50,7 @@ function ParentProfile() {
         contactNumber: data.contact_number,
         email: data.email || 'N/A',
         location: data.location,
+        profilePicture: data.profilePicture || imageUrl,
         babies: babies || [],
       });
 
@@ -72,16 +75,42 @@ function ParentProfile() {
     fetchParentProfile();
   }, []);
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async(e) => {
     const file = e.target.files[0];
-    if (file) {
+    const imageUrl = await uploadImageToCloudinary(file);
+
+    const token = localStorage.getItem('token'); // get token
+      const response = await fetch(
+        `https://8fdsdscs-5000.asse.devtunnels.ms/api/updateParent`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // Add auth if needed
+          },
+          body: JSON.stringify({ profilePicture: imageUrl }), // Send the image URL in the request body
+        }
+      );
+      if (!response.ok) {
+        throw new Error('Failed to update appointment status');
+      }
+      setParentData(prev => ({
+        ...prev,
+        profilePicture: imageUrl,
+      }));
+  
+    if (imageUrl) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImageUrl(reader.result);
+        setProfileImage(reader.result);
       };
       reader.readAsDataURL(file);
     }
   };
+
+  if (!parentData) {
+    return <div className="doctor-profile">Loading doctor profile...</div>;
+  }
 
   const handleAddBabySubmit = async (e) => {
     e.preventDefault();
@@ -148,7 +177,7 @@ function ParentProfile() {
         <>
           <div className="par-pro-profile-image-container">
             <label htmlFor="image-upload" style={{ cursor: 'pointer' }}>
-              <img src={imageUrl} alt="Profile" className="par-pro-profile-img" />
+              <img src={parentData.profilePicture} alt="Profile" className="par-pro-profile-img" />
             </label>
             <input id="image-upload" type="file" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
           </div>

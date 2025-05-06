@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./DoctorProfile.css";
+import {uploadImageToCloudinary} from "../../../../utils/imageUploader"; // Import the image upload utility
 
 function DoctorProfile() {
   const [doctorData, setDoctorData] = useState(null);
@@ -23,6 +24,8 @@ function DoctorProfile() {
 
       const data = await response.json();
       setDoctorData(data); // Set the fetched doctor data
+      console.log("Doctor Data:", data); // Log the doctor data for debugging
+
     } catch (error) {
       console.error("Error fetching doctor profile:", error);
     }
@@ -32,9 +35,31 @@ function DoctorProfile() {
     fetchDoctorProfile(); // Fetch doctor profile on component mount
   }, []);
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async(e) => {
     const file = e.target.files[0];
-    if (file) {
+    const imageUrl = await uploadImageToCloudinary(file);
+
+    const token = localStorage.getItem('token'); // get token
+      const response = await fetch(
+        `https://8fdsdscs-5000.asse.devtunnels.ms/api/updateDoctor`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // Add auth if needed
+          },
+          body: JSON.stringify({ profilePicture: imageUrl }), // Send the image URL in the request body
+        }
+      );
+      if (!response.ok) {
+        throw new Error('Failed to update appointment status');
+      }
+      setDoctorData(prev => ({
+        ...prev,
+        profilePicture: imageUrl,
+      }));
+  
+    if (imageUrl) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfileImage(reader.result);
@@ -55,10 +80,7 @@ function DoctorProfile() {
       <div className="profile-image-container">
         <label htmlFor="profile-image-upload" className="profile-image-label">
           <img
-            src={
-              profileImage ||
-              "https://thumbs.dreamstime.com/b/profile-anonymous-face-icon-gray-silhouette-person-male-businessman-profile-default-avatar-photo-placeholder-isolated-white-107003824.jpg"
-            }
+            src={doctorData.profilePicture}
             alt="Profile"
             className="doc-profile-circle-image"
           />

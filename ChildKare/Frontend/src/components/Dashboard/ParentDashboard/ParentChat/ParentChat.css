@@ -372,3 +372,56 @@
   background: #45a049;
 }
 /*>>>>>>> b48d84bf00882cd96ec0ea9e3b5f51809f51a2f4*/
+.message {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 10px;
+}
+
+.message-sender {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.message-receiver {
+  flex-direction: row;
+  text-align: left;
+
+}
+
+.chat-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 0 10px;
+}
+
+.message-content {
+  max-width: 70%;
+  word-wrap: break-word;
+}
+.chat-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: #f7f9fc;
+  border-bottom: 1px solid #ddd;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.chat-header-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 12px;
+  border: 2px solid #007bff;
+}
+
+.chat-header-name {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 600;
+}

@@ -345,3 +345,10 @@
   color: #2e7d32;
   font-weight: bold;
 }
+/* Style for approved dates in the calendar */
+.approved-date {
+  background-color: #74c977 !important; /* Green background for approved dates */
+  color: white !important; /* White text for better contrast */
+  border-radius: 50%; /* Make the date circular */
+  font-weight: bold; /* Highlight the text */
+}

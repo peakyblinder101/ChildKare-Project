@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './ParentChat.css';
 
 function ParentChat() {
@@ -10,6 +10,32 @@ function ParentChat() {
   const [loading, setLoading] = useState(false);
   const [doctors, setDoctors] = useState([]); // Store doctor list
   const [doctorName, setDoctorName] = useState(''); // Store selected doctor's name
+  const token = localStorage.getItem("token");
+  const [parentProfile, setParentProfile] = useState({});
+  const [doctorPicture, setDoctorPicture] = useState(''); // Store selected doctor's profile picture
+
+  const chatEndRef = useRef(null); // Create ref for scrolling
+
+  const fetchParentProfile = async () => {
+    try {
+      const response = await fetch('https://8fdsdscs-5000.asse.devtunnels.ms/api/parentProfile', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch parent profile');
+      }
+
+      const data = await response.json(); // Parse the JSON response
+      setParentProfile(data); // Set the parsed data to the state
+      console.log("Parent Profile:", data); // Log the parent profile for debugging
+    } catch (error) {
+      console.error('Error fetching parent profile:', error);
+    }
+  };
 
   const fetchChatHistory = async (userId) => {
     setLoading(true);
@@ -42,13 +68,16 @@ function ParentChat() {
         },
       });
       const data = await response.json();
+      console.log("Fetched doctors:", data); // Log the fetched doctors for debugging
       setDoctors(data); // Store the fetched doctors
+      
     } catch (error) {
       console.error('Error fetching doctors list:', error);
     }
   };
 
   useEffect(() => {
+    fetchParentProfile(); // Fetch parent profile on component mount
     fetchDoctorList(); // Fetch doctor list on component mount
   }, []);
 
@@ -57,6 +86,18 @@ function ParentChat() {
       fetchChatHistory(selectedUser); // Fetch chat history for the selected user
     }
   }, [selectedUser]);
+
+  const getAvatar = (senderId) => {
+    if (senderId === currentUserId && parentProfile.profilePicture) {
+      return parentProfile.profilePicture;
+    }
+    if (senderId === selectedUser && doctors.length > 0) {
+      const doctor = doctors.find((doc) => doc.user_id === senderId);
+      return doctor ? doctor.profilePicture : 'https://via.placeholder.com/40x40.png?text=D'; // Default doctor placeholder
+    }
+
+    return 'https://via.placeholder.com/40x40.png?text=D'; // Default doctor placeholder
+  };
 
   const handleSendMessage = async () => {
     if (message.trim()) {
@@ -93,12 +134,20 @@ function ParentChat() {
     }
   };
 
-  const handleUserClick = (userId, first_name, last_name) => {
+  const handleUserClick = (userId, first_name, last_name, profilePicture) => {
     setSelectedUser(userId);
     console.log(`Selected user ID: ${userId}`); // Log the selected doctor ID
     setDoctorName(`${first_name} ${last_name}`); // Set the selected doctor's name
+    setDoctorPicture(profilePicture); // Set the selected doctor's profile picture
     setChatHistory([]); // Clear previous chat history when switching users
   };
+
+  // Scroll to the bottom whenever the chat history updates
+  useEffect(() => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [chatHistory, selectedUser]);
 
   return (
     <div className="parent-chat-container">
@@ -111,10 +160,15 @@ function ParentChat() {
               {doctors.map((doctor) => (
                 <li
                   key={doctor.id}
-                  onClick={() => handleUserClick(doctor.user_id, doctor.first_name, doctor.last_name)}
+                  onClick={() => handleUserClick(doctor.user_id, doctor.first_name, doctor.last_name,doctor.profilePicture)}
                   className={selectedUser === doctor.id ? 'selected' : ''}
                 >
-                  <span className="user-avatar-placeholder">{doctor.first_name} {doctor.last_name}</span>
+                  <img 
+                      src={doctor.profilePicture} 
+                      alt={`${doctor.first_name} ${doctor.last_name}`} 
+                      className="user-avatar"
+                    />
+                    <span>{doctor.first_name} {doctor.last_name}</span>
                 </li>
               ))}
             </ul>
@@ -122,7 +176,15 @@ function ParentChat() {
 
           {/* Right Side - Chat window */}
           <div className="chat-window">
-            <h2>Chat with {doctorName}</h2>
+
+            <div  className='chat-header'>
+               <img 
+                src={doctorPicture} 
+                className="user-avatar"
+                    />
+              <h2>{doctorName}</h2>
+            </div>
+                 
             <div className="messages">
               {loading ? (
                 <p>Loading...</p>
@@ -132,17 +194,14 @@ function ParentChat() {
                     key={index}
                     className={`message ${msg.sender_id === currentUserId ? 'message-sender' : 'message-receiver'}`}
                   >
-                    <div className="message-header">
-                      <span className="user-name">
-                        {msg.sender_id === currentUserId ? 'You' : msg.sender_id}
-                      </span>
-                    </div>
+                   <img src={getAvatar(msg.sender_id)} alt="avatar" className="chat-avatar" />
                     <div className="message-text">
                       <p>{msg.message}</p>
                     </div>
                   </div>
                 ))
               )}
+              <div ref={chatEndRef} /> {/* Scroll marker */}
             </div>
 
             <div className="input-section">
