@@ -1,7 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import './ParentChat.css';
+import io from 'socket.io-client';
 
 function ParentChat() {
+
+
+  const socket = io('https://8fdsdscs-5000.asse.devtunnels.ms/');
+
   const currentUserId = 4; // Parent ID
   const [doctorId, setDoctorId] = useState(3); // Default Doctor ID, can be dynamic
   const [selectedUser, setSelectedUser] = useState(doctorId); // Always chatting with the doctor
@@ -75,6 +80,34 @@ function ParentChat() {
       console.error('Error fetching doctors list:', error);
     }
   };
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log('Socket connected:', socket.id);
+    });
+  
+    socket.on('disconnect', () => {
+      console.log('Socket disconnected');
+    });
+  
+    return () => {
+      socket.off('connect');
+      socket.off('disconnect');
+    };
+  }, []);
+  useEffect(() => {
+    // Join room using parent ID
+    socket.emit('join', { userId: currentUserId });
+  
+    // Listen for incoming messages
+    socket.on('receive_message', (data) => {
+      setChatHistory((prev) => [...prev, data]);
+    });
+  
+    return () => {
+      socket.off('receive_message');
+    };
+  }, []);
+  
 
   useEffect(() => {
     fetchParentProfile(); // Fetch parent profile on component mount
@@ -107,13 +140,15 @@ function ParentChat() {
         message,
         created_at: new Date().toISOString(),
       };
-
-      // Append locally
+  
       setChatHistory((prev) => [...prev, newMessage]);
-
+  
+      // Emit over socket
+      socket.emit('send_message', newMessage);
+  
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch('https://8fdsdscs-5000.asse.devtunnels.ms/api/send', {
+        await fetch('https://8fdsdscs-5000.asse.devtunnels.ms/api/send', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -124,15 +159,14 @@ function ParentChat() {
             message,
           }),
         });
-
-        if (!response.ok) throw new Error('Failed to send message');
       } catch (error) {
         console.error('Error sending message:', error);
       }
-
+  
       setMessage('');
     }
   };
+  
 
   const handleUserClick = (userId, first_name, last_name, profilePicture) => {
     setSelectedUser(userId);

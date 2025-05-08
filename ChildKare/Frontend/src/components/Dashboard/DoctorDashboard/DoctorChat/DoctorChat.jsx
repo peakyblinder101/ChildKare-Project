@@ -1,26 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import io from 'socket.io-client';
 import './DoctorChat.css';
 
+const socket = io('https://8fdsdscs-5000.asse.devtunnels.ms', {
+  transports: ['websocket'], // ensure websocket is used
+});
+
 function DoctorChat() {
-  const currentUserId = 3; // Doctor ID
-  const [selectedUser, setSelectedUser] = useState(null); // Selected parent ID
+  const currentUserId = 3;
+  const [selectedUser, setSelectedUser] = useState(null);
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [parents, setParents] = useState([]); // Store parent list
-  const [parentName, setParentName] = useState(''); // Store selected parent's name
+  const [parents, setParents] = useState([]);
+  const [parentName, setParentName] = useState('');
+  const chatEndRef = useRef(null); // Ref for the chat container
 
-  // Fetch chat history for the selected parent
   const fetchChatHistory = async (userId) => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(`https://8fdsdscs-5000.asse.devtunnels.ms/api/history/${userId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
       setChatHistory(data);
@@ -31,25 +32,19 @@ function DoctorChat() {
     }
   };
 
-  // Fetch parent list
   const fetchParentList = async () => {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch('https://8fdsdscs-5000.asse.devtunnels.ms/api/conversationsForDoctors', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
-      setParents(data); // Store the fetched parents
+      setParents(data);
     } catch (error) {
       console.error('Error fetching parent list:', error);
     }
   };
 
-  // Send a message
   const handleSendMessage = async () => {
     if (message.trim()) {
       const newMessage = {
@@ -59,24 +54,19 @@ function DoctorChat() {
         created_at: new Date().toISOString(),
       };
 
-      // Append locally
       setChatHistory((prev) => [...prev, newMessage]);
+      socket.emit('send_message', newMessage); // Emit through socket
 
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('https://8fdsdscs-5000.asse.devtunnels.ms/api/send', {
+        await fetch('https://8fdsdscs-5000.asse.devtunnels.ms/api/send', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({
-            receiver_id: selectedUser,
-            message,
-          }),
+          body: JSON.stringify({ receiver_id: selectedUser, message }),
         });
-
-        if (!response.ok) throw new Error('Failed to send message');
       } catch (error) {
         console.error('Error sending message:', error);
       }
@@ -85,31 +75,71 @@ function DoctorChat() {
     }
   };
 
-  // Handle parent selection
   const handleUserClick = (userId, first_name, last_name) => {
     setSelectedUser(userId);
-    console.log(`Selected user ID: ${userId}`); // Log the selected parent ID
-    setParentName(`${first_name} ${last_name}`); // Set the selected parent's name
-    setChatHistory([]); // Clear previous chat history when switching users
+    setParentName(`${first_name} ${last_name}`);
+    setChatHistory([]);
   };
 
-  // Fetch parent list on component mount
+  // Scroll to the bottom of the chat
+  const scrollToBottom = () => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Fetch data
   useEffect(() => {
     fetchParentList();
   }, []);
 
-  // Fetch chat history when a parent is selected
   useEffect(() => {
-    if (selectedUser) {
-      fetchChatHistory(selectedUser);
-    }
+    socket.on('connect', () => {
+      console.log('Socket connected:', socket.id);
+
+      // Emit the join event with the doctor's user ID
+      socket.emit('join', { userId: currentUserId });
+      console.log(`Doctor joined room with userId: ${currentUserId}`);
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Socket disconnected');
+    });
+
+    return () => {
+      socket.off('connect');
+      socket.off('disconnect');
+    };
+  }, []);
+
+  useEffect(() => {
+    if (selectedUser) fetchChatHistory(selectedUser);
   }, [selectedUser]);
+
+  // Setup socket listeners
+  useEffect(() => {
+    // Join room using parent ID
+    socket.emit('join', { userId: currentUserId });
+
+    // Listen for incoming messages
+    socket.on('receive_message', (data) => {
+      setChatHistory((prev) => [...prev, data]);
+    });
+
+    return () => {
+      socket.off('receive_message');
+    };
+  }, []);
+
+  // Scroll to the bottom whenever chat history changes
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatHistory]);
 
   return (
     <div className="doctor-chat-container">
       <div className="doctor-chat">
         <div className="chat-container">
-          {/* Left Side - Parent List */}
           <div className="parent-user-list">
             <h2>Parents</h2>
             <ul>
@@ -119,13 +149,14 @@ function DoctorChat() {
                   onClick={() => handleUserClick(parent.user_id, parent.first_name, parent.last_name)}
                   className={selectedUser === parent.id ? 'selected' : ''}
                 >
-                  <span className="user-avatar-placeholder">{parent.first_name} {parent.last_name}</span>
+                  <span className="user-avatar-placeholder">
+                    {parent.first_name} {parent.last_name}
+                  </span>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Right Side - Chat Window */}
           <div className="chat-window">
             <h2>Chat with {parentName}</h2>
             <div className="messages">
@@ -148,8 +179,8 @@ function DoctorChat() {
                   </div>
                 ))
               )}
+              <div ref={chatEndRef} /> {/* Reference to scroll to the bottom */}
             </div>
-
             <div className="input-section">
               <input
                 type="text"
