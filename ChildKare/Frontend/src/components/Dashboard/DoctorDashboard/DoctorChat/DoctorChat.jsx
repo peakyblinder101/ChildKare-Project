@@ -13,8 +13,38 @@ function DoctorChat() {
   const [chatHistory, setChatHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [parents, setParents] = useState([]);
-  const [parentName, setParentName] = useState('');
-  const chatEndRef = useRef(null); // Ref for the chat container
+  const [parentName, setParentName] = useState(''); 
+
+  const [doctorData, setDoctorData] = useState(null);
+  const chatEndRef = useRef(null); // Create ref for scrolling
+
+  const fetchDoctorProfile = async () => {
+    try {
+      const token = localStorage.getItem("token"); // Retrieve token from localStorage
+      const response = await fetch("https://8fdsdscs-5000.asse.devtunnels.ms/api/getDoctorById", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include the token in the request headers
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch doctor profile");
+      }
+
+      const data = await response.json();
+      setDoctorData(data); // Set the fetched doctor data
+      console.log("Doctor Data:", data); // Log the doctor data for debugging
+
+    } catch (error) {
+      console.error("Error fetching doctor profile:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDoctorProfile(); // Fetch doctor profile on component mount
+  }, []);
 
   const fetchChatHistory = async (userId) => {
     setLoading(true);
@@ -130,7 +160,16 @@ function DoctorChat() {
       socket.off('receive_message');
     };
   }, []);
-
+  const getAvatar = (senderId) => {
+    if (senderId === currentUserId && doctorData) {
+      return doctorData.profilePicture || 'https://via.placeholder.com/40x40.png?text=D'; // Doctor's avatar or default
+    }
+    if (senderId === selectedUser && parents.length > 0) {
+      const parent = parents.find((p) => p.user_id === senderId);
+      return parent ? parent.profilePicture : 'https://via.placeholder.com/40x40.png?text=P'; // Parent's avatar or default
+    }
+    return 'https://via.placeholder.com/40x40.png?text=P'; // Default avatar
+  };
   // Scroll to the bottom whenever chat history changes
   useEffect(() => {
     scrollToBottom();
@@ -140,18 +179,23 @@ function DoctorChat() {
     <div className="doctor-chat-container">
       <div className="doctor-chat">
         <div className="chat-container">
-          <div className="parent-user-list">
+        <div className="parent-user-list">
             <h2>Parents</h2>
             <ul>
               {parents.map((parent) => (
                 <li
-                  key={parent.id}
-                  onClick={() => handleUserClick(parent.user_id, parent.first_name, parent.last_name)}
-                  className={selectedUser === parent.id ? 'selected' : ''}
+                  key={parent.user_id}
+                  onClick={() =>
+                    handleUserClick(parent.user_id, parent.first_name, parent.last_name, parent.profilePicture)
+                  }
+                  className={selectedUser === parent.user_id ? 'selected' : ''}
                 >
-                  <span className="user-avatar-placeholder">
-                    {parent.first_name} {parent.last_name}
-                  </span>
+                  <img
+                    src={parent.profilePicture || 'https://via.placeholder.com/40x40.png?text=P'}
+                    alt={`${parent.first_name} ${parent.last_name}`}
+                    className="user-avatar"
+                  />
+                  <span>{parent.first_name} {parent.last_name}</span>
                 </li>
               ))}
             </ul>
@@ -168,11 +212,12 @@ function DoctorChat() {
                     key={index}
                     className={`message ${msg.sender_id === currentUserId ? 'message-sender' : 'message-receiver'}`}
                   >
-                    <div className="message-header">
-                      <span className="user-name">
-                        {msg.sender_id === currentUserId ? 'You' : msg.sender_id}
-                      </span>
-                    </div>
+                    {/* Add profile picture beside each message */}
+                    <img
+                      src={getAvatar(msg.sender_id)}
+                      alt="avatar"
+                      className="chat-avatar"
+                    />
                     <div className="message-text">
                       <p>{msg.message}</p>
                     </div>
@@ -181,7 +226,7 @@ function DoctorChat() {
               )}
               <div ref={chatEndRef} /> {/* Reference to scroll to the bottom */}
             </div>
-            <div className="input-section">
+                        <div className="input-section">
               <input
                 type="text"
                 value={message}
